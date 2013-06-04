@@ -1,0 +1,108 @@
+\section{Software Architecture}
+
+\subsection{Cohesion}
+Cohesion measures interdependance of the elements of one module. Higher cohesion is better.
+\enumstart
+	\item Operations work on the same data
+	\item Operations implement a common abstraction (abstract data type)
+\enumend
+
+\subsection{Coupling}
+Coupling measures interdependance between different modules. Lower coupling is better.
+\enumstart
+	\item Small interfaces
+	\item information hiding
+	\item No global data
+	\item Interactions are within subsystems rather than across subsystem boundaries
+\enumend
+
+\subsection{Architectural Styles}
+
+\subsubsection{Stream processing}
+When large amounts of data are processed through several computational steps.
+\enumstart
+	\item Filter
+	\enumstart
+		\item Typically an autonomous unit of computation
+		\item Does not touch shared memory
+		\item read streams of input data, then locally transform input data and produce stream of output data
+	\enumend
+	\item Pipeline connector
+	\item Splitjoin connector
+	\enumstart
+		\item Connect components in parallel
+		\item Expose data parallelism and data distribution
+		\item Spitter can be:
+		\enumstart
+			\item Round-robin - Each item to different child stream
+			\item Duplicate - Data is dupplicated on output of splitter
+		\enumend
+		\item Joiner can be of various type (e.g. Round-robin)
+	\enumend
+	\item Strengths
+	\enumstart
+		\item Reuse - Any two filter can be connected if they agree on the data format
+		\item Ease of maintenance - filters can be added or replaced
+		\item Potential for parallelism
+	\enumend
+	\item Weaknesses
+	\enumstart
+		\item Sharing global data is expensive or limiting
+		\item Can be difficult to design incremental filters
+		\item Not appropriate for interactive applications
+		\item Error handling is Achilles-heel
+	\enumend
+\enumend
+
+\subsubsection{Event-based}
+\enumstart
+	\item Characterized by the style of communication between components
+	\item Components may
+	\enumstart
+		\item generate events
+		\item register for events of other components with a callback
+	\enumend
+	\item Connectors
+	\enumstart
+		\item Bindings between event generation and method calls (callbacks)
+	\enumend
+	\item Generators of events do not know  which  components will be affected by their events
+	\item Components cannot make assumptions about the ordering in which events arise
+	\item Strengths
+	\enumstart
+		\item Strong support for reuse in the large - Components can be introduced by simple registration
+		\item Maintenance - Add and replace components with minimal effect on other components in the system
+	\enumend
+	\item Weaknesses
+	\enumstart
+		\item Loss of control
+		\enumstart
+			 \item What components will respond to an event?
+			 \item In which order will components be invoked?
+			 \item Are invoked components finished?
+		\enumend
+		\item Ensuring correctness is difficult, because it depends on context in which invoked
+	\enumend
+\enumend
+
+\subsubsection{Call-and-return}
+\enumstart
+	\item Components: Objects
+	\item Connections: Messages (method invocation)
+	\item Key aspects
+	\enumstart
+		\item Object preserves integrity of representation (encapsulation)
+		\item Representation is hidden from client objects
+	\enumend
+	\item Strengths
+	\enumstart
+		\item Change implementation without affecting clients
+		\item Can break problems into interacting agents (distributed across multiple machines/networks)
+	\enumend
+	\item Weaknesses
+	\enumstart
+		\item Objects must know their interaction partner
+		\item When partner changes, objects that explicitly invoke it must change
+		\item Side effects
+	\enumend
+\enumend

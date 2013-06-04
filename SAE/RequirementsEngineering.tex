@@ -1,0 +1,80 @@
+\section{Requirements Engineering}
+A Requirement is a feature that the System must have or a constraint it must satistfy to be accepted by the client.\\
+Requirements define what a System must do/satisfy and not how.
+Part of Requirements
+\enumstart
+	\item Functionality
+	\item User interaction
+	\item Error handling
+	\item Environmental conditions (interfaces)
+\enumend
+
+\subsection{Functional Requirements}
+\enumstart
+	\item Functionality - What is the software supposed to do?
+	\item External interfaces - Interaction with people, hardware or software
+\enumend
+
+\subsection{Nonfunctional Requirements}
+\enumstart
+	\item Performance - Speed, availability, response time, recovery time
+	\item Attributes (quality requirements) - Portability, correctness, maintainability, security
+	\item Design constraints - Required standards, operating environment
+\enumend
+
+\subsection{Functionality}
+\enumstart
+	\item Relationship of outputs to inputs
+	\item Response to abnormal situations
+	\item Exact sequence of operations
+	\item Validity checks on the input
+	\item Effect of parameters
+\enumend
+
+\subsection{External Interfaces}
+Detailed description of all inputs and outputs
+\enumstart
+	\item Description of purpose
+	\item Source of input, destination of output
+	\item Valid range, accuracy, tolerance
+	\item Units of measure
+	\item Relationships to other inputs/outputs
+	\item Screen and window formats
+	\item Data and command formats
+\enumend
+
+\subsection{Performance}
+Static numerical requirements
+\enumstart
+	\item Number of terminals supported
+	\item Number of simultaneous users supported
+	\item Amount of information handled
+\enumend
+Dynamic numerical requirements
+\enumstart
+	\item Number of transactions processed withing certain time periods (average and peek)
+\enumend
+
+\subsection{Constraints (Pseudo Requirements)}
+\enumstart
+	\item Is a nonfunctional requirement
+	\item Standards compliance - Report format, audit tracking, etc.
+	\item Implementation requirements
+	\enumstart
+		\item Tools, programming language, etc.
+		\item Development technology and methodology should not be constrained by the client!
+	\enumend
+	\item Operations requirements - Administration and management of the system
+	\item Legal requirements - Licensing, regulation, certification, maintenance
+\enumend
+
+\subsection{Quality Criteria for Requirements}
+\enumstart
+	\item Correctness - Requirements represent the clients view
+	\item Completeness - All possible scenarios are described including exceptional behaviour
+	\item Consistency - Requirements do not contradict each other
+	\item Clarity (Unambiguity) - Requirements can be interpreted in only one way
+	\item Realism - Requirements can be implemented and delivered
+	\item Verifiability - Repeatable tests can be designed to show that the system fulfills the requirements
+	\item Traceability - Each feature can be traced to a set of functional requirements
+\enumend
