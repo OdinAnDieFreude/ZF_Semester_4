@@ -241,3 +241,119 @@
 \enumend
 
 \subsection{Structural testing}
+
+\subsubsection{Control flow testing}
+\enumstart
+	\item Idea: Cover as many different flows of control as possible
+	\item Control flow graph
+	\enumstart
+		\item Basic blocks as Nodes
+		\item Flow of control as Edges
+	\enumend
+\enumend
+
+\subsubsection{Basic Blocks}
+\enumstart
+	\item Sequence of statements with exactly one entry-point and one exit-point
+	\item Whenever the first instruction is executed, the rest is executed once and in order
+\enumend
+
+\subsubsection{Intraprocedural control flow graph (CFG)}
+\enumstart
+	\item A CFG of a method is
+	\enumstart
+		\item A graph $(N, E)$
+		\item $N$ contains the basic blocks of the method
+		\item $E$ contains
+		\enumstart
+			\item edges $(a, b, c)$ where
+			\enumstart
+				\item the control flow goes from $a$ to $b$
+				\item under the condition that $c$ holds
+			\enumend
+			\item an entry $(entry, a, true)$ to the first basic block
+			\item edges $(b, exit, true)$ for each $b$ that ends with a return statement
+		\enumend
+	\enumend
+\enumend
+
+\subsubsection{Statement coverage}
+\enumstart
+	\item $\text{Statement coverage} = \frac{\text{Number of executed Statements}}{\text{Total number of Statements}}$
+	\item Can also be defined on basic blocks
+\enumend
+
+\subsubsection{Branch coverage}
+\enumstart
+	\item An edge $(a,b,c)$ is a branch iff there is another edge $(a,b',c')$ with $b \ne b'$
+	\item $\text{Branch coverage} = \frac{\text{Number of executed branches}}{\text{Total number of branches}}$
+	\item If code has no branches, branch coverage is defined to be 100\%
+	\item Complete branch coverage leads to complete statement coverage
+	\item At least $n$\% branch coverage does not imply at least $n$\% statement coverage
+	\item Most widely used in industry
+\enumend
+
+\subsubsection{Path coverage}
+\enumstart
+	\item A path is a sequence of nodes $n_1, \mathellipsis, n_k$ such that
+	\enumstart
+		\item $n_1$ is an entry point
+		\item $n_k$ is an exit
+		\item There is an edge $(n_i, n_{i+1}, c)$ for all $1 \le i \le k-1$
+	\enumend
+	\item $\text{Path coverage} = \frac{\text{Number of executed paths}}{\text{Total number of paths}}$
+	\item Complete path coverage leads to complete branch coverage
+	\item At least $n$\% branch coverage does not imply at least $n$\% branch coverage
+	\item Complete path coverage is not feasible for loops (infinity amount of paths)
+\enumend
+
+\subsubsection{Loop coverage}
+\enumstart
+	\item $\text{Loop coverage} = \frac{\text{Number of executed loops with 0, 1 and more iterations}}{\text{Total number of loops * 3}}$
+	\item Often combined with other adequacy criteria
+\enumend
+
+\subsubsection{Data flow testing}
+\enumstart
+	\item Test the paths, where a computation in one part of the path affects the computations of another
+	\item Complements control flow testing
+\enumend
+
+\subsubsection{Variable definition}
+\enumstart
+	\item A variable definition for $v$ is a basic block, that assigns to $v$
+\enumend
+
+\subsubsection{Variable use}
+\enumstart
+	\item A variable use for $v$ is a basic block, that reads the value of $v$
+\enumend
+
+\subsubsection{Definition-Clear path}
+\enumstart
+	\item A path $n_1, \mathellipsis, n_k$ in the CFG, where
+	\enumstart
+		\item $n_1$ is a variable definition for $v$
+		\item $n_k$ is a variable use for $v$
+		\item $n_2, \mathellipsis, n_{k}$ are no variable definitions (except for $n_k$ iff it defines after the use)
+	\enumend
+	\item 
+\enumend
+
+\subsubsection{Definition-Use Pair}
+\enumstart
+	\item A pair $(a,b)$ is a DU-pair iff $a, n_1, \mathellipsis, n_k, b$ is a definition-Clear path
+\enumend
+
+\subsubsection{DU-Pairs coverage}
+\enumstart
+	\item $\text{DU-Pairs coverage} = \frac{\text{Number of executed DU-Pairs}}{\text{Total number of DU-Pairs}}$
+\enumend
+
+\subsubsection{Determing all DU-Pairs}
+\enumstart
+	\item Computed using a static reaching-definitions analysis
+	\\ \includegraphics[width=0.5\textwidth]{img/reaching_definitions.png}
+	\item DU-Pairs = $\{(d,u) | u$ \text{is a variable use for} $v$ \text{ and }$v_d \in Reach(u)\}$
+\enumend
+
