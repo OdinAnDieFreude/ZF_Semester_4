@@ -277,6 +277,13 @@
 	\enumend
 \enumend
 
+\subsubsection{Coverage}
+\enumstart
+	\item Criteria to measure how well tested a method is
+	\item High coverage does not mean the code is well tested
+	\item Low coverage means the code is not well tested
+\enumend
+
 \subsubsection{Statement coverage}
 \enumstart
 	\item $\text{Statement coverage} = \frac{\text{Number of executed Statements}}{\text{Total number of Statements}}$
@@ -317,6 +324,12 @@
 \enumstart
 	\item Test the paths, where a computation in one part of the path affects the computations of another
 	\item Complements control flow testing
+	\item DU-pair anomalies may point to errors
+	\enumstart
+		\item Use before definition
+		\item Double definition without use in between
+		\item Termination after definition without use
+	\enumend
 \enumend
 
 \subsubsection{Variable definition}
@@ -357,3 +370,53 @@
 	\item DU-Pairs = $\{(d,u) | u$ \text{is a variable use for} $v$ \text{ and }$v_d \in Reach(u)\}$
 \enumend
 
+\subsection{Testing object-oriented software}
+
+\subsubsection{Aliasing and object identities}
+\enumstart
+	\item Aliasing: different references that point to the same object
+	\item If aliasing possible, test with aliased and non-aliased objects
+\enumend
+
+\subsubsection{Dynamically-bound method calls}
+\enumstart
+	\item Calls invoke different code, depending on the dynamic receivers type
+	\item Testing should cover the possible behaviours
+	\item A dynamically-bound call can be regarded as a case distinction on the receiver type
+	\enumstart
+		\item  $\rightarrow$ leads to combinatorial explosion
+		\item Use semantic constraints and pairwise-combinations testing
+	\enumend
+\enumend
+
+\subsubsection{Exceptions}
+\enumstart
+	\item Exceptions add a control flow from the block where the exception is thrown to the exit block or the block where the exception is caught
+	\item Idea: cover exceptional control flow like normal control flow
+	\enumstart
+		\item It is impractical to represent and test all exceptional control flows
+	\enumend
+	\item Checked exceptions
+	\enumstart
+		\item Invalid conditions outside the immediate control of the program
+		\item (User input, database, network, files, $\mathellipsis$)
+	\enumend
+	\item Unchecked exceptions
+	\enumstart
+		\item Defects in the program or the execution environment
+		\item (Illegal arguments, null-pointer dereferences, division by zero, assertion violation, $\mathellipsis$)
+	\enumend
+\enumend
+
+\subsubsection{Testing unchecked exceptions}
+\enumstart
+	\item Ignore unchecked exceptions thrown by other methods and virtual machine
+	\item Consider throw statements
+\enumend
+
+\subsubsection{Testing checked exceptions}
+\enumstart
+	\item Checked exceptions represent regular control flow that needs to be tested
+	\item Checked methods are declared in method signatures
+	\item For each method call, add appropriate control flow edges
+\enumend
