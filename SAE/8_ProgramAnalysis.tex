@@ -50,3 +50,132 @@
 	\item Ensures termination at the expense of precision
 	\item Do instead of join, whenever you like
 \enumend
+
+\subsection{Semantics}
+\enumstart
+	\item Why formal semantics?
+	\enumstart
+		\item Understand what a program does
+		\item Implement a language
+		\item Reasoning about program correctness
+	\enumend
+	\item Three approaches
+	\enumstart
+		\item Operational semantics
+		\enumstart
+			\item How would I execute the statement?
+			\item Define a transition system, transition relation describes evaluation steps of a program
+		\enumend
+		\item Denotational semantics
+		\enumstart
+			\item What is the statement computing?
+			\item Define an input/output relation that assigns meaning to each construct
+		\enumend
+		\item Axiomatic semantics
+		\enumstart
+			\item What is true after a statement is executed?
+			\item Define the effect of each construct on logical statements about program store
+		\enumend
+	\enumend
+\enumend
+
+\subsection{SPL Language Syntax}
+\includegraphics[width=0.5\textwidth]{img/spl_language_syntax.png}
+
+\subsection{Operational semantics}
+\enumstart
+	\item Specifies how expressions and statements should be evaluated
+	\item Evaluation depends on the shape of the expression/statement
+	\item Evaluation depends on the values of variables
+	\item Values of variables at any moment in time are given by a function $\sigma \in \text{Store} = \text{Var} \rightarrow Z$
+	\item Configurations: $c \in \Sigma$ where $\Sigma = (\text{Stmt} \times \text{Store}) \cup \text{Store}$
+	\enumstart
+		\item $\la S, \sigma \ra$ is a configuration
+		\item $\sigma$ is also a configuration, a terminal configuration
+	\enumend
+	\item Transitions: $\rightarrow \subseteq \Sigma \times \Sigma$ (steps between configurations)
+	\item Transition system: $(\Sigma, \rightarrow, I, F)$
+	\enumstart
+		\item $I \subseteq \Sigma$: Initial configurations
+		\item $F \subseteq \text{Store}$: final configurations
+	\enumend
+	\item $c \rightarrow c'$ denotes $(c, c') \in \rightarrow$
+	\item $\rightarrow^*$ denotes the reflexive transitive closure of the relation $\rightarrow$
+	\enumstart
+		\item There is a sequence $c_0, \mathellipsis, c_n$ where $c_0 = c$, $c_n = c'$ and for all $0 \le i \le n-1$: $c_i \rightarrow c_{i+1}$
+	\enumend
+\enumend
+
+\subsection{Operational semantics of SPL}
+
+\subsubsection{Big-step semantics}
+\enumstart
+	\item We use it for arithmetic- and boolean expressions 
+	\item $c \rightarrow c'$ describes the entire computation
+	\item Some relations needed
+	\enumstart
+		\item $\Downarrow_a \subseteq (AExp \times Store) \times Z$
+		\item $\Downarrow_b \subseteq (BExp \times Store) \times \{true, false\}$
+		\item $\la a, \sigma \ra \Downarrow_a v$ means: "expression $a$ evaluates to $v$ in store $\sigma$"
+	\enumend
+	\item Evaluation rules for arithmetic expressions
+	\enumstart
+		\item $\frac{\la a_1, \sigma \ra \Downarrow_a v_1 \ \ \ \la a_2, \sigma \ra \Downarrow_a v_2}{\la a_1 + a_2, \sigma \ra \Downarrow_a v_1 + v_2}$
+		\item $\frac{}{\la x, \sigma \ra \Downarrow_a \sigma(x)}$
+	\enumend
+	\item Evaluation rules for boolean expressions
+	\enumstart
+		\item $\frac{\la a_1, \sigma \ra \Downarrow_a v_1 \ \ \ \la a_2, \sigma \ra \Downarrow_a v_2}{\la a_1 \le a_2, \sigma \ra \Downarrow_b bv}$ bv is $v_1 \le v_2$
+		\item $\frac{\la a_1, \sigma \ra \Downarrow_a v_1 \ \ \ \la a_2, \sigma \ra \Downarrow_a v_2}{\la a_1 = a_2, \sigma \ra \Downarrow_b bv}$ bv is $v_1 == v_2$
+		\item $\frac{\la b_1, \sigma \ra \Downarrow_b true \ \ \ \la b_2, \sigma \ra \Downarrow_b true}{\la b_1 \land b_2, \sigma \ra \Downarrow_b true}$
+		\item $\frac{\la b_1, \sigma \ra \Downarrow_b false}{\la b_1 \land b_2, \sigma \ra \Downarrow_b false}$
+		\item $\frac{\la b_2, \sigma \ra \Downarrow_b false}{\la b_1 \land b_2, \sigma \ra \Downarrow_b false}$ adsf
+	\enumend
+\enumend
+
+\subsubsection{Small-step semantics}
+\enumstart
+	\item We use it for statements
+	\item $c \rightarrow c'$ describes a single step of a larger computation
+	\item Evaluating a statement produces a new store ($\la s, \sigma \ra \rightarrow \la s', \sigma' \ra$)
+	\item Evaluation order is important
+	\enumstart
+		\item In "$s_1;s_2$", $s_1$ is evaluated before $s_2$
+		\item In "if true then $s_1$ else $s_2$", $s_2$ is not evaluated
+	\enumend
+	\item Evaluation rules for Stmt
+	\enumstart
+		\item $\frac{\la s_1, \sigma \ra \rightarrow \la s_2, \sigma_1 \ra}{\la s_1;s_3, \sigma \ra \rightarrow \la s_2;s_3, \sigma_1 \ra}$ bla
+		\item $\frac{\la s_1, \sigma \ra \rightarrow \sigma_1}{\la s_1;s_2, \sigma \ra \rightarrow \la s_2, \sigma_1 \ra}$
+		\item $\frac{}{\la skip, \sigma \ra \rightarrow \sigma}$
+		\item $\frac{\la a, \sigma \ra \Downarrow_a v}{\la x := a, \sigma \ra \rightarrow \la x := v, \sigma \ra}$
+		\item $\frac{}{\la x := v, \sigma \ra \rightarrow \sigma[x \mapsto v]}$
+		\item $\frac{}{\la \text{if true then } s_1 \text{ else } s_2, \sigma \ra \rightarrow \la s_1, \sigma \ra}$
+		\item $\frac{}{\la \text{if false then } s_1 \text{ else } s_2, \sigma \ra \rightarrow \la s_2, \sigma \ra}$
+		\item $\frac{\la b_1, \sigma \ra \Downarrow_b bv}{\la \text{if } b_1 \text{ then } s_1 \text{ else } s_2, \sigma \ra \rightarrow \la \text{if } bv \text{ then } s_1 \text{ else } s_2, \sigma \ra}$
+		\item $\frac{}{\la \text{while } b \text{ do } s, \sigma \ra \rightarrow \la \text{if } b \text{ then } (s; \text{while } b \text{ do } s) \text{ else } skip, \sigma}$
+		\item blub
+	\enumend
+	\item Sequences
+	\enumstart
+		\item For a program $s_0$ the steps are formed via the relation $\rightarrow$.
+		\item $\Downarrow_a$ and $\Downarrow_b$ are only used to justify the steps with $\rightarrow$
+		\item $\Downarrow_a$ and $\Downarrow_b$ are only used to build the relation $\rightarrow$
+	\enumend
+\enumend
+
+\subsection{Trace semantics}
+\enumstart
+	\item Trace semantics are the set of all program traces starting from initial configurations
+	\item $\llbracket P \rrbracket = \{c_0, \mathellipsis, c_{n - 1} \ | \ n \ge 1 \land c_0 \in I \land \forall i \in [0, n - 2]: c_i \rightarrow c_{i + 1}\}$
+	\item Traces need not end in final configurations
+	\item Traces are of finite length, but the number of initial configurations can be infinite
+	\item Overapproximate a function
+	\enumstart
+		\item Consider a function $F$
+		\item $F(\llbracket P \rrbracket) = \llbracket P \rrbracket \implies \llbracket P \rrbracket $ is a fixed point of $F$
+		\item Discover a function $F^\#$ such that $F^\#$ approximates $F$
+		\item A fixed point of $F^\#$ approximates a fixed point of $F$
+		\item Compute a fixed point of $F^\# \implies F^\#(\llbracket P \rrbracket^\#) = \llbracket P \rrbracket^\#$
+	\enumend
+\enumend
