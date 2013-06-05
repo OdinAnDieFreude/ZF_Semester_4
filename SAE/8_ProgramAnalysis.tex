@@ -230,3 +230,82 @@
 	\item Given a poset $(L, \sqsubseteq)$, a subset $Y \subseteq L$ is a chain if every two elements in $Y$ are comparable. $\forall x,y \in Y: (x \sqsubseteq y) \lor (y \sqsubseteq x)$
 	\item The height of the poset is the chain with the largest size
 \enumend
+
+\subsubsection{Functions}
+\enumstart
+	\item A function $f: A \rightarrow B$ between two posets $(A, \sqsubseteq)$ and $(B, \le)$ is monotone if: $\forall a,b \in A: a \sqsubseteq b \implies f(a) \le f(b)$
+	\item For a poset $(L, \sqsubseteq)$, a function $f: L \rightarrow L$ and an element $x \in L$:
+	\enumstart
+		\item $x$ is a fixed point iff $f(x) = x$
+		\item $x$ is a post-fixed point iff $f(x) \sqsubseteq x$
+		\item Fix($f$) denotes the set of all fixed points
+		\item Red($f$) denotes the set of all post-fixed points
+		\item lfp$^\sqsubseteq f \in L$ is a least fixed point of $f$ iff:
+		\enumstart
+			\item lfp$^\sqsubseteq f$ is a fixed point
+			\item $\forall a \in L: a = f(a) \implies$ lfp$^\sqsubseteq f \sqsubseteq a$
+			\item The least fixed point may not exist
+		\enumend
+	\enumend
+	\item Tarski's fixed point theorem: if $(L,\sqsubseteq, \sqcup, \sqcap, \bot, \top)$ is a complete lattice anf $f: L \rightarrow L$ is monotone:
+	\enumstart
+		\item lfp$^\sqsubseteq f$ exists, and
+		\item lfp$^\sqsubseteq f = \sqcap$Red($f$)$\in$ Fix($f$) 
+	\enumend
+	\item Computation of fixed points
+	\enumstart
+		\item For a poset $(L, \sqsubseteq)$, a function $f: L \rightarrow L$, an element $a \in L$ the iterates of the function from $a$ are
+		\enumstart
+			\item $f^0(a), f^1(a), f^2(a), \mathellipsis$
+			\item $f^{n+1}(a) = f(f^n(a))$
+			\item $f^0(a) = a$
+		\enumend
+		\item Given a poset of finite height, a least element $\bot$ and a monotone $f$
+		 \enumstart
+		 	\item $f^0(\bot), f^1(\bot), f^2(\bot), \mathellipsis$ form an increasing sequence
+		 	\item $\exists n \in \N: f^n(\bot) = f^{n+1}(\bot)$
+		 	\item lfp$^\sqsubseteq f = f^n(\bot)$
+		 \enumend
+		 \item $\PTrace$ is the least fixed point of $F(S) = I \cup \{\pi \cdotp c \cdotp c' \ | \ \pi \cdotp c \in S \land c \rightarrow c'\}$
+		 \item The set of traces $\PTrace$ is an element of a complete lattice
+	\enumend
+\enumend
+
+\subsubsection{Gallois connections}
+\enumstart
+	\item Left $(L_1, \sqsubseteq_1, \sqcup_1, \sqcap_1)$ and $(L_2, \sqsubseteq_2, \sqcup_2, \sqcap_2)$ be complete lattices and let $\alpha: L_1 \rightarrow L_2$ and $\gamma: L_2 \rightarrow L_1$. Then $\alpha$ and $\gamma$ form a gallois connection if
+	\enumstart
+		\item $\alpha$ is monotone
+		\item $\gamma$ is monotone
+		\item $\alpha \circ \gamma$ is reductive: $\forall x_2 \in L_2: \alpha(\gamma(x_2)) \sqsubseteq_2 x_2$
+		\item $\gamma \circ \alpha$ is extensive: $\forall x_1 \in L_1: x_1 \sqsubseteq_1 \gamma(\alpha(x_1))$
+	\enumend
+	\item Intuition
+	\enumstart
+		\item $\alpha$ and $\gamma$ monotone $\rightarrow$ relationship between information in the concrete is preserved in the abstract and vice versa
+		\item $\gamma \circ \alpha$ extensive $\rightarrow \alpha$ is a correct approximation 
+		\item $(L_1, \sqsubseteq_1, \sqcup_1, \sqcap_1) \Gallois[] (L_2, \sqsubseteq_2, \sqcup_2, \sqcap_2)$
+		\enumstart
+			\item The concrete is captured by the lattice on the left
+			\item The abstract is captured by the lattice on the right
+			\item $\alpha$ is the abstraction function
+			\item $\gamma$ is the concretization function
+			\item Concrete and abstract are linked by this connection
+		\enumend
+	\enumend
+	\item Another definition
+	\enumstart
+		\item $\forall x_1 \in L_1, \forall x_2 \in L_2: \alpha(x_1) \sqsubseteq_2 x_2 \Leftrightarrow x_1 \sqsubseteq_1 \gamma(x_2)$
+	\enumend
+	\item $\alpha$ uniquely determines $\gamma$ and vice versa
+	\enumstart
+		\item $\alpha(x) = \sqcap_2\{z \ | \ x \sqsubseteq_1 \gamma(z)\}$
+		\item $\gamma(z) = \sqcup_1\{x \ | \ \alpha(x) \sqsubseteq_2 z\}$
+	\enumend
+	\item Composition
+	\enumstart
+		\item Given: $(L_1, \sqsubseteq_1, \sqcup_1, \sqcap_1) \Gallois[1] (L_2, \sqsubseteq_2, \sqcup_2, \sqcap_2)$
+		\item Given: $(L_2, \sqsubseteq_2, \sqcup_2, \sqcap_2) \Gallois[2] (L_3, \sqsubseteq_3, \sqcup_3, \sqcap_3)$
+		\item $\implies (L_1, \sqsubseteq_1, \sqcup_1, \sqcap_1) \leftrightarrows^{\gamma_1 \circ \gamma_2}_{\alpha_1 \circ \alpha_2} (L_3, \sqsubseteq_3, \sqcup_3, \sqcap_3)$ 
+	\enumend
+\enumend
