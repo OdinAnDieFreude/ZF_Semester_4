@@ -31,6 +31,7 @@
 \newcommand{\Z}{\mathbb{Z}}
 \newcommand{\PTrace}{\llbracket P \rrbracket}
 \newcommand{\Gallois}[1][]{\leftrightarrows^{\gamma_{#1}}_{\alpha_{#1}}}
+\newcommand{\widen}{\triangledown}
 
 \let\stdsection\section
 \renewcommand\section{\newpage\stdsection}
@@ -45,5 +46,86 @@
 \input{6_Refactoring.tex}
 \input{7_Testing.tex}
 \input{8_ProgramAnalysis.tex}
+
+\subsection{Definitions}
+\enumstart
+	\item $(\ell, action, \ell')$ is an edge in the control-flow graph
+	\item if $t = \langle \ell, \sigma \rangle \rightarrow \langle \ell', \sigma' \rangle$ exists in $\PTrace$ where $t$ was performed by $action: (\ell, action, \ell')$ exists
+	\item an $action$ can be:
+	\enumstart
+		\item $b \in$ BExp
+		\item $x := a$
+		\item skip
+	\enumend
+	\item $\llbracket action \rrbracket_i$ is an abstract transformer
+	\enumstart
+		\item if the map contains a variable mapped to $\bot_i$ then the result of the transformer is $\bot$
+		\item otherwise apply the rules
+	\enumend
+	\item $\llbracket x := a\rrbracket_i(m) = m[x \mapsto v]$, where $\langle a,m \rangle \Downarrow_i v$
+	\item Arithmetic expressions
+	\enumstart
+		\item Addition $\llbracket \rrbracket$
+		\enumstart
+			\item if we add $\bot_i$ to anything, we get $\bot_i$
+			\item otherwise $[a,b]+[c,d] = [a+c, b+d]$
+		\enumend
+	\enumend
+	\item Conditionals $\llbracket a_1 \ c \ a_2 \rrbracket_i$
+	\enumstart
+		\item $c \in \{\le, =, < \}$
+		\item $\llbracket a_1 \ c \ a_2 \rrbracket_i(m) = $select$(a_1, r_1, m) \sqcap $select$(a_2, r_2, m)$, $(r_1, r_2) = pair_c(\langle a_1, m \rangle \Downarrow_i, \langle a_2, m \rangle \Downarrow_i)$
+		\item When $a$ is a constant
+		\enumstart
+			\item select$(a,r,m) = m$ if $a \sqcap_i r \ne \bot_i$ and $\bot$ otherwise		\enumend
+		\item When $a$ is a variable
+		\enumstart
+			\item select$(a,r,m) = m[a \mapsto (r \sqcap_i m(a))]$
+		\enumend
+		\item $pair_\le([l_1, u_1], [l_2, u_2]) = ([l_1, u_1] \sqcap_i [-\infty, u_2], [l_1, \infty] \sqcap_i [l_2, u_2])$
+	\enumend
+	\item Boolean expressions $\llbracket b\rrbracket_i$
+	\enumstart
+		\item $\llbracket b_1 \lor b_2 \rrbracket_i(m) = \llbracket b_1 \rrbracket_i(m) \sqcup_i \llbracket b_2\rrbracket_i(m)$
+		\item $\llbracket b_1 \land b_2 \rrbracket_i(m) = \llbracket b_1 \rrbracket_i(m) \sqcap_i \llbracket b_2\rrbracket_i(m)$
+	\enumend
+	\item The widening operator $\widen$
+	\enumstart
+		\item $\widen: L \times L \rightarrow L$
+		\item $\forall a, b \in L: (a \sqcup b) \sqsubseteq (a \widen b)$ (approximates the join)
+		\item If $L$ is a complete lattice, $F: L \rightarrow L$ is monotone, then
+		\item $y^0 = \bot, y^n = y^{n-1} \widen F(y^{n-1})$ will stabilize after a finite number of steps with $y^n$ beeing a post-fixed point of F
+	\enumend
+	\item Widening for intervals
+	\enumstart
+		\item $\widen_i: L^i \times L^i \rightarrow L^i$
+		\item if one of the operands is $\bot$, the result is the other operand
+		\item $[a,b] \widen_i [c,d] = [e,f]$, where
+		\enumstart
+			\item if $c < a$ then $e = -\infty$ else $e = a$
+			\item if $d > b$ then $f = \infty$ else $f = b$
+		\enumend
+	\enumend
+\enumend
+
+\subsection{Relational domains}
+\enumstart
+	\item Relational domains keep the relation between variables
+\enumend
+
+\subsubsection{Octagon domain}
+\enumstart
+	\item Constraints are of the form $\pm x \pm y \le(\ge) c$
+	\item The slope is fixed $\rightarrow$ octagon shape
+	\item A more spezialized polyhedra domain
+	\item More efficient in space and time than polyhedra domain
+\enumend
+
+\subsubsection{Polyhedra domain}
+\enumstart
+	\item Constraints are of the form $c_1x_1 + c_2x_2 + \mathellipsis + c_nx_n \le(\ge) c$
+	\item The slope can vary
+	\item More precise than octogon domain
+\enumend
 
 \end{document}
