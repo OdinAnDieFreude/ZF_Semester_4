@@ -309,3 +309,21 @@
 		\item $\implies (L_1, \sqsubseteq_1, \sqcup_1, \sqcap_1) \leftrightarrows^{\gamma_1 \circ \gamma_2}_{\alpha_1 \circ \alpha_2} (L_3, \sqsubseteq_3, \sqcup_3, \sqcap_3)$ 
 	\enumend
 \enumend
+
+\subsubsection{Function Approximation}
+\enumstart
+	\item We want to compute an over-approximation of the least fixed point of a function
+	\item We want to avoid computing the least fixed point of a function (might not be feasible)
+	\item Given: $f: A \rightarrow B$, $g: A \rightarrow B$
+	\enumstart
+		\item $g$ approximates $f$ iff $\forall x \in A: f(x) \le g(x)$
+	\enumend
+	\item Given: $(L_1, \sqsubseteq_1, \sqcup_1, \sqcap_1) \Gallois (L_2, \sqsubseteq_2, \sqcup_2, \sqcap_2)$, $f: L_1 \rightarrow L_1$ and $g: L_2 \rightarrow L_2$
+	\enumstart
+		\item $g$ approximates $f$ iff $\forall x \in L_1, \forall z \in L_2: \alpha(x) \sqsubseteq_2 z \implies \alpha(f(x)) \sqsubseteq_2 g(z)$
+		\item When $f$ and $g$ are monotone: $\forall z \in L_2: \alpha(f(\gamma(z))) \sqsubseteq_2 g(z)$
+	\enumend
+	\item Least precise approximation $g(z) = \top$ (not very usefull)
+	\item Most precise approximation $g(z) = \alpha(f(\gamma(z)))$ (best abstract function,  best transformer)
+	\item $\alpha($lfp$(f)) \sqsubseteq_2 $ lfp$(g)$
+\enumend
