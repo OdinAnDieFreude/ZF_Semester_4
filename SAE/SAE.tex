@@ -27,6 +27,14 @@
 \newcommand{\figureend}{\end{figure}}
 \newcommand{\la}{\langle}
 \newcommand{\ra}{\rangle}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\PTrace}{\llbracket P \rrbracket}
+\newcommand{\Gallois}[1][]{\leftrightarrows^{\gamma_{#1}}_{\alpha_{#1}}}
+
+\let\stdsection\section
+\renewcommand\section{\newpage\stdsection}
+
+\tableofcontents
 
 \input{1_RequirementsEngineering.tex}
 \input{2_SoftwareArchitecture.tex}
