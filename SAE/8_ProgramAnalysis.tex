@@ -179,3 +179,54 @@
 		\item Compute a fixed point of $F^\# \implies F^\#(\llbracket P \rrbracket^\#) = \llbracket P \rrbracket^\#$
 	\enumend
 \enumend
+
+\subsection{Mathematical Background}
+
+\subsubsection{Structures}
+\enumstart
+	\item They define the concrete and abstract domain
+\enumend
+
+\paragraph{Partially ordered sets (posets)}
+\enumstart
+	\item A partial order is a relation $\sqsubseteq \ \subseteq L \times L$ on a set $L$
+	\item The following properties hold
+	\enumstart
+		\item Reflexive: $\forall p \in L: p \sqsubseteq p$
+		\item Transitive: $\forall p,q,r \in L: p \sqsubseteq q \land q \sqsubseteq r \implies p \sqsubseteq r$
+		\item Anti-symmetric: $\forall p,q \in L: p \sqsubseteq q \land q \sqsubseteq p \implies p = q$
+	\enumend
+	\item A poset $(L, \sqsubseteq)$ is a set $L$ equipped with a partial ordering $\sqsubseteq$
+	\item $\bot \in L$ is called the least element if it is smaller than all other elements of the poset. $\forall p \in L: \bot \sqsubseteq p$
+	\item $\top \in L$ is called the greatest element if it is greater than all other elements of the poset. $\forall p \in L: p \sqsubseteq \top$
+	\item The least and greatest elements may not exist, but if they do they are unique
+	\item Given $(L, \sqsubseteq)$ and $Y \subseteq L$
+	\enumstart
+		\item $u \in L$ is an upper bound of $Y$ if $\forall p \in Y: p \sqsubseteq u$
+		\item $v \in L$ is a lower bound of $Y$ if $\forall p \in Y: v \sqsubseteq p$
+		\item $\sqcup Y \in L$ is a least upper bound of $Y$ if
+		\enumstart
+			\item $\sqcup Y$ is an upper bound of $Y$ and
+			\item $\forall u: u =$ upperBound($Y$) $\implies \sqcup Y \sqsubseteq u$
+		\enumend
+		\item $\sqcap Y \in L$ is a greatest lower bound of $Y$ if
+		\enumstart
+			\item $\sqcap Y$ is a lower bound of $Y$ and
+			\item $\forall u: u =$ lowerBound($Y$) $\implies u \sqsubseteq \sqcap Y$
+		\enumend
+		\item Bounds may not exist and may not be in $Y$
+		\item We write $p \sqcup q$ for $\sqcup\{p, q\}$ and $p \sqcap q$ for $\sqcap\{p, q\}$
+	\enumend
+\enumend
+
+\paragraph{Complete lattices}
+\enumstart
+	\item A complete lattice $(L, \sqsubseteq, \sqcup)$ is a poset, where $\sqcup Y$ and $\sqcap Y$ exist for any $Y \subseteq L$
+	\item The set of traces $\llbracket P \rrbracket$ belongs to a complete lattice
+\enumend
+
+\paragraph{Chains}
+\enumstart
+	\item Given a poset $(L, \sqsubseteq)$, a subset $Y \subseteq L$ is a chain if every two elements in $Y$ are comparable. $\forall x,y \in Y: (x \sqsubseteq y) \lor (y \sqsubseteq x)$
+	\item The height of the poset is the chain with the largest size
+\enumend
