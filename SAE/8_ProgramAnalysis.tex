@@ -327,3 +327,74 @@
 	\item Most precise approximation $g(z) = \alpha(f(\gamma(z)))$ (best abstract function,  best transformer)
 	\item $\alpha($lfp$(f)) \sqsubseteq_2 $ lfp$(g)$
 \enumend
+
+\subsection{Formal concepts illustrated}
+\enumstart
+	\item Domain of traces $(\mathcal{P}(\Sigma^+), \subseteq, \cup, \cap, \emptyset, \Sigma^+)$ is a complete lattice, where
+	\enumstart
+		\item $\Sigma =$ Lab $\times$ Store
+		\item $\Sigma^+$ denotes all finite traces
+	\enumend
+	\item Traces in $\Sigma^+$ that belong to $\PTrace$
+	\\ \includegraphics[width=0.2\textwidth]{img/sample_program.png}
+	\enumstart
+		\item e.g. $\langle 1, \{x \mapsto 42, y \mapsto 0, z \mapsto 0\} \rangle \cdotp \langle 2, \{x \mapsto 42, y \mapsto 42, z \mapsto 0\} \rangle \cdotp \langle 3, \{x \mapsto 42, y \mapsto 42, z \mapsto 1\} \rangle \cdotp \mathellipsis$
+		\item "$\cdotp$" denotes concatenation
+		\item A trace is just a sequence of states, need not follow the program transition relation $\rightarrow$
+	\enumend
+	\item Abstraction
+	\enumstart
+		\item $\PTrace$ can be infinite $\rightarrow$ create abstraction
+		\item State abstraction $\rightarrow$ $(\mathcal{P}(\Sigma), \subseteq, \cup, \cap, \emptyset, \Sigma)$ forms a complete lattice
+		\enumstart
+			\item $\alpha^s:  \mathcal{P}(\Sigma^+) \rightarrow \mathcal{P}(\Sigma)$, $\alpha^s(Traces) = \{\pi_i \ | \ i \in [0, |\pi|] \land \pi \in Traces\}$
+			\item We lose the relationship between states
+			\item We lose how many times each state occurs in a trace
+			\item $\gamma^s: \mathcal{P}(\Sigma) \rightarrow \mathcal{P}(\Sigma^+)$, $\gamma^s(S) = \{c_0 \cdotp \mathellipsis, c_n \ | \ n \ge 0 \land \forall i \in [0, n]: c_i \in S\}$
+			\item Or by general formula: $\gamma^s(S) = \cup \{traces \subseteq \Sigma^+ \ | \ \alpha^s(traces) \subseteq S\}$
+			\item This forms a gallois connection
+		\enumend
+		\item Invariance abstraction
+		\enumstart
+			\item $\Sigma =$ Lab $\times$ Store
+			\item $\alpha^{inv}: \mathcal{P}($Lab $\times$ Store$) \rightarrow ($Lab $\rightarrow \mathcal{P}($Store$)): \alpha^{inv}(S)\ell = \{\sigma \ | \ \langle \ell, \sigma \rangle \in S\}$
+			\item Abstract domain: $($Lab$ \rightarrow \mathcal{P}($Store$), \dot \subseteq, \dot \cup, \dot \cap, \lambda \ell.\emptyset, \lambda \ell.$Store$)$
+			\item $f \dot \subseteq g$ means that for any value $x \in X: f(x) \subseteq g(x)$
+			\item $f \dot \cup g$ produces a new function $\lambda x \in X. f(x) \cup g(x)$
+			\item Does not lose information
+			\item $\gamma^{inv}: ($Lab $\rightarrow \mathcal{P}($Store$)) \rightarrow \mathcal{P}($Lab $\times$ Store$): \gamma^{inv}(M) = \{\langle \ell, \sigma \rangle \ | \ \sigma \in M(\ell)\}$
+			\item This forms a gallois connection
+		\enumend
+		\item Cartesian abstraction
+		\enumstart
+			\item Abstraction that loses relationship between variables
+			\item $\alpha^x: ($Lab$ \rightarrow \mathcal{P}($Store$)) \rightarrow ($Lab$ \rightarrow ($Var$ \rightarrow \Z)): \alpha^x(F)(\ell)x = \{\sigma(x) \ | \ \sigma \in F(\ell)\}$
+			\item $\gamma^x(M)\ell = \cup \{$stores $\subseteq \Sigma \ | \ \alpha^x(\ell \rightarrow $ stores$) \subseteq \ell \rightarrow M(\ell)\}$
+			\item This forms a gallois connection
+		\enumend
+		\item Interval abstraction
+		\enumstart
+			\item Interval domain: $(L^i, \sqsubseteq_i, \sqcup_i, \sqcap_i, \bot_i, [-\infty, \infty])$
+			\item $\Z^\infty = \Z \cup \{-\infty, \infty\}$
+			\item $L^i = \{[x,y] \ | \ x,y \in \Z^\infty, x \le y\} \cup \bot_i$
+			\item For $S \subseteq \Z^\infty$
+			\enumstart
+				\item min(S) = minimum number in $S$
+				\item max(S) = maximum number in $S$
+			\enumend
+			\item $[a,b] \sqsubseteq_i [c,d]$ if $a \ge c \land b \le d$
+			\item $[a,b] \sqcup_i [c,d] = [$min$(\{a,c\}), $max$(\{b,d\})]$
+			\item $[a,b] \sqcap_i [c,d] = $meet$($max$(\{a,c\}),$min$(\{b,d\}))$
+			\item where meet$(a,b) = [a,b]$ if $a \le b$ and $\bot$ otherwise
+			\item $\alpha^i: ($Lab $ \rightarrow ($Var $ \rightarrow \mathcal{P}(\Z))) \rightarrow ($Lab $\rightarrow ($Var $\rightarrow L^i))$
+			\item $\alpha^i(C)(\ell)x = [$min$(C(\ell)x), $max$(C(\ell)x)]$ if $C(\ell)x \ne \emptyset$ and $\bot_i$ otherwise
+			\item $\gamma^i(M)(\ell)x = \{v \in \Z \ | \ l \le v \land  v \le u\}$ if $M(\ell)x = [l, u]$ and $\emptyset$ otherwise
+		\enumend
+		\item chaining the abstractions
+		\enumstart
+			\item $\alpha^i \circ \alpha^x \circ \alpha^{inv} \circ \alpha^s(\PTrace)$
+			\item $F^i$ is the best transformer of $F$
+			\item $F^i = \alpha^i \circ \alpha^x \circ \alpha^{inv} \circ \alpha^s \circ F \circ \gamma^s \circ \gamma^{inv} \circ \gamma^x \circ \gamma^i$
+		\enumend
+	\enumend
+\enumend
