@@ -529,3 +529,41 @@
 		\item Fixed point computation
 	\enumend
 \enumend
+
+\subsection{Symbolic execution}
+\enumstart
+	\item Symbolic execution sits inbetween testing and static analysis
+	\item Under-approximation $\rightarrow$ false negatives
+	\item Associate a symbolic value foreach variable $\rightarrow$ formulas
+	\item Use an SMT solver to find satisfying assignments
+	\item At any point during program execution, symbolic execution keeps two formulas
+	\enumstart
+		\item Symbolic store
+		\item Path constraints
+		\item Symbolic state is the conjunction of these two formulas
+	\enumend
+	\item The values of variables at any moment in time are given by a function $\sigma_s \in$ SymStore $=$ Var $\rightarrow$ Sym
+	\enumstart
+		\item Var is the set of variables
+		\item Sym is the set of symbolic values
+		\item $\sigma_s$ is called a symbolic store
+	\enumend
+	\item A path constraint records the history of all branches taken so far
+	\enumstart
+		\item Typically a decidable formula
+		\item At the start of the analysis, the path constraint is $true$
+		\item Evaluation of conditionals affects only the path constraint
+	\enumend
+	\item Handling unbounded loops will take forever
+	\enumstart
+		\item Just provide a random loop bound will lead to underapproximation
+		\item Symbolic execution does underapproximation anyway
+		\item Loop invariants are also a possibility
+	\enumend
+\enumend
+
+\subsection{Concolic execution}
+\enumstart
+	\item Combines Symbolic execution and concrete execution
+	\item The concrete execution drives the symbolic execution
+\enumend
