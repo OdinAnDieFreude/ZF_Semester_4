@@ -8,15 +8,6 @@
 \usepackage{graphicx}
 \usepackage{stmaryrd}
 
-\setcounter{tocdepth}{4}
-\setcounter{secnumdepth}{4}
-
-\title{\textbf{Software Architecture and Engineering Zusammenfassung}}
-\author{Christoph Stillhard}
-\date{}
-\begin{document}
-\maketitle
-
 \newcommand{\enumstart}{\begin{enumerate}}
 \newcommand{\enumend}{\end{enumerate}}
 \newcommand{\tablestart}{\begin{table}}
@@ -33,10 +24,29 @@
 \newcommand{\Gallois}[1][]{\leftrightarrows^{\gamma_{#1}}_{\alpha_{#1}}}
 \newcommand{\widen}{\triangledown}
 
+\setcounter{tocdepth}{4}
+\setcounter{secnumdepth}{4}
+
+\title{\textbf{Software Architecture and Engineering Zusammenfassung}}
+\author{Christoph Stillhard}
+\date{}
+\begin{document}
+
+\maketitle
+\pagenumbering{none}
+\thispagestyle{empty}
+
 \let\stdsection\section
 \renewcommand\section{\newpage\stdsection}
 
+\newpage
+\pagenumbering{roman}
+\setcounter{page}{1}
 \tableofcontents
+
+\newpage
+\pagenumbering{arabic}
+\setcounter{page}{1}
 
 \input{1_RequirementsEngineering.tex}
 \input{2_SoftwareArchitecture.tex}
