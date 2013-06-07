@@ -1,0 +1,201 @@
+\documentclass[10pt]{article}
+%Gummi|065|=)
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{fullpage}
+\usepackage{lscape}
+\usepackage{graphicx}
+\usepackage{stmaryrd}
+\usepackage{upquote}
+
+\newcommand{\enumstart}{\begin{enumerate}}
+\newcommand{\enumend}{\end{enumerate}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\image}[1]{\includegraphics[width=0.5\textwidth]{img/#1}}
+\newcommand{\lan}{\langle}
+\newcommand{\ran}{\rangle}
+
+\setcounter{tocdepth}{4}
+\setcounter{secnumdepth}{4}
+
+\title{\textbf{Formal Methods Zusammenfassung}}
+\author{Christoph Stillhard}
+\date{}
+\begin{document}
+
+\maketitle
+\pagenumbering{none}
+\thispagestyle{empty}
+
+\let\stdsection\section
+\renewcommand\section{\newpage\stdsection}
+
+\newpage
+\pagenumbering{roman}
+\setcounter{page}{1}
+\tableofcontents
+
+\newpage
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+\section{Natural deduction}
+\enumstart
+	\item Definitions
+	\enumstart
+		\item Rules
+		\enumstart
+			\item Are used to construct derivations under assumptions
+			\item $A_1, \mathellipsis, A_n  \vdash A$ reads as "A follows from $A_1, \mathellipsis, A_n$"
+		\enumend
+		\item Derivations (are trees)
+			\\ \image{example_derivation_tree.png}
+		\item Proof of $A$ is a derivation tree with root $\vdash A$
+		\item A sequent is an assertion (judgement) of the form: $A_1, \mathellipsis, A_n \vdash A$
+		\item An axiom is a starting point for building derivation trees
+		\item Two kinds of rules: introduction and elimination
+	\enumend
+\enumend
+
+\section{Propositional logic}
+\enumstart
+	\item Propositions
+	\enumstart
+		\item Built from a collection of variables
+		\item Closed under conjunction, disjunction, implication, $\mathellipsis$
+	\enumend
+	\item Set of variables $\mathcal{V}$
+	\item $\mathcal{L}_P$, the language of propositional logic, is the smallest set where:
+	\enumstart
+		\item $X \in \mathcal{L}_P$ if $X \in \mathcal{V}$
+		\item $\bot \in \mathcal{L}_P$
+		\item $A \land B \in \mathcal{L}_P$ if $A \in \mathcal{L}_P$ and $B \in \mathcal{L}_P$
+		\item $A \lor B \in \mathcal{L}_P$ if $A \in \mathcal{L}_P$ and $B \in \mathcal{L}_P$
+		\item $A \rightarrow B \in \mathcal{L}_P$ if $A \in \mathcal{L}_P$ and $B \in \mathcal{L}_P$
+	\enumend
+	\item A valuation $\sigma: \mathcal{V} \rightarrow \{$True$, $False$\}$
+	\item Let Valuations be the set of valuations
+	\item Satisfiability: smallest relation $\vDash \ \subseteq$ Valuations $ \times \mathcal{L}_P$ such that
+	\enumstart
+		\item $\sigma \vDash X$, if $\sigma(X) =$ True
+		\item $\sigma \vDash A \land B$, if $\sigma \vDash A$ and $\sigma \vDash B$
+		\item $\sigma \vDash A \lor B$, if $\sigma \vDash A$ or $\sigma \vDash B$
+		\item $\sigma \vDash A \rightarrow B$, if whenever $\sigma \vDash A$ then $\sigma \vDash B$
+		\item Note: $\sigma \vDash \bot$, for every $\sigma \in$ Valuations
+	\enumend
+	\item A formula $A \in \mathcal{L}_P$ is satisfiable if $\sigma \vDash A$ for some valuation $\sigma$
+	\item A formula $A \in \mathcal{L}_P$ is valid (a tautology) if $\sigma \vDash A$ for all valuations $\sigma$
+	\item Semantic entailment: $A_1, \mathellipsis, A_n \vDash A$ if for all $\sigma$, if $\sigma \vDash A_1, \mathellipsis, \sigma \vDash A_n$ then $\sigma \vDash A$
+	\item Requirements for a deductive system
+	\enumstart
+		\item Syntactic entailment $\vdash$ and semantic entailment $\vDash$ should agree
+		\item Soundness
+		\enumstart
+			\item If $H \vdash A$ can be derived, then $H \vDash A$
+		\enumend
+		\item Completeness
+		\enumstart
+			\item If $H \vDash A$, then $H \vdash A$ van be derived
+		\enumend
+		\item Decidability (Complexity of determining satisfiability/validity)
+	\enumend
+\enumend
+
+\section{First-order logic}
+\enumstart
+	\item Syntax
+	\enumstart
+		\item Two syntactic categories: terms and formulae
+		\item A signature consists of:
+		\enumstart
+			\item A set of function symbols $\mathcal{F}$
+			\item A set of predicate symbols $\mathcal{P}$
+			\item Their arities
+			\item Write $f^i (p^i)$ to indicate function symbol $f$ (predicate symbol $p$) has arity $i \in \N$
+			\item Constants are 0-ary function symbols
+		\enumend
+		\item Let $\mathcal{V}$ be a set of variables
+		\item Term, the set of terms of first-order logic, is the smallest set where:
+		\enumstart
+			\item $x \in$ Term if $x \in \mathcal{V}$
+			\item $f^n(t_1, \mathellipsis, t_n) \in$ Term if $f^n \in \mathcal{F}$ and $t_j \in$ Term, for all $1 \le j \le n$
+		\enumend
+		\item Form, the set of formulae of first-order logic, is the smallest set where:
+		\enumstart
+			\item $\bot \in$ Form
+			\item $p^n(t_1, \mathellipsis, t_n) \in$ Form if $p^n \in \mathcal{P}$ and $t_j \in$ Term, for all $1 \le j \le n$
+			\item $A \circ B \in$ Form if $A \in$ Form, $B \in$ Form and $\circ \in \{\land, \lor, \rightarrow\}$
+			\item $Qx.A \in$ Form if $A \in$ Form, $x \in \mathcal{V}$ and $Q \in \{\exists, \forall \}$
+		\enumend
+		\item Each occurence of each variable in a formula is bound or free
+		\enumstart
+			\item A variable occurence $x$ in a formula $A$ is bound iff $x$ occurs within a subformula of $A$ of the form $\exists x.B$ or $\forall x.B$
+		\enumend
+	\enumend
+	\item Semantics
+	\enumstart
+		\item A structure is a pair $S = \lan U_S, I_S \ran$ where
+		\enumstart
+			\item $U_S$ is a nonempty set, the universe
+			\item $I_S$ is a mapping, where
+			\enumstart
+				\item $I_S(p^n)$ is an $n$-ary relation on $U_S$, for $p^n \in \mathcal{P}$
+				\item $I_S(f^n)$ is an $n$-ary total function on $U_S$ for $f^n \in \mathcal{F}$
+				\item As shorthand write $p^S$ for $I_S(p)$ and $f^S$ for $I_S(f)$
+			\enumend
+		\enumend
+		\item An interpretation is a pair $\mathcal{I} = \lan S,v \ran$, where
+		\enumstart
+			\item $S = \lan U_S, I_S \ran$ is a structure
+			\item $v: \mathcal{V} \rightarrow U_S$ a valuation
+		\enumend
+		\item The value of a term $t$ under the interpretation $\mathcal{I} = \lan S, v \ran$ is written as $\mathcal{I}(t)$ and defined by
+		\enumstart
+			\item $\mathcal{I}(x) = v(x)$, for $x \in \mathcal{V}$
+			\item $\mathcal{I}(f(t_1, \mathellipsis, t_n)) = f^S(\mathcal{I}(t_1), \mathellipsis, \mathcal{I}(t_n))$
+		\enumend
+		\item Semantic entailment $\vDash \ \subseteq$ Interpretations $\times$ Form is the smallest relation satisfying
+		\enumstart
+			\item $\lan S, v \ran \vDash p(t_1, \mathellipsis, t_n)$ if $(\mathcal{I}(t_1), \mathellipsis, \mathcal{I}(t_n)) \in p^S$ where $\mathcal{I} = \lan S, v \ran$
+			\item $\vdots$
+			\item $\lan S, v \ran \vDash \forall x.A$ if $\lan S, v[x \mapsto a] \ran \vDash A$ for all $a \in U_S$
+			\item $\lan S, v \ran \vDash \exists x.A$ if $\lan S, v[x \mapsto a] \ran \vDash A$ for some $a \in U_S$
+		\enumend
+		\item When $\lan S, v \ran \vDash A$ we say $A$ is satisfied with respect to $\lan S, v \ran$ or $\lan S, v \ran$ is a model of $A$
+		\item If $A$ does not have free variables, satisfaction does not depend on the valuation $v$, we write $S \vDash A$
+		\item When every suitable interpretation is a model, we write $\vDash A$ and say $A$ is valid
+		\item $A$ is satisfiable if there is at least one model for $A$ (and contradictory otherwise)
+		\item Universal quantification
+		\enumstart
+			\item $\frac{\Gamma \vdash A(x)}{\Gamma \vdash \forall x.A(x)}\forall-I^* \ \ \ \ \frac{\Gamma \vdash \forall x.A(x)}{\Gamma \vdash A(t)}\forall-E$
+			\item Side condition (*): $x$ is not free in any assumption in $\Gamma$
+		\enumend
+		\item Existential quantification
+		\enumstart
+			\item $\frac{\Gamma \vdash A(t)}{\Gamma \vdash \exists x.A(x)}\exists-I \ \ \ \ \frac{\Gamma \vdash \exists x.A(x) \ \ \Gamma, A(x) \vdash B}{\Gamma \vdash B}\exists-E^*$
+			\item Side condition (*): $x$ not free in $B$ or $\Gamma$
+		\enumend
+	\enumend
+\enumend
+
+\section{Equality}
+\enumstart
+	\item Logical symbol with associated proof rules
+	\item One speaks of "first-order logic with equality" rather than beeing just another predicate
+	\item Extended language: $t_1 = t_2 \in$ Form if $t_1, t_2 \in$ Term
+	\item Extended definition of semantic entailment $\vDash$
+	\enumstart
+		\item $\mathcal{I} \vDash t_1 = t_2$ if $\mathcal{I}(t_1) = \mathcal{I}(t_2)$
+	\enumend
+	\item Equality is an equivalence relation
+	\enumstart
+		\item $\frac{}{\Gamma \vdash t = t}$ref $\ \ \ \frac{\Gamma \vdash t = s}{\Gamma \vdash s = t}$sym $\ \ \ \frac{\Gamma \vdash t = s \ \ \ \Gamma \vdash s = r}{\Gamma \vdash t = r}$trans
+	\enumend
+	\item Equality is a congruence relation
+	\enumstart
+		\item $\frac{\Gamma \vdash t_1 = s_1 \ \ \ \mathellipsis \ \ \ \Gamma \vdash t_n = s_n}{\Gamma \vdash r(t_1, \mathellipsis, t_n) = r(s_1, \mathellipsis s_n)}$cong$_1 \ \ \ \frac{\Gamma \vdash t_1 = s_1 \ \ \ \mathellipsis \ \ \ \Gamma \vdash t_n = s_n \ \ \ \Gamma \vdash A(t_1, \mathellipsis, t_n)}{\Gamma \vdash A(s_1, \mathellipsis, s_n)}$cong$_2$
+	\enumend
+\enumend
+30
+\end{document}
