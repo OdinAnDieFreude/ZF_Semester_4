@@ -1,0 +1,39 @@
+\section{Types}
+\enumstart
+	\item Haskell is strongly typed $\rightarrow$ avoids runtime errors
+	\item Either programmer provides types along with the function definition or system computes types itself
+	\item Function-/argument-types must match
+	\item Basic types
+	\enumstart
+		\item Int
+		\enumstart
+			\item Range: at least $\{-2^{29}, \mathellipsis, 2^{29}-1\}$
+		\enumend
+		\item Integer
+		\enumstart
+			\item Range: $\N$
+		\enumend
+		\item Bool
+		\enumstart
+			\item Values: True, False
+		\enumend
+		\item Char
+		\enumstart
+			\item Values: 'a', 'b', $\mathellipsis$, '0', '1', $\mathellipsis$, '$\backslash$t', '$\backslash$n'
+		\enumend
+		\item String
+		\enumstart
+			\item Strings are equivalent zu [Char]
+			\item Special notation: "text" = ['t', 'e', 'x', 't']
+		\enumend
+		\item Float
+		\enumstart
+			\item Values: 0.3348, -2.34e07, $\mathellipsis$
+		\enumend
+		\item tuples
+		\enumstart
+			\item Is a type constructor
+			\item $(t_1, \mathellipsis, t_n)$ is a type if $t_1, \mathellipsis, t_n$ are types and $n \ge 2$
+		\enumend
+	\enumend
+\enumend

@@ -1,0 +1,18 @@
+\section{Equality}
+\enumstart
+	\item Logical symbol with associated proof rules
+	\item One speaks of "first-order logic with equality" rather than beeing just another predicate
+	\item Extended language: $t_1 = t_2 \in$ Form if $t_1, t_2 \in$ Term
+	\item Extended definition of semantic entailment $\vDash$
+	\enumstart
+		\item $\mathcal{I} \vDash t_1 = t_2$ if $\mathcal{I}(t_1) = \mathcal{I}(t_2)$
+	\enumend
+	\item Equality is an equivalence relation
+	\enumstart
+		\item $\frac{}{\Gamma \vdash t = t}$ref $\ \ \ \frac{\Gamma \vdash t = s}{\Gamma \vdash s = t}$sym $\ \ \ \frac{\Gamma \vdash t = s \ \ \ \Gamma \vdash s = r}{\Gamma \vdash t = r}$trans
+	\enumend
+	\item Equality is a congruence relation
+	\enumstart
+		\item $\frac{\Gamma \vdash t_1 = s_1 \ \ \ \mathellipsis \ \ \ \Gamma \vdash t_n = s_n}{\Gamma \vdash r(t_1, \mathellipsis, t_n) = r(s_1, \mathellipsis s_n)}$cong$_1 \ \ \ \frac{\Gamma \vdash t_1 = s_1 \ \ \ \mathellipsis \ \ \ \Gamma \vdash t_n = s_n \ \ \ \Gamma \vdash A(t_1, \mathellipsis, t_n)}{\Gamma \vdash A(s_1, \mathellipsis, s_n)}$cong$_2$
+	\enumend
+\enumend

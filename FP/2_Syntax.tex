@@ -1,0 +1,42 @@
+\section{Syntax}
+\enumstart
+	\item Naming
+	\enumstart
+		\item Functions start with a lowercase letter
+		\item Types start with an uppercase letter
+	\enumend
+	\item Language constructs
+	\enumstart
+		\item Function application
+		\enumstart
+			\item Function application by whitespace: $\langle$function$\rangle$ $\langle$argument$\rangle$
+			\item Binary functions can be used infix by using backticks: $v_1$ \backtick function\backtick $v_2$
+			\item An infix binary relation is called an operator
+			\item An operator can be written prefix: (operator) $v_1 v_2$
+			\item Operators have different binding strengths
+		\enumend
+		\item Guards
+		\enumstart
+			\item xor $x$ $y$\\ $.\ \ \ | x ==$ True $=$ not $y$\\ $.\ \ \ | x ==$ False $= y$
+		\enumend
+		\item Pattern matching
+		\enumstart
+			\item xor True $y$ = not $y$\\xor False $y$ = $y$
+		\enumend
+		\item Global scope functions
+		\enumstart
+			\item f $x$ $y$ = $\mathellipsis$
+		\enumend
+		\item Local scope functions
+		\enumstart
+			\item Let (builds one expression from others)
+			\enumstart
+				\item let x1 = e1\\$\vdots$\\.$\ \ \ \ $xn = en\\in e
+			\enumend
+			\item Where
+			\enumstart
+				\item f p1 p2 $\mathellipsis$ pm\\.$\ \ \ |$ g1 = e1\\$\vdots$\\.$\ \ \ |$ gk = ek\\.$\ \ \ $where\\.$\ \ \ \ \ $v1 a1 $\mathellipsis$ an = r1\\.$\ \ \ \ \ $v2 = r2
+			\enumend
+		\enumend
+	\enumend
+\enumend

@@ -1,0 +1,43 @@
+\section{Propositional logic}
+\enumstart
+	\item Propositions
+	\enumstart
+		\item Built from a collection of variables
+		\item Closed under conjunction, disjunction, implication, $\mathellipsis$
+	\enumend
+	\item Set of variables $\mathcal{V}$
+	\item $\mathcal{L}_P$, the language of propositional logic, is the smallest set where:
+	\enumstart
+		\item $X \in \mathcal{L}_P$ if $X \in \mathcal{V}$
+		\item $\bot \in \mathcal{L}_P$
+		\item $A \land B \in \mathcal{L}_P$ if $A \in \mathcal{L}_P$ and $B \in \mathcal{L}_P$
+		\item $A \lor B \in \mathcal{L}_P$ if $A \in \mathcal{L}_P$ and $B \in \mathcal{L}_P$
+		\item $A \rightarrow B \in \mathcal{L}_P$ if $A \in \mathcal{L}_P$ and $B \in \mathcal{L}_P$
+	\enumend
+	\item A valuation $\sigma: \mathcal{V} \rightarrow \{$True$, $False$\}$
+	\item Let Valuations be the set of valuations
+	\item Satisfiability: smallest relation $\vDash \ \subseteq$ Valuations $ \times \mathcal{L}_P$ such that
+	\enumstart
+		\item $\sigma \vDash X$, if $\sigma(X) =$ True
+		\item $\sigma \vDash A \land B$, if $\sigma \vDash A$ and $\sigma \vDash B$
+		\item $\sigma \vDash A \lor B$, if $\sigma \vDash A$ or $\sigma \vDash B$
+		\item $\sigma \vDash A \rightarrow B$, if whenever $\sigma \vDash A$ then $\sigma \vDash B$
+		\item Note: $\sigma \vDash \bot$, for every $\sigma \in$ Valuations
+	\enumend
+	\item A formula $A \in \mathcal{L}_P$ is satisfiable if $\sigma \vDash A$ for some valuation $\sigma$
+	\item A formula $A \in \mathcal{L}_P$ is valid (a tautology) if $\sigma \vDash A$ for all valuations $\sigma$
+	\item Semantic entailment: $A_1, \mathellipsis, A_n \vDash A$ if for all $\sigma$, if $\sigma \vDash A_1, \mathellipsis, \sigma \vDash A_n$ then $\sigma \vDash A$
+	\item Requirements for a deductive system
+	\enumstart
+		\item Syntactic entailment $\vdash$ and semantic entailment $\vDash$ should agree
+		\item Soundness
+		\enumstart
+			\item If $H \vdash A$ can be derived, then $H \vDash A$
+		\enumend
+		\item Completeness
+		\enumstart
+			\item If $H \vDash A$, then $H \vdash A$ van be derived
+		\enumend
+		\item Decidability (Complexity of determining satisfiability/validity)
+	\enumend
+\enumend
