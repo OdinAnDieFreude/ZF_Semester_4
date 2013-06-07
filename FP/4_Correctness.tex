@@ -1,0 +1,38 @@
+\section{Correctness}
+\enumstart
+	\item Termination
+	\enumstart
+		\item If $f$ is defined in terms of functions $g_1, \mathellipsis, g_k (g_i \ne f)$ and each $g_i$ terminates, then so does $f$
+		\item Problem is recursion
+		\item Sufficient condition for termination: Argements are smaller along a well-founded order on functions domain
+	\enumend
+	\item Functional behaviour
+	\enumstart
+		\item Defined by another (mathematically defined) function or
+		\item Defined by an input-output relation
+	\enumend
+	\item Well-founded relation
+	\enumstart
+		\item Definition: An order $>$ on a set $S$ is well-founded, iff there is no infinite decreasing chain $x_1 > x_2 > \mathellipsis$ for $x_i \in S$
+		\item Construction:
+		\enumstart
+			\item Construct new well-founded relations from existing ones
+			\enumstart
+				\item Let $R_1, R_2$ be binary relations on a set $S$. The composition is defined as $R_2 \circ R_1 \equiv \{(a,c) \in S \times S \ | \ \exists b \in S: (a,b) \in R_1 \land (b,c) \in R_2\}$
+				\item Let $R \subseteq S \times S: R^1 \equiv R, R^{n+1} \equiv R \circ R^n$ for $n \ge 1, R^+ \equiv \cup_{n \ge 1}R^n$
+				\item Lemma: Let $R \subseteq S \times S$, let $s_0, s_i \in S$ and $i \ge 1$. Then $s_0Rs_i$ iff there are $s_1, \mathellipsis, s_{i-1} \in S$ such that $s_0Rs_1R\mathellipsis Rs_{i-1}Rs_i$
+				\item Theorem:  If $>$ is a well-founded order on the set $S$, then $>^+$ is also well-founded on $S$
+			\enumend
+		\enumend
+	\enumend
+	\item Correctness
+	\enumstart
+		\item Equational reasoning - Use function definition in Haskell
+		\item Reasoning by cases
+		\item Proof by induction
+		\item Noetherian induction
+		\enumstart
+			\item Let $>$ be a well-founded ordering on a set $S$. To prove $\forall x \in S: P(x)$ prove $P(y)$ for an arbitrary $y$ under the assumption that $P(x)$ holds for all $x < y$
+		\enumend
+	\enumend
+\enumend
