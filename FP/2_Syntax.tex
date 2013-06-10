@@ -22,6 +22,22 @@
 		\item Pattern matching
 		\enumstart
 			\item xor True $y$ = not $y$\\xor False $y$ = $y$
+			\item Recursive definition: pattern $p$ matches term $a$ by recursion on $p$
+			\enumstart
+				\item Constant: $p = c$ succeeds if $c = a$
+				\item Variable: $p = x$ succeeds and with binding $x = a$
+				\item Wild card: $p = \_$ succeeds with no binding
+				\item Tuple: $p = (p_1, \mathellipsis, p_k)$ succeeds if $a = (a_1, \mathellipsis, a_k)$ and $p_i$ matches $a_i$ for $i \in \{1, \mathellipsis, k\}$
+				\item List: $p = (p_1 : p_2)$ succeeds if $a$ is a nonempty list $(a_1 : a_2)$ and $p_1$ mathces $a_1$ and $p_2$ matches $a_2$
+			\enumend
+		\enumend
+		\item List comprehension
+		\enumstart
+			\item $[X | A_1, \mathellipsis, A_k]$
+			\item $X$ is an expression
+			\item $A_i$ is either a Predicate or an assignment
+			\item Assignments have the form $v \leftarrow [a_1, \mathellipsis, a_k]$
+			\item Pattern-matching possible
 		\enumend
 		\item Global scope functions
 		\enumstart
@@ -37,6 +53,17 @@
 			\enumstart
 				\item f p1 p2 $\mathellipsis$ pm\\.$\ \ \ |$ g1 = e1\\$\vdots$\\.$\ \ \ |$ gk = ek\\.$\ \ \ $where\\.$\ \ \ \ \ $v1 a1 $\mathellipsis$ an = r1\\.$\ \ \ \ \ $v2 = r2
 			\enumend
+		\enumend
+		\item The type keyword
+		\enumstart
+			\item <TODO>
+		\enumend
+		\item $\lambda$-expressions
+		\enumstart
+			\item $\backslash a_1 \mathellipsis a_k \rightarrow$ expression
+			\item Create functions inline
+			\item $a_i$ are patterns
+			\item the functions takes the input values defined in the patterns and evaluates to whatever the expression says
 		\enumend
 	\enumend
 \enumend

@@ -3,37 +3,70 @@
 	\item Haskell is strongly typed $\rightarrow$ avoids runtime errors
 	\item Either programmer provides types along with the function definition or system computes types itself
 	\item Function-/argument-types must match
-	\item Basic types
+\enumend
+
+\subsection{Basic types}
+\enumstart
+	\item Int
 	\enumstart
-		\item Int
-		\enumstart
-			\item Range: at least $\{-2^{29}, \mathellipsis, 2^{29}-1\}$
-		\enumend
-		\item Integer
-		\enumstart
-			\item Range: $\N$
-		\enumend
-		\item Bool
-		\enumstart
-			\item Values: True, False
-		\enumend
-		\item Char
-		\enumstart
-			\item Values: 'a', 'b', $\mathellipsis$, '0', '1', $\mathellipsis$, '$\backslash$t', '$\backslash$n'
-		\enumend
-		\item String
-		\enumstart
-			\item Strings are equivalent zu [Char]
-			\item Special notation: "text" = ['t', 'e', 'x', 't']
-		\enumend
-		\item Float
-		\enumstart
-			\item Values: 0.3348, -2.34e07, $\mathellipsis$
-		\enumend
-		\item tuples
-		\enumstart
-			\item Is a type constructor
-			\item $(t_1, \mathellipsis, t_n)$ is a type if $t_1, \mathellipsis, t_n$ are types and $n \ge 2$
-		\enumend
+		\item Range: at least $\{-2^{29}, \mathellipsis, 2^{29}-1\}$
+	\enumend
+	\item Integer
+	\enumstart
+		\item Range: $\N$
+	\enumend
+	\item Bool
+	\enumstart
+		\item Values: True, False
+	\enumend
+	\item Char
+	\enumstart
+		\item Values: 'a', 'b', $\mathellipsis$, '0', '1', $\mathellipsis$, '$\backslash$t', '$\backslash$n'
+	\enumend
+	\item Float
+	\enumstart
+		\item Values: 0.3348, -2.34e07, $\mathellipsis$
+	\enumend
+	\item String
+	\enumstart
+		\item Strings are equivalent zu [Char] $\rightarrow$ not really a basic type
+		\item Special notation: "text" = ['t', 'e', 'x', 't']
+	\enumend
+\enumend
+
+\subsection{Functions}
+\enumstart
+	\item A function $f :: X a \Rightarrow A \rightarrow B$ takes an argument of type $A$ and returns a value of type $B$
+	\item $X$ is a restriction on the polymorphic type $a$ (type variable a)
+	\item $A$ and $B$ might be functions as well
+	\item Higher order functions
+	\enumstart
+		\item First order functions use basis types or constructor types as arguments
+		\item Second order functions use basis types, constructor types or first order functions as arguments
+		\item Higher order functions use basis types, constructor types or functions of any order as arguments
+	\enumend
+	\item Functions take exactly one argument
+	\enumstart
+		\item partial application vs. tupling
+		\item curry: tupling $\rightarrow$ partial application
+		\item uncurry: partial application $\rightarrow$ tupling
+	\enumend
+\enumend
+
+\subsection{Type constructors}
+\enumstart
+	\item Tuples
+	\enumstart
+		\item $(t_1, \mathellipsis, t_n)$ is a type if $t_1, \mathellipsis, t_n$ are types and $n \ge 2$
+	\enumend
+	\item Lists
+	\enumstart
+		\item If $T$ is a type, then $[T]$ is a type.
+		\item $[]$ is an Element of type $[T]$
+		\item If $x$ :: $T$ and $xs$ :: $[T]$ then $(x:xs)$ :: $[T]$
+	\enumend
+	\item Most general type (principal type)
+	\enumstart
+		\item A type $w$ for $f$ is the most general type iff for all types $s$ for $f$, $s$ is an instance of $w$
 	\enumend
 \enumend
