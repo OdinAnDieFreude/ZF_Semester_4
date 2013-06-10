@@ -1,0 +1,13 @@
+\section{Lazy Evaluation}
+\enumstart
+	\item Expressions only evaluated when necessary
+	\item Substitution without argument evaluation
+	\item Sometimes, expressions are never evaluated
+	\item Duplicated computation avoided
+	\item Implementation based on sharing: terms represented as directed acyclic graphs
+	\item Functions are evaluated top-down (outermost operator first)
+	\item Otherwise usually from left to right, but dependant on operator precedence
+	\item Complexity can be better than exprected (head . isort executes in $\mathcal{O}(n)$, even though isort has complexity $\mathcal{O}(n^2)$)
+	\item Infinity data (data is created on demand)
+	\item Lazy evaluation complicates analyzing program complexity and correctness
+\enumend
