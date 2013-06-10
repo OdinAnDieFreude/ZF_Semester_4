@@ -1,0 +1,31 @@
+\section{Algebraic data types (ADT)}
+\enumstart
+	\item Declare new types specialized to the objects beeing modeled
+	\item Definition
+	\enumstart
+		\item data $T$ = $C_1 a_{1,1}\mathellipsis a_{1,k_1}| C_2 a_{2,1}\mathellipsis a_{2,k_2}| \mathellipsis | C_j a_{j,1}\mathellipsis a_{j,k_j}$
+		\item Start with the keyword data
+		\item $T$ is the name of the new type
+		\item $C_i$ are type-constructors
+		\item Constructor-names start with an uppercase letter
+		\item $a_{c,d}$ are parameters for the constructors
+		\item Constructor parameters can be polymorphic
+		\item Recursion for constructors is possible (e.g. trees)
+		\item Constructors are functions:
+		\enumstart
+			\item data People = Person Name Age
+			\item Person :: Name $\rightarrow$ Age $\rightarrow$ People
+		\enumend
+		\item Derive from typeclasses
+		\enumstart
+			\item Automatically: (not always possible)
+			\enumstart
+				\item data Foo D1 $|$ D2 $|$ D3\\$.\ \ \ \ \ \ \ $deriving(Eq, Ord, Enum, Show)
+			\enumend
+			\item Manually
+			\enumstart
+				\item instance Eq Foo where\\$.\ \ \ $D1 == D1 = True\\$.\ \ \ $D2 == D2 = True\\$.\ \ \ $D3 == D3 = True\\$.\ \ \ $\_ == \_ = False
+			\enumend
+		\enumend
+	\enumend
+\enumend
