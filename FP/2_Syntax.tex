@@ -67,3 +67,28 @@
 		\enumend
 	\enumend
 \enumend
+
+\subsection{Type classes}
+\enumstart
+	\item Type classes are a way to implement polymorphism in haskell
+	\item A type can be an instance of multiple typeclasses
+	\item Polymorphic arguments of functions can be restricted to members of certain typeclasses
+	\item Definition
+	\enumstart
+		\item class Eq a where$\\. \ \ \ (==), (/=) :: a \rightarrow a \rightarrow Bool$\\$. \ \ \ x /= y = $not$(x==y)$
+		\item Definition contains
+		\enumstart
+			\item Class name
+			\item Signature: List of function names and types
+			\item (Optional standard-)definitions: can be overwritten
+		\enumend
+	\enumend
+	\item Derived classes
+	\enumstart
+		\item class Eq a $\Rightarrow$ Ord a where $\mathellipsis$
+	\enumend
+	\item Instantiation
+	\enumstart
+		\item instance Eq Bool where\\True == True = True\\False == False = True\\ \_ \_ = False
+	\enumend
+\enumend
