@@ -1,0 +1,43 @@
+\section{IMP Extensions}
+\enumstart
+	\item Local variable declarations
+	\enumstart
+		\item var $x$ := $e$ in $s$ defines a local variable that is visible in the sub-statements of $s$
+		\item Big-step semantics: $\frac{\lan \underline{s}, \underline{\sigma}[\underline{x} \mapsto \mathcal{A}\llb \underline{e} \rrb \underline{\sigma}] \ran \rightarrow \underline{\sigma'}}{\lan \text{var }\underline{x} := \underline{e} \text{ in }\underline{s}\text{ end}, \underline{\sigma} \ran \rightarrow \underline{\sigma'}[\underline{x} \mapsto \underline{\sigma}(\underline{x})]}$(LOC$_{NS}$)
+		\item FV(var $x := e$ in $s$ end) = FV($e$) $\cup$ (FV($s$) $\smallsetminus x$)
+	\enumend
+	\item Procedure declarations and calls
+	\enumstart
+		\item Procedure declaration: procedure $p(x_1, \mathellipsis, x_n; y_1, \mathellipsis, y_m)$ begin $s$ end
+		\item $x_1, \mathellipsis x_n$ are value parameters
+		\item $y_1, \mathellipsis y_m$ are variable parameters (can be used to assign values back to the caller)
+		\item The formal parameter $x_1, \mathellipsis, x_n, y_1, \mathellipsis, y_m$ in a declaration must be distinct
+		\item In a procedure call, the actual variable parameters must be distinct (no aliasing)
+		\item Natural semantics: $\frac{\lan \underline{s}, \underline{\sigma}[\underline{x_i} \mapsto \mathcal{A}\llb \underline{e_i} \rrb \underline{\sigma} ][\underline{y_j} \mapsto \underline{\sigma}(\underline{z_j})] \ran \rightarrow \underline{\sigma'}}{\lan \underline{p}(\underline{e_i}; \underline{z_j}), \underline{\sigma} \ran \mapsto \underline{\sigma'}[\underline{x_i} \mapsto \underline{\sigma}(\underline{x_i})][\underline{y_j} \mapsto \underline{\sigma}(\underline{y_j})][\underline{z_j} \mapsto \underline{\sigma'}(\underline{y_j})]}$(CALL$_{NS}$)
+	\enumend
+	\item Abort
+	\enumstart
+		\item Modeled by ensuring that there is no state $\sigma'$ such that $\lan \text{abort}, \sigma \ran \rightarrow \sigma'$
+	\enumend
+	\item Non-determinism
+	\enumstart
+		\item Natural semantics: $\frac{\lan \underline{s}, \underline{\sigma} \ran \rightarrow \underline{\sigma'}}{\lan \underline{s} \square \underline{s'}, \underline{\sigma} \ran \rightarrow \underline{\sigma'}}$(ND1$_{NS}$) $\ \ \ $ $\frac{\lan \underline{s'}, \underline{\sigma} \ran \rightarrow \underline{\sigma'}}{\lan \underline{s} \square \underline{s'}, \underline{\sigma} \ran \rightarrow \underline{\sigma'}}$(ND2$_{NS}$)
+	\enumend
+	\item Parallelism
+	\enumstart
+		\item For the statement $s$ par $s'$, both statements $s$ and $s'$ are executed, but execution can be interleaved
+		\item But: Interleaving cannot be done in natural semantics
+	\enumend
+	\item Problems with natural semantics
+	\enumstart
+		\item Properties of non-terminating programs cannot be expressed
+		\item No distinction between aborting (abnormal termination) and non-termination
+		\item Non-determinism suppresses looping (when possible)
+		\item Parallelism (interleaving) cannot be modeled
+		\item Definition of semantic equivalence is coarse
+		\enumstart
+			\item All sorting programs are equivalent
+			\item All non-terminating programs are equivalent
+		\enumend
+	\enumend
+\enumend
