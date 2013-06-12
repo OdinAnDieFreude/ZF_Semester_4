@@ -1,0 +1,63 @@
+\section{Operational semantics}
+
+\subsection{Big-step semantics}
+\enumstart
+	\item Describes how the overall result of the executions are obtained
+	\item We will use "natural semantics"
+	\item A transitionsystem is a tuple $(\Gamma, T, \rightarrow)$
+	\enumstart
+		\item $\Gamma$ is a set of configurations
+		\item $T$ is a set of terminal configurations $T \subseteq \Gamma$
+		\item $\rightarrow$ is a transition relation $\rightarrow \subseteq \Gamma \times \Gamma$
+	\enumend
+	\item Two types of configurations
+	\enumstart
+		\item $\lan s, \sigma \ran$, which represents that the statement $s$ is to be executed in state $\sigma$
+		\item $\sigma$, which represents a final state (terminal configuration)
+	\enumend
+	\item Transition relation
+	\enumstart
+		\item describes how execution takes place
+		\item Big-step transitions are of the form $\lan s, \sigma \ran \rightarrow \sigma'$
+	\enumend
+	\item IMP
+	\enumstart
+		\item $\Gamma = \{ \lan s, \sigma \ran \ | \ s \in Stm, \sigma \in State\} \cup State $
+		\item $T = State$
+		\item $\rightarrow \subseteq \{ \lan s, \sigma \ran \ | \ s \in Stm, \sigma \in State\} \times State$
+	\enumend
+	\item Inference rules(-schemes)
+	\enumstart
+		\item $\frac{\varphi_1 \ \ \mathellipsis \ \ \varphi_n}{\psi}$(Name)$^*$
+		\item $*$ optional side-condition
+		\item If $\varphi_1, \mathellipsis, \varphi_n$ are transitions and the side-condition is true, then $\psi$ is a transition
+		\item $\varphi_i$ are called premises of the rule
+		\item $\psi$ is called the conclusion of the rule
+		\item A rule without premises is sometimes called an axiom rule
+		\item By convention, we write meta-variables in rule-schemes with underlines
+	\enumend
+	\item Big-step semantics of IMP
+	\enumstart
+		\item $\frac{}{\lan skip, \underline{\sigma} \ran \rightarrow \underline{\sigma}}$(SKIP$_{NS}$)
+		\item $\frac{}{\lan \underline{x} := \underline{e}, \underline{\sigma} \ran \rightarrow \underline{\sigma}[\underline{x} \mapsto \mathcal{A}\llb \underline{e}\rrb\underline{\sigma}]}$(ASS$_{NS}$)
+		\item $\frac{\lan \underline{s}, \underline{\sigma} \ran \rightarrow \underline{\sigma'} \ \ \ \lan \underline{s'}, \underline{\sigma'}\ran \rightarrow \underline{\sigma''}}{\lan \underline{s}; \underline{s'}, \underline{\sigma}\ran \rightarrow \underline{\sigma''}}$(SEQ$_{NS}$)
+		\item $\frac{\lan \underline{s}, \underline{\sigma} \ran \rightarrow \underline{\sigma'}}{\lan \text{if }\underline{b} \text{ then }\underline{s}\text{ else } \underline{s'}\text{ end}, \underline{\sigma}\ran \rightarrow \underline{\sigma'}}$(IFT$^*_{NS}$) *if $\mathcal{B}\llb \underline{b} \rrb \underline{\sigma} =$ tt
+		\item $\frac{\lan \underline{s'}, \underline{\sigma} \ran \rightarrow \underline{\sigma'}}{\lan \text{if }\underline{b} \text{ then }\underline{s}\text{ else } \underline{s'}\text{ end}, \underline{\sigma}\ran \rightarrow \underline{\sigma'}}$(IFF$^*_{NS}$) *if $\mathcal{B}\llb \underline{b} \rrb \underline{\sigma} =$ ff
+		\item $\frac{\lan \underline{s}, \underline{\sigma} \ran \rightarrow \underline{\sigma' \ \ \lan \text{while } \underline{b} \text{ do } \underline{s} \text{ end}, \underline{\sigma'}\ran \rightarrow \underline{\sigma''}}}{\lan \text{while } \underline{b} \text{ do } \underline{s} \text{ end}, \underline{\sigma} \ran \rightarrow \underline{\sigma''}}$(WHT$^*_{NS}$) *if $\mathcal{B}\llb \underline{b} \rrb \underline{\sigma} =$ tt
+		\item $\frac{}{\lan \text{while } \underline{b} \text{ do } \underline{s} \text{ end}, \underline{\sigma} \ran \rightarrow \underline{\sigma}}$(WHF$^*_{NS}$) *if $\mathcal{B}\llb \underline{b} \rrb \underline{\sigma} =$ ff
+	\enumend
+	\item The execution of statement $s$ in state $\sigma$ terminates successfully iff
+	\enumstart
+		\item there exists a state $\sigma'$ such that $\vdash \lan s, \sigma \ran \rightarrow \sigma'$
+		\item and fails to terminate otherwise
+	\enumend
+	\item Big-step semantics cannot characterize being stuck / running forever
+	\item Two statements $s_1$ and $s_2$ are semantically equivalent ($s_1 \simeq s_2$) if: $\forall \sigma, \sigma': (\vdash \lan s_1, \sigma \ran \rightarrow \sigma' \Leftrightarrow \ \vdash \lan s_2, \sigma \ran \rightarrow \sigma')$
+	\item Big-step semantics of IMP is deterministic
+\enumend
+
+\subsection{Small-step semantics}
+\enumstart
+	\item Describes how the individual steps of the computations take place
+	\item We will use "structural operational semantics"
+\enumend
