@@ -1,0 +1,147 @@
+\section{The IMP-language}
+\enumstart
+	\item Minimal imperative language
+	\enumstart
+		\item Variables, expressions, assignments
+		\item If-conditional, loops
+	\enumend
+	\item Expressions
+	\enumstart
+		\item Boolean and arithmetic expressions
+		\item No side-effects in expressions
+	\enumend
+	\item Variables
+	\enumstart
+		\item All variables range over integers
+		\item All variables are initialized
+	\enumend
+	\item IMP does not include
+	\enumstart
+		\item Heap allocation and pointers
+		\item Variable declarations
+		\item Procedures
+		\item Concurrency
+	\enumend
+\enumend
+
+\subsection{IMP syntax}
+\enumstart
+	\item Meta-variables
+	\enumstart
+		\item Used in proofs to distinguish from variable names
+		\item Written in math-font
+		\item $n$ for numerals (Numeral)
+		\item $x,y,z$ for variables (Var)
+		\item $e, e', e_1, e_2$ for arithmetic expressions (Aexp)
+		\item $b, b_1, b_2$ for boolean expressions (Bexp)
+		\item $s, s', s_1, s_2$ for statements (Stm)
+		\item $\sigma$ for states
+	\enumend
+	\item Characters
+	\enumstart
+		\item Letter = 'A' $| \mathellipsis |$ 'Z' $|$ 'a' $| \mathellipsis |$ 'z'
+		\item Digit = '0' $| \mathellipsis |$ '9'
+	\enumend
+	\item Token
+	\enumstart
+		\item Ident = Letter $\{$Letter $|$ Digit$\}^*$
+		\item Numeral = Digit $|$ Numeral Digit
+		\item Var = Ident
+	\enumend
+	\item Arithmetic expressions
+	\enumstart
+		\item Aexp = '(' Aexp Op Aexp')' $|$ Var $|$ Numeral
+		\item Op = '$+$' $|$ '$-$' $|$ '$*$'
+	\enumend
+	\item Boolean expressions
+	\enumstart
+		\item Bexp = '(' Bexp 'or' Bexp ')' $|$ '(' Bexp 'and' Bexp ')' $|$ 'not' Bexp $|$ Aexp Rop Aexp
+		\item Rop = '=' $|$ '\#' $|$ '$<$' $|$ '$<=$' $|$ '$>$' $|$ '$>=$'
+	\enumend
+	\item Statements
+	\enumstart
+		\item Stm = 'skip' $|$ Var ':=' Aexp $|$ '('Stm ';' Stm')' $|$ 'if' Bexp 'then' Stm 'else' Stm 'end' $|$ 'while' Bexp 'do' Stm 'end'
+	\enumend
+\enumend
+
+\subsection{IMP semantics}
+\enumstart
+	\item Mapping from syntactic to semantic category
+	\enumstart
+		\item Numeral $\rightarrow$ Val = $\Z$
+	\enumend
+	\item Semantics of numerals
+	\enumstart
+		\item $\mathcal{N}:$ Numerals $\rightarrow$ Val
+		\item $\mathcal{N}\llb 0 \rrb = 0 \ \ \ \mathellipsis \ \ \ \mathcal{N}\llb 9 \rrb = 9$
+		\item $\mathcal{N}\llb n 0\rrb = 10*\mathcal{N}\llb n \rrb + 0 \ \ \ \mathellipsis \ \ \ \mathcal{N}\llb n 9 \rrb = 10*\mathcal{N}\llb n \rrb + 9$
+	\enumend
+	\item State
+	\enumstart
+		\item Total function associating a value to each program variable
+		\item State: Var $\rightarrow$ Val
+		\item $\forall x: \sigma_{zero}(x) = 0$
+		\item Updating states: $\sigma[y \mapsto v]$
+		\item $(\sigma[y \mapsto v])(x) = v$ if $x \equiv y$ and $\sigma(x)$ otherwise
+		\item Equality: $\sigma_1 = \sigma_2 \Leftrightarrow \forall x.(\sigma_1(x) = \sigma_2(x))$
+	\enumend
+	\item Arithmetic expressions
+	\enumstart
+		\item $\mathcal{A}$: Aexp $\rightarrow$ State $\rightarrow$ Val
+		\item $\mathcal{A}\llb x \rrb \sigma = \sigma(x)$
+		\item $\mathcal{A}\llb n \rrb \sigma = \mathcal{N}\llb n \rrb$
+		\item $\mathcal{A}\llb e_1$ op $e_2\rrb \sigma = \mathcal{A}\llb e_1 \rrb \sigma$ $\overline{\text{op}}$ $\mathcal{A}\llb e_2\rrb \sigma$ for op $\in$ Op
+		\item $\overline{\text{op}}$ is the operation Val $\times$ Val $\rightarrow$ Val corresponding to op
+	\enumend
+	\item Boolean expressions
+	\enumstart
+		\item $\mathcal{B}$: Bexp $\rightarrow$ State $\rightarrow$ Bool
+		\item $\mathcal{B}\llb e_1$ op $e_1\rrb \sigma =$ tt if $\mathcal{A}\llb e_1 \rrb \sigma$ $\overline{\text{op}}$ $\mathcal{A}\llb e_2\rrb \sigma$ and ff otherwise
+		\item $\overline{\text{op}}$ is the relation Val $\times$ Val corresponding to op
+	\enumend
+	\item Free variables
+	\enumstart
+		\item Arithmetic expressions
+		\enumstart
+			\item FV($e_1$ op $e_2$) = FV($e_1$) $\cup$ FV($e_2$)
+			\item FV(n) = $\emptyset$
+			\item FV(x) = $\{x\}$
+		\enumend
+		\item Boolean expressions
+		\enumstart
+			\item FV($e_1$ op $e_2$) = FV($e_1$) $\cup$ FV($e_2$)
+			\item FV(not $b$) = FV(b)
+			\item FV($b_1$ or $b_2$) = FV($b_1$) $\cup$ FV($b_2$)
+			\item FV($b_1$ and $b_2$) = FV($b_1$) $\cup$ FV($b_2$)
+		\enumend
+		\item Statements
+		\enumstart
+			\item FV(skip) = $\emptyset$
+			\item FV($x$ := $e$) = $\{x\} \cup$ FV($e$)
+			\item FV($s_1$ ; $s_2$) = FV($s_1$) $\cup$ FV($s_2$)
+			\item FV(if $b$ then $s_1$ else $s_2$ end) = FV($b$) $\cup$ FV($s_1$) $\cup$ FV($s_2$)
+			\item FV(while $b$ do $s$ end) = FV($b$) $\cup$  FV($s$)
+		\enumend
+	\enumend
+	\item Substitution
+	\enumstart
+		\item Substitution $[x \mapsto e]$ replaces all free occurrence of variable $x$ by $e$
+		\item Arithmetic expressions
+		\enumstart
+			\item $(e_1$ op $e_2)[x \mapsto e] \equiv (e_1[x \mapsto e]$ op $e_2[x \mapsto e])$
+			\item $n[x \mapsto e] \equiv n$
+			\item $y[x \mapsto e] \equiv e$, if $x \equiv y$ and $y$ otherwise
+		\enumend
+		\item Boolean expressions
+		\enumstart
+			\item $(e_1$ op $e_2)[x \mapsto e] \equiv (e_1[x \mapsto e]$ op $e_2[x \mapsto e])$
+			\item $($not $b)[x \mapsto e] \equiv$ not$(b[x \mapsto e])$
+			\item $(b_1$ or $b_2)[x \mapsto e] \equiv (b_1[x \mapsto e]$ or $b_2[x \mapsto e])$
+			\item $(b_1$ and $b_2)[x \mapsto e] \equiv (b_1[x \mapsto e]$ and $b_2[x \mapsto e])$
+		\enumend
+		\item Substitution lemma
+		\enumstart
+			\item $\mathcal{B}\llb b[x \mapsto e] \rrb \sigma \Leftrightarrow \mathcal{B}\llb b \rrb \sigma[x \mapsto \mathcal{A}\llb e \rrb \sigma]$
+		\enumend
+	\enumend
+\enumend
