@@ -1,0 +1,38 @@
+\section{Monads}
+\enumstart
+	\item Add a context to a type (partiality, non-determinism, exceptions, $\mathellipsis$)
+	\item The monad laws:
+	\enumstart
+		\item Left unit: return x $>>=$ f = f x
+		\item Right unit: m $>>=$ return = m
+		\item Associativity: (m $>>=$ f) $>>=$ g = m $>>=$ (\textbackslash x $\rightarrow$ (f x $>>=$ g))
+	\enumend
+	\item Monad operations
+	\enumstart
+		\item Mathematical core
+		\enumstart
+			\item return :: a $\rightarrow$ m a
+			\item bind ($>>=$) :: m a $\rightarrow$ (a $\rightarrow$ m b) $\rightarrow$ m b
+		\enumend
+		\item When second computation does not depend on result of first one
+		\enumstart
+			\item ($>>$) :: m a $\rightarrow$ m b $\rightarrow$ m b
+			\item m1 $>>$ m2 = m1 $>>=$ (\textbackslash \_ $\rightarrow$ m2)
+		\enumend
+		\item Called on pattern matching errors in do-notation
+		\enumstart
+			\item fail :: String $\rightarrow$ m a
+		\enumend
+	\enumend
+	\item Monads let you use side effects in a controlled way
+	\item Different monads
+	\enumstart
+		\item Partiality
+		\item Exception
+		\item State
+		\item I/O
+		\item Nondeterministic
+		\item Output
+		\item Parsers
+	\enumend
+\enumend
