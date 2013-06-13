@@ -1,0 +1,56 @@
+\section{Small-step semantics}
+\enumstart
+	\item Describes how the individual steps of the computations take place
+	\item We will use "structural operational semantics (SOS)"
+	\item Allows to express the order of an execution (e.g. for interleaving computations)
+	\item Allows to express properties of non-terminating programs
+	\item The configurations are the same as for natural semantics (we use $\gamma$ as meta-variable for configurations)
+	\item The transition relation $\rightarrow_1$ has two forms
+	\enumstart
+		\item $\lan s, \sigma \ran \rightarrow_1 \lan s', \sigma' \ran$ (execution of $s$ from $\sigma$ is not completed $\rightarrow$ remaining computation)
+		\item $\lan s, \sigma \ran \rightarrow_1 \sigma'$ (the execution of $s$ from $\sigma$ has terminated $\rightarrow$ final state $\sigma'$)
+		\item A transition $\lan s, \sigma \ran \rightarrow_1 \gamma$ descibes the first step of the execution of $s$ in state $\sigma$
+	\enumend
+	\item Transition relation
+	\enumstart
+		\item $\Gamma = \{\lan s, \sigma \ran \ | \ s \in Stm, \sigma \in State\} \cup State$
+		\item $T = State$
+		\item $\rightarrow_1 \subseteq \{\lan s, \sigma \ran \ | \ s \in Stm, \sigma \in State\} \times \Gamma$
+		\item We say a non-terminal configuration $\lan s, \sigma \ran$ is stuck if there doesn't exist a configuration $\gamma$ such that $\lan s, \sigma \ran \rightarrow_1 \gamma$ (terminal configurations are never stuck)
+	\enumend
+	\item SOS of IMP
+	\enumstart
+		\item $\frac{}{\lan \text{skip}, \underline{\sigma} \ran \rightarrow_1 \underline{\sigma}}$(SKIP$_{SOS}$)
+		\item $\frac{}{\lan \underline{x} := \underline{e}, \underline{\sigma} \ran \rightarrow_1 \underline{\sigma}[\underline{x} \mapsto \mathcal{A}\llb \underline{e} \rrb\underline{\sigma}]}$(ASS$_{SOS}$)
+		\item $\frac{\lan \underline{s}, \underline{\sigma} \ran \rightarrow_1 \underline{\sigma'}}{\lan \underline{s};\underline{s'}, \underline{\sigma} \ran \rightarrow_1 \lan \underline{s'}, \underline{\sigma'} \ran}$(SEQ1$_{SOS}$)
+		\item $\frac{\lan \underline{s}, \underline{\sigma} \ran \rightarrow_1 \lan \underline{s''}, \underline{\sigma'} \ran}{\lan \underline{s};\underline{s'}, \underline{\sigma} \ran \rightarrow_1 \lan \underline{s''};\underline{s'}, \underline{\sigma} \ran}$(SEQ2$_{SOS}$)
+		\item $\frac{}{\lan \text{if }\underline{b}\text{ then }\underline{s}\text{ else }\underline{s'}\text{ end}, \underline{\sigma} \ran \rightarrow_1 \lan \underline{s}, \underline{\sigma} \ran}$(IFT$^*_{SOS}$) *if $\mathcal{B} \llb \underline{b} \rrb \underline{\sigma} =$ tt
+		\item $\frac{}{\lan \text{if }\underline{b}\text{ then }\underline{s}\text{ else }\underline{s'}\text{ end}, \underline{\sigma} \ran \rightarrow_1 \lan \underline{s'}, \underline{\sigma} \ran}$(IFF$^*_{SOS}$) *if $\mathcal{B} \llb \underline{b} \rrb \underline{\sigma} =$ ff
+		\item $\frac{}{\lan\text{while } \underline{b} \text{ do }\underline{s} \text{ end}, \underline{\sigma}\ran \rightarrow_1 \lan \text{if }\underline{b} \text{ then }\underline{s};\text{ while }\underline{b} \text{ do } \underline{s}\text{ end else skip end}, \underline{\sigma}\ran}$(WHILE$_{SOS}$)
+		\item $k$-step-execution: $\gamma \rightarrow_1^k \gamma'$ means that there is an execution from $\gamma$ to $\gamma'$ in exactly $k \in \N$ steps
+		\enumstart
+			\item $\gamma \rightarrow_1^0 \gamma'$ iff $\gamma = \gamma'$
+			\item For $k > 0$, $\gamma \rightarrow_1^k \gamma'$ iff there exists $\gamma''$ such that $\gamma \rightarrow_1 \gamma''$ and $\gamma'' \rightarrow_1^{k-1} \gamma'$
+			\item $\gamma \rightarrow_1^* \gamma'$ means: $\exists k \in \N.\gamma \rightarrow_1^k \gamma'$
+		\enumend
+	\enumend
+	\item Derivation sequence
+	\enumstart
+		\item Non-empty, finite or infinite, sequence of configurations $\gamma_0, \gamma_1, \mathellipsis$
+		\item $\forall i. \gamma_i \rightarrow_1^1 \gamma{i+1}$
+		\item The last configuration in a finite sequence is a terminal or a stuck configuration
+		\item The length of a derivation sequence is the number of transitions
+	\enumend
+	\item The execution of a statement $s$ in state $\sigma$
+	\enumstart
+		\item terminates, iff there is a finite derivation sequence starting with $\lan s, \sigma\ran$
+		\item runs forever, iff there is an infinite derivation sequence starting with $\lan s, \sigma \ran$
+		\item terminates successfully iff $\exists \sigma'. \lan s, \sigma \ran \rightarrow_1^* \sigma'$
+	\enumend
+	\item Two statements $s_1$ and $s_2$ are semantically equivalent if for all states $\sigma$
+	\enumstart
+		\item for all stuck or terminal configurations $\gamma$, we have $\lan s_1, \sigma \ran \rightarrow_1^* \gamma$ iff $\lan s_2, \sigma \ran \rightarrow_1^* \gamma$ and
+		\item there is an infinite derivation sequence starting in $\lan s_1, \sigma \ran$ iff there is one starting in $\lan s_2, \sigma \ran$
+	\enumend
+	\item The small-step semantics of IMP is deterministic
+\enumend
