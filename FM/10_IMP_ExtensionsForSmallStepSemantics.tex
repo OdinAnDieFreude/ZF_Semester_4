@@ -1,0 +1,31 @@
+\section{IMP extensions for small-step semantics}
+\enumstart
+	\item Local variable declarations
+	\enumstart
+		\item When we have a local variable $x$ in $s$, we need to restore the initial value of $x$, once $s$ terminates
+		\item Stm = $\mathellipsis \ |$ 'restore' (Var, Val)
+		\item restore is used internally by the semantics but must not occur in source programs
+		\item $\frac{}{\lan \text{var }\underline{x} := \underline{e}\text{ in }\underline{s}\text{ end}, \underline{\sigma} \ran \rightarrow_1 \lan \underline{s}; \text{restore}(\underline{x}, \underline{\sigma}(\underline{x})), \underline{\sigma}[\underline{x} \mapsto \mathcal{A}\llb \underline{e} \rrb \underline{\sigma}] \ran}$(LOC$_{SOS}$)
+		\item $\frac{}{\lan\text{restore}(\underline{x},\underline{v}), \underline{\sigma}\ran \rightarrow_1 \underline{\sigma}[\underline{x} \mapsto \underline{v}]}$(RET$_{SOS}$)
+	\enumend
+	\item Abort
+	\enumstart
+		\item Stops the execution of the complete program
+		\item Modeled by ensuring that configurations $\lan \text{abort}, \sigma\ran$ are stuck
+		\item Different then "running forever" (= infinite derivation sequence)
+	\enumend
+	\item Non-determinism
+	\enumstart
+		\item Does not suppress looping
+		\item $\frac{}{\lan\underline{s}\square \underline{s'}, \underline{\sigma} \ran \rightarrow_1 \lan \underline{s}, \underline{\sigma} \ran}$(ND1$_{SOS}$)
+		\item $\frac{}{\lan \underline{s} \square \underline{s'}, \underline{\sigma} \ran \rightarrow_1 \lan \underline{s'}, \underline{\sigma} \ran}$(ND2$_{SOS}$)
+	\enumend
+	\item Parallelism
+	\enumstart
+		\item All interleavings can be modeled easily
+		\item $\frac{\lan \underline{s}, \underline{\sigma} \ran \rightarrow_1 \lan \underline{s''}, \underline{\sigma'} \ran}{\lan \underline{s} \text{ par }\underline{s'}, \underline{\sigma} \ran \rightarrow_1 \lan \underline{s''} \text{ par }\underline{s'}, \underline{\sigma'} \ran}$(PAR1$_{SOS}$)
+		\item $\frac{\lan \underline{s}, \underline{\sigma} \ran \rightarrow_1  \underline{\sigma'}}{\lan \underline{s} \text{ par }\underline{s'}, \underline{\sigma} \ran \rightarrow_1 \lan \underline{s'}, \underline{\sigma'} \ran}$(PAR2$_{SOS}$)
+		\item $\frac{\lan \underline{s'}, \underline{\sigma} \ran \rightarrow_1 \lan \underline{s''}, \underline{\sigma'} \ran}{\lan \underline{s} \text{ par }\underline{s'}, \underline{\sigma} \ran \rightarrow_1 \lan \underline{s} \text{ par }\underline{s''}, \underline{\sigma'} \ran}$(PAR3$_{SOS}$)
+		\item $\frac{\lan \underline{s'}, \underline{\sigma} \ran \rightarrow_1  \underline{\sigma'}}{\lan \underline{s} \text{ par }\underline{s'}, \underline{\sigma} \ran \rightarrow_1 \lan \underline{s}, \underline{\sigma'} \ran}$(PAR4$_{SOS}$)
+	\enumend
+\enumend
