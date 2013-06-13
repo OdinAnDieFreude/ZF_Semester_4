@@ -18,15 +18,17 @@
 	\item Abort
 	\enumstart
 		\item Modeled by ensuring that there is no state $\sigma'$ such that $\lan \text{abort}, \sigma \ran \rightarrow \sigma'$
+		\item No distinction between aborting and running forever
 	\enumend
 	\item Non-determinism
 	\enumstart
+		\item Suppresses looping (when possible)
 		\item Natural semantics: $\frac{\lan \underline{s}, \underline{\sigma} \ran \rightarrow \underline{\sigma'}}{\lan \underline{s} \square \underline{s'}, \underline{\sigma} \ran \rightarrow \underline{\sigma'}}$(ND1$_{NS}$) $\ \ \ $ $\frac{\lan \underline{s'}, \underline{\sigma} \ran \rightarrow \underline{\sigma'}}{\lan \underline{s} \square \underline{s'}, \underline{\sigma} \ran \rightarrow \underline{\sigma'}}$(ND2$_{NS}$)
 	\enumend
 	\item Parallelism
 	\enumstart
 		\item For the statement $s$ par $s'$, both statements $s$ and $s'$ are executed, but execution can be interleaved
-		\item But: Interleaving cannot be done in natural semantics
+		\item But: Interleaving cannot be modeled in natural semantics
 	\enumend
 	\item Problems with natural semantics
 	\enumstart
