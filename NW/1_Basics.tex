@@ -1,0 +1,100 @@
+\section{Basics}
+\enumstart
+	\item Node: computer
+	\item Link: Physical medium that connects nodes
+	\item Network: Two or more nodes, connected by a link
+	\item Physical medium
+	\enumstart
+		\item Guided medium: signal propagates in solid media (copper, fiber, $\mathellipsis$)
+		\item Usnguided medium: signal propagates freely (radio, $\mathellipsis$)
+		\item Twisted pair (TP) - pairs of insulted copper wires
+		\item Fiber optic cable - glass fiber carrying light pulses
+	\enumend
+	\item Network topology
+	\enumstart
+		\item Point-to-point
+		\item Multiple access
+	\enumend
+	\item Switched network
+	\enumstart
+		\item Nodes outside the cloud communicate (terminals)
+		\item Nodes inside the cloud redirect the traffic (switches, routers)
+		\item Circuit switching
+		\enumstart
+			\item Dividing link bandwidth into pieces
+			\enumstart
+				\item Frequency division
+				\item Time division
+			\enumend
+			\item Dedicated resources (no sharing)
+			\item Guaranteed performancey
+			\item Call setup required
+		\enumend
+		\item Packet switching
+		\enumstart
+			\item Source breaks messages into smaller chunks (packets)
+			\item Store-and-forward at each switch
+		\enumend
+	\enumend
+	\item Routing - determines how to get a packet from source to destination
+	\item Network protocols - define ways to communicate on a network
+	\enumstart
+		\item Mesage format
+		\item Order of messages sent and received
+		\item Actions on message transmission and reception
+		\item How to respond to problems
+	\enumend
+	\item Layering
+	\enumstart
+		\item Explicit structure
+		\item Modularization
+		\item Data traverses entire protocol stack
+	\enumend
+	\item TCP/IP reference model
+	\enumstart
+		\item Application layer $\rightarrow$ Message
+		\item Transport layer $\rightarrow$ Segment
+		\item Network layer $\rightarrow$ Datagram
+		\item Link layer $\rightarrow$ Frame
+		\item Physical layer
+	\enumend
+	\item OSI reference model
+	\enumstart
+		\item Application layer
+		\item Presentation layer
+		\item Session layer
+		\item Transport layer
+		\item Network layer
+		\item Link layer
+		\item Physical layer
+	\enumend
+	\item Network performance
+	\enumstart
+		\item Bandwidth (Throughput)
+		\enumstart
+			\item Throughput often refers to measured performance
+			\item Throughput $= \frac{\text{Transfer size}}{\text{Transfer time}}$
+		\enumend
+		\item Latency (Delay)
+		\enumstart
+			\item Time for a message to traverse the network
+			\item Half the Round Trip Time (RTT)
+			\item Factors
+			\enumstart
+				\item Propagation delay
+				\item Time to transmit data
+				\item Queuing delays inside the network
+				\item Processing delays in routers and computers
+			\enumend
+		\enumend
+		\item Bandwidth-delay-product (what the sender can send before the reciever sees)
+		\item Transfer time = RTT + $\frac{\text{Transfer size}}{\text{Bandwidth}}$
+		\item Application requirement
+		\enumstart
+			\item Utility function (measures how useful each network resource is to an application)
+			\item Burstiness (required network bandwidth varies over time)
+			\item Jitter (variance in end-to-end latency)
+			\item Loss (packet loss rate, bit error rate $\rightarrow$ error-correction, retransmission)
+		\enumend
+	\enumend
+\enumend
