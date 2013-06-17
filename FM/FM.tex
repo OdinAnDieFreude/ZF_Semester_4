@@ -53,47 +53,6 @@
 \input{8_IMP_ExtensionsForBigStepSemantics.tex}
 \input{9_SmallStepSemantics.tex}
 \input{10_IMP_ExtensionsForSmallStepSemantics.tex}
+\input{11_AxiomaticSemantics.tex}
 
-\section{Axiomatic semantics}
-\enumstart
-	\item Formal semantics can be used to prove the correctness of a program
-	\enumstart
-		\item Partial correctness - if a program terminates, there is a certain relationship between the initial and final state
-		\item Total correctness - a program terminates, and there will be a certain relationship between the initial and final state
-		\item total correctness = partial correctness + termination
-	\enumend
-	\item We can prove properties in small-/big-step semantics, but it's too detailed $\rightarrow$ use axiomatic semantics
-	\item Hoare triples
-	\enumstart
-		\item $\{P\}s\{Q\}$ where $s$ is a statement and $P, Q$ are assertions (about the state)
-		\item $P$ is called the precondition of a triple $\{P\}s\{Q\}$
-		\item $Q$ is called the postcondition of a triple $\{P\}s\{Q\}$
-		\item Assertions are boolean expressions, with some additional features
-		\item $P,Q,s$ are meta-variables
-		\item If $P$ evaluates to true in an initial state $\sigma$, and if the execution of $s$ from $\sigma$ terminates in state $\sigma'$, then $Q$ will evaluate to true in $\sigma' \rightarrow$ describes partial correctness
-		\item It's possible to assign different meanings to the hoare triples (e.g. total correctness)
-	\enumend
-	\item Logical variables
-	\enumstart
-		\item They occur only in assertions
-		\item Used to save values in the initial state, so that they can be reffered to later
-	\enumend
-	\item Assertion language
-	\enumstart
-		\item Boolean expressions and logical variables
-		\item Use additional expressions when it is convenient (e.g. mathematical functions)
-		\item Substitution Lemma $\mathcal{B}\llb P[x \mapsto e] \rrb \sigma = \mathcal{B}\llb P \rrb \sigma[x \mapsto \mathcal{A} \llb e \rrb \sigma]$ holds
-	\enumend
-	\item Derivation system
-	\enumstart
-		\item $\vdash \{P\}s\{Q\}$ iff there exists a finite derivation tree ending in $\{P\}s\{Q\}$
-		\item $\frac{}{\{\underline{P}\}\text{skip}\{\underline{P}\}}$(SKIP$_{Ax}$)
-		\item $\frac{}{\{\underline{P}[\underline{x} \mapsto \underline{e}]\}\underline{x}:=\underline{e}\{\underline{P}\}}$(ASS$_{Ax}$)
-		\item $\frac{\{\underline{P}\}\underline{s}\{\underline{Q}\} \ \ \ \{\underline{Q}\}\underline{s'}\{\underline{R}\}}{\{\underline{P}\}\underline{s};\underline{s'}\{\underline{R}\}}$(SEQ$_{Ax}$)
-		\item $\frac{\{\underline{b} \land \underline{P}\}\underline{s}\{\underline{Q}\} \ \ \ \{\lnot\underline{b} \land \underline{P}\}\underline{s'}\{\underline{Q}\}}{\{\underline{P}\}\text{if }\underline{b}\text{ then }\underline{s}\text{ else }\underline{s'}\text{ end}\{\underline{Q}\}}$(IF$_{Ax}$)
-		\item $\frac{\{\underline{b} \land \underline{P}\}\underline{s}\{\underline{P}\}}{\{\underline{P}\}\text{while }\underline{b}\text{ do }\underline{s}\text{ end}\{\lnot\underline{b} \land \underline{P}\}}$(WH$_{Ax}$)
-		\item $P \vDash Q$ iff for all states $\sigma: \mathcal{B}\llb P\rrb \sigma =$ tt $\implies \mathcal{B}\llb Q\rrb \sigma =$ tt
-		\item $\frac{\{P'\}s\{Q'\}}{\{P\}s\{Q\}}$(CONS$_{Ax}^*$) *if $P \vDash P'$ and $Q' \vDash Q$
-	\enumend
-\enumend
 \end{document}
