@@ -1,0 +1,136 @@
+\section{Model checking}
+\enumstart
+	\item Enumerate all possible states of a system
+	\item Explicit model checkers - represent states explicitly through concrete values
+	\item Symbolic model checkers - represent states through (boolean) formulas
+	\\ \image{model_checking.png}
+	\item Model checking process
+	\enumstart
+		\item Medeling phase
+		\enumstart
+			\item Model the system using the description language of your model checker
+			\item Formalize the properties to be checked
+		\enumend
+		\item Running phase - run the model checker to check the validity of the property in the system model
+		\item Analysis phase
+		\enumstart
+			\item If property is satisfied $\rightarrow$ finished
+			\item If property is violated $\rightarrow$ analyze counterexample
+			\item If out of memory $\rightarrow$ reduce model and try again
+		\enumend
+		\item Modeling concurrent systems
+		\enumstart
+			\item As finite transition systems
+			\item Communicating sequential processes (agents)
+			\enumstart
+				\item Finite number of processes
+				\item Interleaved process execution
+			\enumend
+			\item Process communication via
+			\enumstart
+				\item Shared variables
+				\item Synchronous message passing
+				\item Asynchronous message passing
+			\enumend
+			\item Protocol meta language Promala
+			\enumstart
+				\item Input language of the spin model checker
+				\item Main objects are processes, chanels and variables
+				\item C-like syntax
+				\item Spin can execute (simulate) models
+			\enumend
+		\enumend
+	\enumend
+\enumend
+
+\subsection{Promela}
+\enumstart
+	\item Constant declaration
+	\enumstart
+		\item \#define N 5
+		\item mtype = $\{$ack, req$\}$;
+	\enumend
+	\item Structure declaration: typedef vector $\{$int x; int y$\}$;
+	\item Global channel declaration: chan buf = [2] of $\{$int$\}$;
+	\item Global variable declaration: byte counter;
+	\item Process declaration
+	\enumstart
+		\item Simple: proctype myProc(int p) $\{\mathellipsis\}$
+		\item General: active [N] proctype myProc($\mathellipsis$) provided(E) priority M $\{\mathellipsis\}$
+		\enumstart
+			\item active: start N instances of myProc in the initial state
+			\item provided: E is enabeling condition, evaluated in the initial state
+			\item priority: M indicates probability during random simulation (M $\ge$ 1)
+		\enumend
+		\item Init process is started in the initial state
+		\item Deterministic processes lead to extra check during model analysis: D\_proctype myProc $\mathellipsis$
+	\enumend
+	\item Types
+	\enumstart
+		\item Primitive types
+		\enumstart
+			\item bit/bool $\{0,1\}$
+			\item byte $\{0\mathellipsis255\}$
+			\item short $\{-2^{15}\mathellipsis2^{15}-1\}$
+			\item int $\{2^{31}\mathellipsis2^{31}-1\}$
+		\enumend
+		\item User-defined types
+		\enumstart
+			\item Arrays: int name[4]
+			\item Structures
+			\item Type of symbolic constants: mtype
+		\enumend
+		\item Chanel type: chan
+		\item Declaration
+		\enumstart
+			\item Variables
+			\enumstart
+				\item byte a, b = 5, c;
+				\item int d[3], e[4] = 3;
+				\item mtype msg = ack;
+				\item vector v;
+				\item Variables are initialized to zero-equivalent values
+			\enumend
+			\item Channels
+			\enumstart
+				\item chan c1 = [2] of $\{$mtype, bit, chan$\}$;
+				\item chan c2 = [0] of $\{$int$\}$;
+				\item chan c3;
+				\item c1 can store up to two messages that consist of triples
+				\item c2 models rendez-vouz communication (no buffer)
+				\item c3 is uninitialized (must be assigned an initialized buffer before useage
+			\enumend
+			\item Can be local or global
+		\enumend
+	\enumend
+	\item Expressions
+	\enumstart
+		\item Variables, constants and literals
+		\item Structure and array accesses
+		\item Unary and binary operations with operators $\{+,-,*,/,\%,>,>=,<,<=,==,!=,!,\&,||,\&\&,|,\tilde \,>>,<<,$\textasciicircum$,++,--\}$
+		\item Function applications $\{$len, empty, nempty, nfull, full, run, eval, enabled, pcvalue$\}$
+		\item Conditional expressions: (E1 $->$ E2 : E3)
+	\enumend
+	\item Statements
+	\enumstart
+		\item skip
+		\item timeout - executable if all other statements in the system are blocked
+		\item assert(E) - aborts if E evaluates to zero, otherwise skip
+		\item Assignment - x = E, a[n] = E
+		\item Sequential composition - s1;s2 is executable if s1 is executable
+		\item Expression statement - Executable if E evaluates to a value different than zero
+		\item Selection
+		\enumstart
+			\item if \\::b1 $->$ s1;\\::b2 $->$ s2;\\::b3 $->$ s3;\\::b4 $->$ s4;\\::else $->$ s5;\\fi
+			\item Can select non-deterministically
+		\enumend
+		\item atomic$\{s\}$ - executes $s$ atomically
+	\enumend
+	\item No procedures
+	\item Macros - inline fun($\mathellipsis$)$\{\mathellipsis\}$
+	\enumstart
+		\item No recursion
+		\item No return values
+		\item Globally defined
+	\enumend
+\enumend
