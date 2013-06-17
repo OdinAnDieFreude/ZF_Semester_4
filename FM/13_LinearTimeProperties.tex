@@ -1,0 +1,61 @@
+\section{Linear time properties}
+\enumstart
+	\item Many interesting properties relate several states
+	\item Finite transition system $(\Gamma, \sigma_I, \rightarrow)$
+	\enumstart
+		\item $\Gamma$: a finite set of configurations
+		\item $\sigma_I$: an initial configuration, $\sigma_I \in \Gamma$
+		\item $\rightarrow$: a transition relation, $\rightarrow \subseteq \Gamma \times \Gamma$
+		\item Fixed initial configuration: here, transition system models one program (not all programs of a language as before)
+		\item No terminal configurations (can be modelled by sink-state)
+		\item Number of states grows exponentially with the number of processes, variables
+		\item State space explosion can be limited
+		\enumstart
+			\item Only examine reachable states
+			\item Good modeling discards unimportant details
+			\item Explore certain paths first
+			\item Ignore certain interleavings
+			\item Clever encoding for checking LTL properties
+		\enumend
+	\enumend
+	\item Computations
+	\enumstart
+		\item $S^\omega$ is the set of infinite sequences of the set $S$
+		\item $s_{[i]}$ denotes the $i$-th element of the sequence $s \in S^\omega$
+		\item $\gamma \in \Gamma^\omega$ is a computation of a transition system if
+		\enumstart
+			\item $\gamma_{[0]} = \sigma_I$
+			\item $\forall i \ge 0.\gamma_{[i]} \rightarrow \gamma_{[i+1]}$
+			\item if $\gamma = \sigma_0, \sigma_1, \sigma_2,\mathellipsis$ then $\gamma_{[i]} = \sigma_i$
+		\enumend
+		\item $\mathcal{C}(TS)$ is the set of all computations of a transition system TS
+	\enumend
+	\item Linear time properties
+	\enumstart
+		\item Can be used to specify the permitted computations of a transition systems
+		\item A linear time property $P$ over $\Gamma$ is a subset of $\Gamma^\omega$
+		\item TS satisfies LT-property P: TS $\vDash P$ iff $\mathcal{C}(TS) \subseteq P$
+	\enumend
+	\item Atomic propositions are propositions that do not contain logical connectives (e.g. $\{$open, closed$\}$)
+	\enumstart
+		\item AP is the set of atomic propositions
+		\item Labeling function $L: \Gamma \rightarrow \mathcal{P}(AP)$
+		\item We call $L(\sigma)$ an abstract state
+	\enumend
+	\item Traces
+	\enumstart
+		\item A trace is an abstraction of a computation
+		\item $t \in P(AP)^\omega$ is a trace of a transition system TS if $t = L(\gamma_{[0]})L(\gamma_{[1]})\mathellipsis$ and $\gamma$ is a computation of TS
+		\item $\mathcal{T}$(TS) is the set of all traces of a transition system TS
+		\item LT-properties are typically defined over infinite sequences of abstract states
+	\enumend
+	\item An LT-property is a safety property if
+	\enumstart
+		\item $\forall t \in \mathcal{P}(AP)^\omega$. if $t \notin P$ then there is a finite prefix $\hat{t}$ of $t$ such that for every infinite sequence $t'$ with prefix $\hat{t}$, $t' \notin P$ (the property is violated in finite time and cannot be repaired)
+	\enumend
+	\item An LT-property is a liveness property if
+	\enumstart
+		\item every finite sequence $\hat{t} \in \mathcal{P}(AP)^*$ is a prefix of an infinite sequence $t \in P$
+		\item which means that the property can always be repaired
+	\enumend
+\enumend

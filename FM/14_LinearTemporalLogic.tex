@@ -1,0 +1,28 @@
+\section{Linear temporal logic}
+\enumstart
+	\item Allows us to formalize LT-properties of traces in a convenient and succinct way
+	\item Basic operators
+	\enumstart
+		\item Syntax: $\phi = p | \lnot \phi | \phi \land \phi | \phi \cup \phi | \fullmoon \phi$ where $p \in AP$ is a proposition
+		\item $t \vDash \phi$ expresses that trace $t \in \mathcal{P}(AP)^\omega$ satisfies LTL formula $\phi$
+		\item $t \vDash p$ iff $p \in t_{[0]}$
+		\item $t \vDash \lnot \phi$ iff not $t \vDash \phi$
+		\item $t \vDash \phi \land \psi$ iff $t \vDash \phi$ and $t \vDash \psi$
+		\item $t \vDash \phi \cup \psi$ iff there is a $k \ge 0$ with $t_{[\ge k]} \vDash \psi$ and $\forall 0 \le j < k: t_{[\ge j]} \vDash \phi$ (until-operator)
+		\item $t \vDash \fullmoon\phi$ iff $t_{[\ge 1]} \vDash \phi$ (next-operator)
+	\enumend
+	\item Derived operators
+	\enumstart
+		\item $true, false, y, \lor, \Rightarrow, \Leftrightarrow$ defined as usual
+		\item $\lozenge \phi \equiv (true \cup \phi)$ (eventueally-operator)
+		\item $\square \phi \equiv \lnot \lozenge \lnot \phi$ (always-operator)
+	\enumend
+	\item Usefull specification patterns
+	\enumstart
+		\item Strong invariant $\square \psi$ (always true)
+		\item Monotone invariant $\square (\psi \Rightarrow \square\psi)$ (onece true, always true)
+		\item Establishing an invariant $\lozenge \square \psi$ (eventually $\psi$ will always hold)
+		\item Responsiveness $\square(\psi \Rightarrow \lozenge \phi)$ (every time $\psi$ holds, $\phi$ will eventually hold)
+		\item Fairness $\square \lozenge \psi$ ($\psi$ holds infinitely often)
+	\enumend
+\enumend
