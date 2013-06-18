@@ -1,0 +1,151 @@
+\section{Socket programming}
+
+\subsection{Basic socket concepts}
+\enumstart
+	\item Socket: application-created interface for sending/receiving messages to another application process
+	\item Socket API: introduced in BSD4.1 UNIX
+	\item Two types of transport service
+	\enumstart
+		\item Unreliable datagram
+		\item Reliable, byte-stream oriented
+	\enumend
+	\item TCP socket
+	\enumstart
+		\item Server must create socket and wait for clients to connect
+		\item Client must create client-local socket and specify receiver address and port
+	\enumend
+	\item UDP socket
+	\enumstart
+		\item sender explicitly attaches IP address and port of destination
+	\enumend
+\enumend
+
+\subsection{Java socket programming}
+\enumstart
+	\item TCP Client
+	\enumstart
+		\item Create input stream: BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
+		\item Create client-socket: Socket clientSocket = new Socket("favServer",6789);
+		\item Create output stream attached to socket: DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
+		\item Create input stream attached to socket: BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+		\item Send line to server: outToServer.writeBytes(sentence + '\textbackslash n');
+		\item Read line from server: modifiedSentence = inFromServer.readLine();
+	\enumend
+	\item TCP Server
+	\enumstart
+		\item Create welcoming socket: ServerSocket welcomeSocket = new ServerSocket(6789);
+		\item Wait for contact on socket: Socket connectionSocket = welcomeSocket.accept();
+		\item Create inputStream attached to socket: BufferedReader inFromClient = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
+		\item Create outputStream attached to socket: DataOutputStream outToClient = new DataOutputStream(connectionSocket.getOutputStream());
+		\item Read line from socket: clientSentence = inFromClient.readLine();
+		\item Write out line to socket: outToClient.writeBytes(modifiedSentence);
+	\enumend
+	\item Problem: simplest implementation allows only one connection at once
+	\enumstart
+		\item Use threads
+	\enumend
+	\item UDP Client
+	\enumstart
+		\item Create input stream: BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
+		\item Create client socket: DatagramSocket clientSocket = new DatagramSocket();
+		\item Translate host name to IP address using DNS: InetAddress IPAddress = InetAddress.getByName("favServer");
+		\item Create datagram: DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, 9876);
+		\item Send datagram to server: clientSocket.send(sendPacket);
+		\item Read datagram from server: clientSocket.receive(receivePacket);
+	\enumend
+	\item UDP Server
+	\enumstart
+		\item Create datagram socket: DatagramSocket serverSocket = new DatagramSocket(9876);
+		\item Create space for received datagram: DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
+		\item Receive datagram: serverSocket.receive(receivePacket);
+		\item Get IP address of server: InetAddress IPAddress = receivePacket.getAddress();
+		\item Get port of server: int port = receivePacket.getPort();
+		\item Create datagram to send to client: DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, port);
+		\item Write out datagram to socket: serverSocket.send(sendPacket);
+	\enumend
+\enumend
+
+\subsection{C socket programming}
+\enumstart
+
+	\item Client
+	\enumstart
+		\item Create socket: int s = socket(AF\_INET, SOCK\_STREAM, 0);
+		\enumstart
+			\item s: socket descriptor
+			\item AF\_INET: Address family or domain (here IPv4)
+			\item SOCK\_STREAM: service type (SOCK\_STREAM or SOCK\_DGRAM)
+			\item 0: Protocol withing a service type (0 $\Rightarrow$ OS choses IPPROTO\_TCP)
+		\enumend
+		\item Create a sockaddr\_in struct
+		\enumstart
+			\item struct sockaddr\_in \{\\short sin\_family;\\u\_short sin\_port;\\struct in\_addr sin\_addr;\\char sin\_zero[8];\\ \}
+			\item struct sockaddr\_in sa;
+			\item sa.sin\_family = PF\_INET;
+			\item sa.sin\_port = htons(0);
+			\item sa.sin\_addr = htonl(INADDR\_ANY);
+		\enumend
+		\item Bind socket: bind(s, (struct sockaddr *)\&sa, sizeof(sa));
+		\enumstart
+			\item Return value $<$ 0 \arrow error
+		\enumend
+		\item Resolve a host name: h = gethostbyname();
+		\enumstart
+			\item struct hostent *h;
+			\item IP address: h$->$h\_length
+		\enumend
+		\item Connect
+		\enumstart
+			\item struct sockaddr\_in sa;
+			\item sa.sin\_port = htons(port);
+			\item sa.sin\_addr = *(struct sockaddr *)h$->$h\_addr;
+			\item connect(s, (struct sockaddr *)\&sa, sizeof(sa));
+			\enumstart
+				\item Return value $<$ 0 \arrow error
+			\enumend
+		\enumend
+		\item Send
+		\enumstart
+			\item ssize\_t send(int s, const void *buf, size\_t len, int flags);
+			\item send with no flags equivalent to write(s, buf, len);
+			\item ssize\_t sentto(int s, const void *buf, size\_t len, int flags, const struct sockaddr *to, socklen\_t tolen);
+		\enumend
+		\item Receive
+		\enumstart
+			\item ssize\_t recv(int s, void *buf, size\_t len, int flags);
+			\item recv with no flags equivalent to read(s, buf, len);
+			\item ssize\_t recvfrom(int s, void *buf, size\_t len, int flags, struct sockaddr *from, socklen\_t *fromlen);
+		\enumend
+	\enumend
+	\item Server
+	\enumstart
+		\item Listen
+		\enumstart
+			\item int listen(int sockfd, int backlog);
+			\item sockfd: bound, but not connected socket
+			\item Returns immediately a listener for new connections
+			\item backlog: number of outstanding connection attempts
+		\enumend
+		\item Accept
+		\enumstart
+			\item int accept(int sockfd, struct sockaddr *addr, socklen\_t *addrlen);
+			\item sockfd: listening socket
+			\item Waits for a connection and accepts it
+			\item Returns a new socket for the connection
+		\enumend
+	\enumend
+	\item Asynchronous programming
+	\enumstart
+		\item Alternative to threads: event driven
+		\item Only one thread: manage each activity explicitly
+		\item Use fcntl() to manipulate file descriptors to act non-blocking
+		\item Use select(): returns when anything happens on any set file descriptor, or the timeout occurs
+		\item Operations to register callbacks for
+		\enumstart
+			\item File desciptors
+			\item Timeout events
+		\enumend
+		\item Map from socket descripter to callback
+		\item Priority queue of timer events
+	\enumend
+\enumend
