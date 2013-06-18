@@ -24,71 +24,67 @@
 			\item Bandwidth requirements
 		\enumend
 	\enumend
-	\item Transmission control protocol (TCP)
+\enumend
+
+\subsection{Transmission control protocol (TCP)}
+\enumstart
+	\item Connection oriented \arrow setup required between client and server
+	\item Reliable data transfer
+	\item Flow control
+	\item Congestion control \arrow throttle sender when network overloaded
+	 \item No timing and minimum bandwidth guarantee
+\enumend
+
+\subsection{User datagram protocol (UDP)}
+\enumstart
+	\item Unreliable data transfer
+	\item No connection setup, reliability, flow control, congestion control, timing or bandwidth guarantee
+\enumend
+
+\subsection{Hypertext transfer protocol (HTTP)}
+\enumstart
+	\item step-by-step
 	\enumstart
-		\item Connection oriented \arrow setup required between client and server
-		\item Reliable data transfer
-		\item Flow control
-		\item Congestion control \arrow throttle sender when network overloaded
-		 \item No timing and minimum bandwidth guarantee
+		\item Clients indicate TCP connection (typically on port 80)
+		\item Server accepts TCP connection
+		\item HTTP messages exchanged between browser and webserver
+		\item TCP connection is closed
 	\enumend
-	\item User datagram protocol (UDP)
+	\item HTTP/1.0
 	\enumstart
-		\item Unreliable data transfer
-		\item No connection setup, reliability, flow control, congestion control, timing or bandwidth guarantee
+		\item Non-persistent
+		\item New TCP connection for each file to transmit \arrow slow
 	\enumend
-	\item Hypertext transfer protocol (HTTP)
+	\item HTTP/1.1
 	\enumstart
-		\item step-by-step
-		\enumstart
-			\item Clients indicate TCP connection (typically on port 80)
-			\item Server accepts TCP connection
-			\item HTTP messages exchanged between browser and webserver
-			\item TCP connection is closed
-		\enumend
-		\item HTTP/1.0
-		\enumstart
-			\item Non-persistent
-			\item New TCP connection for each file to transmit \arrow slow
-		\enumend
-		\item HTTP/1.1
-		\enumstart
-			\item Persistent
-			\item Multiple files in one TCP connection \arrow faster
-		\enumend
-		\item HTTP request
-		\enumstart
-			\item Encoded in ASCII
-			\item Carriage return and line feed indicate end of message
-			\\ \customImage{http_request.png}{0.25}
-		\enumend
-		\item HTTP request methods
-		\enumstart
-			\item GET
-			\item POST
-		\enumend
-		\item HTTP response
-		\enumstart
-			\item Encoded in ASCII
-			\\ \customImage{http_response.png}{0.3}
-		\enumend
-		\item HTTP response status codes
-		\enumstart
-			\item 200 OK
-			\item 301 Moved permanently
-			\item 400 Bad request
-			\item 404 Not found
-			\item 505 HTTP version not supported
-		\enumend
+		\item Persistent
+		\item Multiple files in one TCP connection \arrow faster
 	\enumend
-	\item Telnet (Remote terminal access)
+	\item HTTP request
 	\enumstart
-		\item Typically on port 23
-		\item No security encryption
-		\item Superceded by SSH
-		\item Useful for debugging text-based protocols (HTTP, FTP, SMTP, POP, \ddd)
+		\item Encoded in ASCII
+		\item Carriage return and line feed indicate end of message
+		\\ \customImage{http_request.png}{0.25}
 	\enumend
-	\item Cookies in HTTP
+	\item HTTP request methods
+	\enumstart
+		\item GET
+		\item POST
+	\enumend
+	\item HTTP response
+	\enumstart
+		\item Encoded in ASCII
+		\\ \customImage{http_response.png}{0.3}
+	\enumend
+	\item HTTP response status codes
+	\enumstart
+		\item 200 OK
+		\item 301 Moved permanently
+		\item 400 Bad request
+		\item 404 Not found
+		\item 505 HTTP version not supported
+	\enumend
+	\item Cookies
 	\enumstart
 		\item Server sends cookie to client in response message
 		\item Client presents cookie in later request
@@ -99,71 +95,82 @@
 		\item The rest: page dependant
 	\enumend
 	\item Caching (websites are cached in various layers \arrow faster)
-	\item Domain name system (DNS)
+\enumend
+
+\subsection{Telnet (Remote terminal access)}
+\enumstart
+	\item Typically on port 23
+	\item No security encryption
+	\item Superceded by SSH
+	\item Useful for debugging text-based protocols (HTTP, FTP, SMTP, POP, \ddd)
+\enumend
+
+\subsection{Domain name system (DNS)}
+\enumstart
+	\item Maps domain names to IP-Addresses
+	\item Distributed database (hierarchical)
+	\item Application layer protocol
+	\item Types
 	\enumstart
-		\item Maps domain names to IP-Addresses
-		\item Distributed database (hierarchical)
-		\item Application layer protocol
+		\item Root name server (maps TLDs to their IP-addresses)
+		\item Authoritative name server (store IP-addresses and names of all nodes in it's zone)
+		\item Local name server (e.g. for a company)
+		\item DNS resolver (local to the application)
+	\enumend
+	\item Recursive search: ask DNS server that is responsible for the best suffix you know after an IP adress for a better suffix \arrow until domain name is found
+	\item Hierarchical search: ask your DNS server to find the domain name for you \arrow he does the same
+	\item DNS caching \arrow on all levels
+	\item Ressource records
+	\enumstart
+		\item Format: (name, ttl, class, type, value)
 		\item Types
 		\enumstart
-			\item Root name server (maps TLDs to their IP-addresses)
-			\item Authoritative name server (store IP-addresses and names of all nodes in it's zone)
-			\item Local name server (e.g. for a company)
-			\item DNS resolver (local to the application)
-		\enumend
-		\item Recursive search: ask DNS server that is responsible for the best suffix you know after an IP adress for a better suffix \arrow until domain name is found
-		\item Hierarchical search: ask your DNS server to find the domain name for you \arrow he does the same
-		\item DNS caching \arrow on all levels
-		\item Ressource records
-		\enumstart
-			\item Format: (name, ttl, class, type, value)
-			\item Types
-			\enumstart
-				\item A (name is hostname, value is IP address)
-				\item CNAME (name is alias name for some canonical name, value is canonical name)
-				\item NS (name is domain, value is IP address of authoritative name server for this domain)
-				\item MX (value is mail server assiciated with name)
-			\enumend
-		\enumend
-		\item DNS protocol messages
-		\enumstart
-			\item Typically on port 53
-			\item Query and reply messages, both with the same message format
-			\item Reply uses the same identification number as query
-			\\ \customImage{dns_message.png}{0.3}
-			\item Flags
-			\enumstart
-				\item Query or reply
-				\item Recursion desired
-				\item Recursion available
-				\item Reply is authoritative
-			\enumend
+			\item A (name is hostname, value is IP address)
+			\item CNAME (name is alias name for some canonical name, value is canonical name)
+			\item NS (name is domain, value is IP address of authoritative name server for this domain)
+			\item MX (value is mail server assiciated with name)
 		\enumend
 	\enumend
-	\item Domain name
+	\item DNS protocol messages
 	\enumstart
-		\item Top level domain (TLD)
+		\item Typically on port 53
+		\item Query and reply messages, both with the same message format
+		\item Reply uses the same identification number as query
+		\\ \customImage{dns_message.png}{0.3}
+		\item Flags
 		\enumstart
-			\item Two letters are always country-TLDs (e.g. .ch, .us, .uk, \ddd)
-			\item Three letters are special TLDs (e.g. .com, .org, .edu, .mil, \ddd)
-		\enumend
-		\item Subdomains
-		\enumstart
-			\item Any TLD or subdomain $x$, can have any subdomain $y.x$ \arrow tree structure
+			\item Query or reply
+			\item Recursion desired
+			\item Recursion available
+			\item Reply is authoritative
 		\enumend
 	\enumend
-	\item Simple mail transfer protocol (SMTP)
+\enumend
+
+\subsection{Domain name}
+\enumstart
+	\item Top level domain (TLD)
 	\enumstart
-		\item Typically TCP on port 25
-		\item Direct transfer from sending server to receiving server
-		\item 3 phases
-		\enumstart
-			\item Handshake
-			\item Transfer of messages
-			\item Closure
-		\enumend
-		\item 7-bit ASCII text based
-		\item Persistent connections
-		\item Carriage return - line feed - carriage return - line feed \arrow end of message
+		\item Two letters are always country-TLDs (e.g. .ch, .us, .uk, \ddd)
+		\item Three letters are special TLDs (e.g. .com, .org, .edu, .mil, \ddd)
 	\enumend
+	\item Subdomains
+	\enumstart
+		\item Any TLD or subdomain $x$, can have any subdomain $y.x$ \arrow tree structure
+	\enumend
+\enumend
+
+\subsection{Simple mail transfer protocol (SMTP)}
+\enumstart
+	\item Typically TCP on port 25
+	\item Direct transfer from sending server to receiving server
+	\item 3 phases
+	\enumstart
+		\item Handshake
+		\item Transfer of messages
+		\item Closure
+	\enumend
+	\item 7-bit ASCII text based
+	\item Persistent connections
+	\item Carriage return - line feed - carriage return - line feed \arrow end of message
 \enumend
