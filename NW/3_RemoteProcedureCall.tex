@@ -1,0 +1,65 @@
+\section{Remote procedure call (RPC)}
+\enumstart
+	\item Standard for distributed computing
+	\item Client can make procedure calls to a software running on another machine
+	\item Pointers cannot be passed as parameters \arrow opaque references are used instead
+	\item With opaque references, one can make queries to a datastructure on another machine
+	\item Data must be in the same format for different operating systems and machines
+	\enumstart
+		\item Byte order (e.g. little endian vs. big endian)
+		\item Data structures (e.g. trees need to be flattened)
+	\enumend
+	\item  Use an intermediate representation format (IRF) for data
+	\enumstart
+		\item Can be system dependent
+		\item Transforming to IRF (aka marshalling, aka serializing
+		\item Transforming from IRF (aka unmarshalling, aka deserializing)
+	\enumend
+	\item Interface definition language (IDL)
+	\enumstart
+		\item Independent on the programming language used
+		\item Define service by name, input parameters, output parameters, \ddd
+		\item An interface compiler generates stubs for servers and clients
+	\enumend
+	\item Binding (A server must be bound to an IP adress and port)
+	\enumstart
+		\item Can be done locally or distributed
+		\item Options for distributed bind
+		\enumstart
+			\item Register (a server can register service names and the corresponding port)
+			\item Withdraw (a server can annulatea service)
+			\item Lookup (a client can ask the binder for address and port of a given service)
+		\enumend
+		\item There must be a way to locate the binder
+		\item Clients usually cache binding informations
+	\enumend
+	\item Call semantics
+	\enumstart
+		\item Client makes RPC to a service, after a timeout, the server tries again or terminates
+		\item Maybe: the procedure may have been executed or not (request or response message lost)
+		\item At least once: the procedure may have been executed more than once (in some cases acceptable)
+		\enumstart
+			\item Messages need to be identifiable
+			\item Messages should not be lost (resent until acknowledgement) \arrow persistence at sender
+		\enumend
+		\item At most once: the procedure may have been executed once or not at all
+		\enumstart
+			\item Messages need to be identifiable
+			\item Needs duplicate detection
+			\item Messages should not be delivered twice (resent until acknowledgement) \arrow persistence at receiver
+		\enumend
+	\enumend
+	\item Advantages
+	\enumstart
+		\item A simple and efficient way to build distributed applications
+		\item Fits well with the most typical programming languages
+		\item Allows modular and hierarchical design
+	\enumend
+	\item Disadvantages
+	\enumstart
+		\item Not a standard \arrow different implementations of RPC
+		\item Does not solve many problems, distribution creates
+		\item Only client-server communication
+	\enumend
+	\item Limitations can be resolved by making the RPC transactional \arrow transaction manager
+\enumend
