@@ -1,0 +1,113 @@
+\section{Transport layer}
+\enumstart
+	\item Port (in combination with IP address) determines the correct socket
+	\item UDP
+	\enumstart
+		\item unreliable, unordered, unicast or multicast delivery
+		\item IP address and port determine, which socket the packet goes to
+		\item bind operation will fail if it violates uniqueness
+		\item Demultiplexing based on destination IP and destination port
+		\item Connectionless
+		\item UDP header
+		\enumstart
+			\item Source port (16 bit)
+			\item Destination port (16 bit)
+			\item Length (16 bit)
+			\item Checksum (16 bit)
+		\enumend
+		\item Loss tolerant
+		\item Protocols that use UDP
+		\enumstart
+			\item DNS (domain name service)
+			\item SNMP (simple network management protocol)
+		\enumend
+		\item UDP checksum
+		\enumstart
+			\item Treat content as 16-bit integers
+			\item Sum all 16-bit integers
+			\item Interv all bits
+			\item Check checksum: Add all 16-bit integers and checksum \arrow 11\ddd 1 = correct
+		\enumend
+	\enumend
+	\item TCP
+	\enumstart
+		\item Reliable, in-order, unicast delivery
+		\item Congestion control
+		\item Flow control
+		\item Connection setup
+		\item Server can have several socket attached to the same interface
+		\item For established connections: demultiplexing based on destination IP, destination port, source IP and source port
+		\item For new connections: demultiplexing based on destination IP, destination port and SYN flag (indicates connection request)
+		\item Full duplex (bidirectional data on one connection)
+		\item TCP header
+		\enumstart
+			\item Source port (16 bit)
+			\item Destination port (16 bit)
+			\item Sequence number (32 bit)
+			\item Acknowledgement number (32 bit)
+			\item Head len
+			\item Flags (UAPRSF)
+			\enumstart
+				\item U: urgent
+				\item A: ACK
+				\item P: push data
+				\item R: error
+				\item S: SYN
+				\item F: FIN
+			\enumend
+			\item Receiver window size (16 bit)
+			\item Checksum (16 bit)
+			\item Ptr urgent data (16 bit)
+			\item Options
+		\enumend
+		\item Handling of out-of-order segments is up to implementation
+		\item Three-way handshake (setting up a connection)
+		\enumstart
+			\item Client: SYN + (sequence number $x$)
+			\item Server: SYN + ACK + (acknowledgement number $x+1$) + (sequence number $y$)
+			\item Client: ACK + (acknowledgement number $y+1$)
+		\enumend
+		\item End a connection
+		\enumstart
+			\item Client: FIN
+			\item Server: ACK
+			\item Server: FIN
+			\item Client: ACK
+		\enumend
+		\item Also timeouts for closing connections
+	\enumend
+	\item Congestion control
+	\enumstart
+		\item End-end congestion control (used in TCP)
+		 \enumstart
+		 	\item Congestion inferred from end-system observed loss, delay
+		 \enumend
+		\item Network-assisted congestion control
+		\enumstart
+			\item Routers provide feedback (single bit indicating congestion)
+		\enumend
+		\item Congestion detection
+		\enumstart
+			\item Long delays
+			\enumstart
+				\item Queues fill up in routers
+				\item TCP sees estimated RTT going up
+			\enumend
+			\item Packet losses
+			\enumstart
+				\item Routers drop packets
+				\item TCP sees timeouts and duplicate ACKs
+			\enumend
+		\enumend
+		\item Congestion avoidance
+		\enumstart
+			\item Probe for usable bandwidth
+			\enumstart
+				\item Increase rate until loss
+				\item Loss: decrease rate the begin probing again
+				\item Increase linearly
+				\item Decrease to halve the congestion window, when loss is detected
+			\enumend
+		\enumend
+	\enumend
+\enumend
