@@ -1,0 +1,30 @@
+\section{Reliable data transfer}
+\enumstart
+	\item Create a reliable data transfer over a probably unreliable channel
+	\item Protocol implements reliability
+	\item Reliable data transfer over a reliable channel is trivial
+	\item Reliable data transfer over a channel with bit errors and packet loss
+	\enumstart
+		\item Sender
+		\enumstart
+			\item Sends packet to receiver with sequence number and checksum
+			\item If no valid ACK received in reasonable amount of time: retransmit identical packet
+			\item If ACK received: check checksum (if OK then finished else do nothing (wait for timeout))
+		\enumend
+		\item Receiver
+		\enumstart
+			\item Receives packet and checks checksum (if OK then ACK else do nothing)
+			\item If a packet is retransmitted: ACK again
+		\enumend
+		\item Optimizations
+		\enumstart
+			\item NAKs
+			\item Send several packets before ACK (generalize alternating bit to "window")
+			\item Pipelined protocols (sliding window)
+			\enumstart
+				\item Go-back-N (multiple-bit sequence number, window of up to N consecutive unacked packets allowed, receiver ACKs all messages at once)
+				\item Selective repeat (receiver individually ACKs all packets, window of N consecutive sequence numbers)
+			\enumend
+		\enumend
+	\enumend
+\enumend
