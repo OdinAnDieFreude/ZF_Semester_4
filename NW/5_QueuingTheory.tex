@@ -1,0 +1,122 @@
+\section{Queuing theory}
+\enumstart
+	\item Arrival distribution (A)
+	\item Service distribution (S)
+	\item Number of Servers (m)
+	\item Buffer capacity (C)
+	\item Population size (P)
+	\item Service discipline (SD)
+\enumend
+
+\subsection{Arrival rate distribution}
+\enumstart
+	\item Interarrival time ($\tau$)
+	\enumstart
+		\item Time between Arrival-moments of packets
+		\item Sequence of independent and identically distributet random variables
+		\item Common assumption is a poisson distribution
+	\enumend
+	\item Mean interarrival time = $E[\tau]$
+	\item Mean arrival rate $\lambda = \frac{1}{E[\tau]}$
+	\item Assumption
+	\enumstart
+		\item Queuing systems assume a constant arrival rate
+		\item Assumptions do not hold in real systems
+		\enumstart
+			\item Burstiness / batch jobs
+			\item Flash crowds (popularity)
+			\item Social effects (time of day variant load)
+		\enumend
+	\enumend
+\enumend
+
+\subsection{Service rate distribution}
+\enumstart
+	\item Time it takes to process a job = $s$
+	\item For one server: mean service rate $\mu = \frac{1}{E[s]}$
+	\item For $m$ server: mean service rate is $m\mu$
+	\item Mean service rate is sometimes confused with throughput
+	\item Throughput is the amount of jobs that is processed in a time interval
+	\item Mean service rate is the amount of jobs that can be processed in a time interval
+\enumend
+
+\subsection{Offered load}
+\enumstart
+	\item Offered load $\rho = \frac{\lambda}{m\mu} = \frac{\lambda E[s]}{m}$
+	\item The system is stable if $\rho < 1 \Rightarrow \lambda < m\mu$
+	\item $\rho = 1$ does not lead to a stable system (randomness)
+\enumend
+
+\subsection{Little's law}
+\enumstart
+	\item The number of jobs in the system: $n = n_s + n_q$, where
+	\enumstart
+		\item The number of jobs in the queue: $n_q$
+		\item The number of jobs in service: $n_s$
+	\enumend
+	\item The time in the system: $w = w_q + s$, where
+	\enumstart
+		\item The time waiting in the queue: $w_q$
+		\item The time in service: $s$
+	\enumend
+	\item These are random variables
+	\item Little's law (stable system)
+	\enumstart
+		\item For the whole system: $E[n] = \lambda E[w]$
+		\item For the queue: $E[n_q] = \lambda E[w_q]$
+		\item $E[n] = E[n_q] + E[n_s]$
+		\item $E[w] = E[w_q] + E[s] = E[w_q] + \frac{1}{\mu}$
+	\enumend
+	\item $E[n_s] = \frac{\lambda}{\mu} = \lambda E[s]$
+	\item For a queuing system with $m$ server: $E[n_s] = m \rho$
+\enumend
+
+\subsection{Operational laws}
+\enumstart
+	\item Are relationships that apply to certain measurable parameters in a computer system
+	\item Independent of the distribution of arrival times or service rates
+	\item Parameters are observed for a finite time interval $T_i$
+	\enumstart
+		\item Number of arrivals $A_i$ (jobs arriving during $T_i$)
+		\item Number of completions $C_i$ (jobs completed during $T_i$)
+		\item Busy time $B_i$
+		\item $A_i = C_i$
+	\enumend
+	\item Derivations
+	\enumstart
+		\item Arrival rate: $\lambda_i = \frac{A_i}{T_i}$
+		\item Throughput: $X_i = \frac{C_i}{T_i}$
+		\item Utilization: $U_i = \frac{B_i}{T_i}$
+		\item Mean service time: $S_i = \frac{B_i}{C_i}$
+	\enumend
+	\item Utilization law: $U_i = \frac{B_i}{T_i} = \frac{C_i}{T_i} \frac{B_i}{C_i} = X_i S_i$
+	\item Forced flow law
+	\enumstart
+		\item Number of completed jobs: $C_0$
+		\item Each job makes $V_i$ requests to the $i_{th}$ device, then $C_i = C_0V_i$
+		\item $X_i = \frac{C_i}{T_i} = \frac{C_i}{C_0} \frac{C_0}{T_i} = V_iX$
+	\enumend
+	\item Bottleneck
+	\enumstart
+		\item Utilization for device $i$: $U_i = X_iS_i = V_iXS_i$
+		\item Demand for the device: $D_i = V_iS_i$ \arrow $U_i = XD_i$
+		\item The device with the highest demand is the bottleneck device
+	\enumend
+	\item Little's law
+	\enumstart
+		\item Assuming job flow balance
+		\item Arrival rate equals throughput for device $i$: $\lambda_i = X_i$
+		\item $w_i$ is the response time for device $i$
+		\item $n_i$ is the number of jobs in device $i$: $n_i = \lambda_iw_i = X_iw_i$
+	\enumend
+	\item Interactive response time law
+	\enumstart
+		\item Response time $w$
+		\item Total cycle time $w+Z$
+		\item Each user generates $\frac{T}{w+Z}$ request in time $T$
+		\item There are $N$ users
+		\item $X = \frac{\text{Jobs}}{\text{Time}} = \frac{N\frac{T}{w+Z}}{T} = \frac{N}{w+Z}$
+		\item $w = \frac{N}{X} - Z$
+	\enumend
+	\item Real systems are not ideal!
+\enumend
