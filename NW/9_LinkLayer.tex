@@ -1,0 +1,201 @@
+\section{Link layer}
+\enumstart
+	\item Connect two or more physically connected devices
+	\item Services
+	\enumstart
+		\item Encoding
+		\item Framing
+		\item Error detection
+		\item Flow control
+		\item Media access
+	\enumend
+\enumend
+
+\subsection{Encoding}
+\enumstart
+ 	\item Non-return to zero (NRZ) encoding
+ 	\\ \image{nrz_encoding.png}
+ 	\enumstart
+	 	\item Problem: long runs of zeros or ones
+	 	\enumstart
+	 		\item Baseline wander
+	 		\item No clock recovery
+ 		\enumend
+ 	\enumend
+ 	\item Non-return to zero inverted (NRZI)
+ 	\\ \image{nrzi_encoding.png}
+ 	\enumstart
+ 		\item Problem: long runs of zeros
+ 	\enumend
+ 	\item Manchester encoding
+ 	\\ \image{manchester_encoding.png}
+ 	\enumstart
+ 		\item Encode 1 as hi\arrow lo transition
+ 		\item Encode 0 as lo\arrow hi transition
+ 		\item No loss of sync
+ 		\item Problem: requires double the frequency (baud rate)
+ 	\enumend
+ 	\item 4B/5B encoding
+ 	\enumstart
+ 		\item Encode 4 bits as 5 bits \arrow no long runs of zeros or ones
+ 		\item More efficient than manchester encoding 80\% vs 50\%
+ 		\item Can use unused strings as control information
+ 	\enumend
+\enumend
+
+\subsection{Framing}
+\enumstart
+	\item How to tell where frames start and end
+	\item Point-to-point protocol (PPP)
+	\enumstart
+		\item Bidirectional unicast link (only two machines)
+		\item No sharing (no MAC, no explicit MAC addressing)
+		\item PPP data frame
+		\enumstart
+			\item Flag: delimiter (1 byte)
+			\item Address: does nothing (1 byte)
+			\item Control: does nothing (1 byte)
+			\item Protocol: upper layer protocol: (1-2 byte)
+			\item Payload (variable size)
+			\item Check: CRC checksum (2-4 byte)
+			\item Flag: delimiter (1 byte)
+		\enumend
+		\item Problem
+		\enumstart
+			\item What if there is a Flag-string in the payload? 
+			\item Byte stuffing: insert two flags in the payload for detection
+			\item Escaping: Insert escape sequence before special string
+		\enumend
+	\enumend
+	\item High-level data link control (HDLC)
+	\enumstart
+		\item Frames similar to PPP
+		\item Large family of similar protocols: SDLC, HDLC, LAP, LAPB, \ddd
+		\item 3 types of frames
+		\enumstart
+			\item Information (most frames)
+			\item Supervisory (flow and error control)
+			\item Unnumbered (all kind of misc. things)
+		\enumend
+		\item Sliding window protocol
+	\enumend
+	\item Synchronous optical framing
+	\enumstart
+		\item Dominant standard for long distance data transmission over optical networks
+		\item No bit or byte stuffing
+		\item Framing is clock based
+		\item Encoding NRZ but scrambled (XORed with 127 bit pattern)
+	\enumend
+\enumend
+
+\subsection{Error detection}
+\enumstart
+	\item Error detection and correction bits (redundancy)
+	\item Error detection is not 100\% reliable
+	\item Simple single-bit parity
+	\enumstart
+		\item Detects single bit errors
+		\item Number of 1-bits in message (includes parity) is always odd
+	\enumend
+	\item Two-dimensional bit parity
+	\\ \customImage{2d_bit_parity.png}{0.1}
+	\enumstart
+		\item Detect and correct single bit errors
+	\enumend
+	\item Cyclic redundancy check (CRC)
+\enumend
+
+\subsection{Media access control (MAC)}
+\enumstart
+	\item How can 3 or more machines share a single link
+	\item We need a decentralized protocol that coordinates nodes
+	\item Turn taking protocol
+	\enumstart
+		\item No master node
+		\item Token passing protocol
+		\item Protocols: Token ring, slotted ring, \ddd
+	\enumend
+	\item Random access protocols
+	\enumstart
+		\item Just send, when needed
+		\item Detect collisions
+		\item Recovery from collisions
+		\item Slotted aloha
+		\enumstart
+			\item Time divided into equal size slots
+			\item Collision \arrow retransmit packet in future slots with probability $p$, until successful
+			\item Channel efficiency is 37\%
+			\item Less performance then round robin
+			\item More flexible
+		\enumend
+		\item Pure (unslotted aloha)
+		\enumstart
+			\item Higher collision probability then slotted aloha
+			\item Less performance then slotted aloha
+		\enumend
+		\item Demand assigned multiple access (DAMA)
+		\enumstart
+			\item A sender reserves a future timeslot (no collission, unless no new node)
+			\item Reservation causes higher delays
+		\enumend
+		\item Carrier sense multiple access (CSMA)
+		\enumstart
+			\item Listen before transmit
+			\item If channel idle: transmit entire packet
+			\item If channel busy: defer transmission
+			\enumstart
+				\item Persistent CSMA: retry immediately with probability $p$ when channel becomes idle
+				\item Non-persistent CSMA: retry after random interval
+			\enumend
+		\enumend
+		\item CSMA/CD (collision detection)
+		\enumstart
+			\item Collision detected \arrow colliding transmission aborted \arrow reduce channel wastage
+		\enumend
+	\enumend
+\enumend
+
+\subsection{Ethernet}
+\enumstart
+	\item Ethernet frame structure
+	\enumstart
+		\item Preable: 7 bytes with pattern 10101010, 1 byte with pattern 10101011
+		\item Destination address: MAC address (6 byte)
+		\item Source address: MAC address (6 byte)
+		\item Type: higher layer protocol (2 bytes)
+		\item Payload
+		\item CRC: packet dropped if error is detected (4 bytes)
+	\enumend
+	\item CSMA/CD
+	\enumstart
+		\item Step-by-step
+		\enumstart
+			\item Adapter gets datagram from network layer and creates frame
+			\item If channel idle, transmit frame
+			\item If channel busy, wait until channel is idle, then transmit frame
+			\item If transmission is done without detecting another transmission: adapter is done
+			\item If another transmission at the same time is detected: abort and send jam signal
+			\item After aborting: exponential backoff
+		\enumend
+		\item Jam signal: make shure, other nodes know about collision
+		\item Utilization: much better than aloha
+	\enumend
+	\item 10Base2
+	\enumstart
+		\item 10: 10 Mbps
+		\item 2: under 200 meter maximal cable length
+		\item Thin coaxial cable
+		\item Bus topology
+	\enumend
+	\item Hubbed 10BaseT/100BaseT
+	\enumstart
+		\item 10 Mbps/100 Mbps (aka fast ethernet)
+		\item T: Twisted pair
+		\item Nodes connect to a hub \arrow star topology
+		\item Hubs are physical-layer repeaters
+	\enumend
+	\item Gigabit ethernet
+	\enumstart
+		\item Standard ethernet frame format (+ jumbo frames)
+	\enumend
+\enumend
