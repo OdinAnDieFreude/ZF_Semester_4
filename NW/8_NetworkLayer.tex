@@ -1,0 +1,189 @@
+\section{Network layer}
+\enumstart
+	\item Transport packet from sending to receiving host (NIC)
+	\item Function
+	\enumstart
+		\item Path determination (routing algorithm)
+		\item Switching (from routers input to routers output)
+		\item Call setup (some network architectures require router call setup along path)
+	\enumend
+	\item Service models
+	\enumstart
+		\item Virtual circuits
+		\enumstart
+			\item Path tries to behave like a physical circuit
+			\item Call setup
+			\item Packet carries VC identifier
+			\item Link, router ressources may be allocated to VC
+			\item Used in ATM, frame-relay, X.25 (not used in todays internet)
+		\enumend
+		\item Datagram
+		\enumstart
+			\item No call setup at network layer
+			\item Routers keep no state about end-to-end connections
+			\item Packets routet using destination host ID (different paths)
+		\enumend
+	\enumend
+	\item Routing
+	\enumstart
+		\item Series of local routing decisions (routing tables)
+		\item Routing table is gathered by using a routing protocol
+	\enumend
+	\item Internet protocol (IP)
+	\enumstart
+		\item Address: IP address
+		\item Datagram based
+		\enumstart
+			\item Best effort, unreliable
+			\item Simple routers
+			\item Packet fragmentation and reassembly
+		\enumend
+		\item Packet format
+		\enumstart
+			\item Version (4 bit)
+			\item Header length (4 bit)
+			\item Type of service (8 bit)
+			\item Length (16 bit)
+			\item Identifier (16 bit)
+			\item Flags (3 bit)
+			\item Offset (13 bit)
+			\item Time to live (8 bit)
+			\item Upper layer protocol (8 bit)
+			\item Header checksum (16 bit)
+			\item Source address (32 bit)
+			\item Destination address (32 bit)
+			\item Options (optional) (n $\times$ 32 bit, maximal 40 byte)
+		\enumend
+		\item Fragmentation and reassembly
+		\enumstart
+			\item Every network has a maximum transfer unit (MTU)
+			\item Fragments reassemble only at destination
+			\item Identifier, flag and offset are used to mark fragments and reassemble thems
+			\item Fragmentation happens in addition to fragmentation at the transport layer
+		\enumend
+		\item IP addresses
+		\enumstart
+			\item 32 bit, split into network part and host part
+			\item Class-full addressing (not used anymore, stupid)
+			\item Classless interdomain routing (CIDR) (netmask replaces class)
+			\item IP address is either manually configured or delivered by DHCP server
+			\item Dynamic host configuration protocol (DHCP)
+			\enumstart
+				\item Host: DHCP discover
+				\item Server: DHCP offer
+				\item Host: DHCP request
+				\item Server: DHCP ack
+			\enumend
+			\item How does an ISP get a block of IP addresses? Internet Corporation for Assigned Names and Numbers (ICANN)
+		\enumend
+	\enumend
+	\item Internet control message protocol (ICMP)
+	\enumstart
+		\item Used by hosts, routers, gateways to exchange network-level information
+		\item e.g. ping
+	\enumend
+	\item Network address translation
+	\enumstart
+		\item Translates the packets the router gets to the correct destination in the LAN
+		\item Keeps state of the connections to assign packets to hosts
+		\item Servers cannot initially connect to a host in the LAN (which host is meant?)
+		\item Controversial
+		\enumstart
+			\item Routers should only process up to Layer 3
+			\item Violates end-to-end argument (is like a man in the middle)
+			\item IPv6 should be used
+		\enumend
+	\enumend
+	\item Routing
+	\enumstart
+		\item Goal: determine good path through network
+		\item Routing protocol classes
+		\enumstart
+			\item Distance vector protocol
+			\enumstart
+				\item Nodes know only distance (cost) to neighbors
+				\item Exchange distance to all nodes with neighbors
+				\item Update local information based on received information
+			\enumend
+			\item Link state protocol
+			\enumstart
+				\item All nodes know network topology
+				\item Run algorithm to find shortest path (graph algorithm)
+			\enumend
+			\item Convergence: how fast until it stabilizes/reacts to changes?
+			\item Security: Can malicious routers game the network
+		\enumend
+		\item Distance vector protocols
+		\enumstart
+			\item Algorithm is iterative, asynchronous, distributed
+			\item $D^x(y) = min_z(D^x(y,z))$
+			\item $D^x(y,z) = c(x,z) + D^z(y)$
+			\item Local iteration caused by
+			\enumstart
+				\item Local link cost change
+				\item Neighbor sends a message saying that one of its least cost paths changed
+				\item Each node notifies neighbors, when local link cost changes
+			\enumend
+			\item Count to infinity problem (
+			\item Routing information protocol (RIP)
+			\enumstart
+				\item Distance metric: number of hops
+				\item Distance vectors: exchanged every 30 seconds via response messages (aka advertisements)
+				\item If no advertisement from neighbor after 180 seconds \arrow neighbor is dead
+				\item Poisoned reverse: if Z routes through Y to get to X, Z tells Y it's distance to X is infinite
+				\item Advertisements in UDP packets
+			\enumend
+			\item $[$Enhanced$]$ interior gateway routing protocol ($[$E$]$IGRP)
+			\enumstart
+				\item CISCO proprietary
+				\item Several cost metrics: delay, bandwidth, reliability, load \ddd
+				\item Uses TCP to exchange routing updates
+				\item Loop free routing via distributed updating algorithm (DUAL)
+			\enumend
+		\enumend
+		\item Link state routing protocols
+		\enumstart
+			\item Every node knows the topology and cost of every link
+			\enumstart
+				\item Achieved through flooding
+				\item Nodes send information on their links and neighbors to all neighbors
+				\item Nodes forward information about other nodes to their neighbors
+				\item ACK used to prevent message loss
+				\item Sequence number used to compare versions
+			\enumend
+			\item With this information: Calculate shortest path to every possible destination
+			\item Open shortest path first (OSPF)
+			\enumstart
+				\item Publicly available
+				\item Advertisement carries one entry per neighbors router
+				\item All OSPF messages authenticated
+				\item Multiple same cost paths allowed
+				\item Integrated uni- and multicast support
+			\enumend
+		\enumend
+	\enumend
+	\item IPv6
+	\enumstart
+		\item 128 bit addresses (32 bit was not enough anymore)
+		\item Anycast
+		\item No fragmentation allowed
+		\item Fixed length 40 byte header
+		\enumstart
+			\item Version (4 bit)
+			\item Traffic class (8 bit)
+			\item Flow label (20 bit)
+			\item Payload length (16 bit)
+			\item Next header (8 bit)
+			\item Hop limit (8 bit)
+			\item Source address (128 bit)
+			\item Destination address (128 bit)
+		\enumend
+		\item No checksum
+		\item ICMPv6
+		\item From IPv4 to IPv6
+		\enumstart
+			\item Dual Stack
+			\item Tunneling
+		\enumend
+	\enumend
+\enumend
