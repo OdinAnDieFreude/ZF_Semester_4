@@ -1,0 +1,103 @@
+\section{Introduction to operating systems}
+
+\subsection{Goals}
+\enumstart
+	\item Reliability: does it keep working? \arrow availability
+	\item Security: can it be compromised?
+	\item Portability: how easy can it be retargeted?
+	\item Performance: how fast/cheap/hungry is it?
+	\item Adoption: Will people use it?
+\enumend
+
+\subsection{Roles}
+\enumstart
+	\item Referee: Ressource manager
+	\enumstart
+		\item Sharing: multiplexing hardware among applications
+		\item Protection: ensure one application can't read/write/use anothers data/resources
+		\item Communication: protected application must communicate
+		\item Fairness: No starvation, every application makes progress
+		\item Efficiency: Best use of resources, minimize power consumption
+		\item Predictability: Guarantee real time performance
+	\enumend
+	\item Illusionist: Virtualization of resources
+	\enumstart
+		\item How?
+		\enumstart
+			\item Multiplexing: divide resources among clients
+			\item Emulation: create the illusion of a resource
+			\item Aggregation: join multiple resources together
+		\enumend
+		\item Why?
+		\enumstart
+			\item Sharing: enable multiple clients of a resource
+			\item Sandboxing: prevent a client from accessing others resources
+			\item Decoupling: avoid tying a client to a particular instance of a resource
+			\item Abstraction: make a resource easier to use
+		\enumend
+	\enumend
+	\item Glue
+	\enumstart
+		\item Provide high-level abstractions
+		\item Extend hardware with additional functionality
+		\item Hides detail
+	\enumend
+\enumend
+
+\subsection{Operating system structure}
+\enumstart
+	\item Architectural software modes
+	\enumstart
+		\item Privileged mode (kernel mode)
+		\enumstart
+			\item Protecting the OS from applications
+		\enumend
+		\item User mode
+	\enumend
+	\item General OS structure
+	\enumstart
+		\item Application uses system libraries
+		\item System libraries use system calls to communicate with the kernel
+		\item The kernel manages ressources, \ddd
+	\enumend
+	\item Kernel: software that runs in privileged mode
+	\enumstart
+		\item Large parts of Windows, Linux (monolithic kernel)
+		\item Small parts of L4, Barrelfish
+		\item Just a special computer program
+		\item Typically event-driven
+		\item Responds to multiple entry points
+		\enumstart
+			\item System calls
+			\item Hardware interrupts
+			\item Program traps
+		\enumend
+		\item May include internal threads
+	\enumend
+	\item System libraries
+	\enumstart
+		\item Convenience functions
+		\item System call wrappers
+	\enumend
+	\item Daemons: processes which are part of the OS
+	\item When is the kernel entered?
+	\enumstart
+		\item Startup
+		\item Exception: caused by user program
+		\item Interrupt: caused by something else
+		\item System calls
+	\enumend
+	\item System calls
+	\enumstart
+		\item RPC to the kernel
+		\item Kernel is a series of syscall event handlers
+		\item Mechanisms is hardware dependant
+	\enumend
+	\item When is the kernel exited
+	\enumstart
+		\item Creating a new process
+		\item Resuming a process after a trap
+		\item User-level upcall
+		\item Switching to another process
+	\enumend
+\enumend
