@@ -1,0 +1,90 @@
+\section{Packet switching}
+
+\subsection{Virtual circuit switching}
+\enumstart
+	\item Every frame has a virtual circuit identifier (VCI (local scope))
+	\item Every switch has a forwarding table (maps Incoming (VCI, port) \arrow Outgoing (VCI, port))
+	\item Asynchronous transfer mode (ATM)
+	\enumstart
+		\item Connection-oriented, packet-switched
+		\item Cell-layout
+		\enumstart
+			\item Generic flow control (GFC): 4 bits
+			\item Virtual path identifier (VPI): 8 bits
+			\item Virtual circuit identifier (VCI): 16 bits
+			\item Type: 3 bits
+			\item Cell-loss priority (CLP): 1 bit
+			\item Checksum over the header (HEC): 8 bits
+			\item Payload: 48 bytes
+		\enumend
+		\item Small, fixed cell size causes
+		\enumstart
+			\item Easier to build switches (fixed size) \arrow parallelism
+			\item Cell queues are shorter
+			\item Total switching time reduced
+			\item End-to-end latency and jitter reduced
+			\item Traffic delay is reduced
+		\enumend
+		\item Segmentation and reassembly
+		\item ATM vs IP was a huge religious war
+		\item Major uses today
+		\enumstart
+			\item Carrying IP traffic for VPNs
+			\item Link layer for DSL
+		\enumend
+	\enumend
+	\item Multiprotocol label switching (MPLS)
+\enumend
+
+\subsection{Datagram switching}
+\enumstart
+	\item Switch functionality
+	\enumstart
+		\item Receive frame on a port
+		\item Examine frame and make decision
+		\item Send frame on some number of other ports
+	\enumend
+	\item Based on MAC address
+	\item Forwarding table maps destination address to outgoing port
+	\item MAC addresses
+	\enumstart
+		\item 6 bytes
+		\item First 3 bytes are vendor specific
+		\item Last 3 bytes are a ID given by the vendor
+	\enumend
+	\item Lots of protocols
+	\enumstart
+		\item WiMax (802.16)
+		\item WiFi (802.11)
+		\item Ethernet (802.3)
+	\enumend
+	\item Address resolution protocol (ARP)
+	\enumstart
+		\item Used to determine the MAC address to an IP address
+		\item Each IP node has an ARP table (IP address \arrow (MAC address, TTL))
+		\item Time to live (TTL): determines, when the table entry becomes invalid
+	\enumend
+	\item Switches are selflearning
+	\item Problem loops \arrow loop prevention
+	\enumstart
+		\item Disable forwarding along certain links \arrow spanning tree
+		\item Redundant bridges can be activated in the event of a failure
+	\enumend
+	\item Virtual LANs (VLANs)
+	\enumstart
+		\item Isolation, security, management
+		\item Rewiring is too expensive
+		\item Switches assign each port and MAC address to a VLAN
+		\item Ethernet protocol header changed (802.1Q)
+		\enumstart
+			\item Destination address
+			\item Source address
+			\item 0x8100 (new)
+			\item Tag (new) \arrow contains VLAN ID
+			\item Length
+			\item Datay
+			\item Pad
+			\item Checksum
+		\enumend
+	\enumend
+\enumend
