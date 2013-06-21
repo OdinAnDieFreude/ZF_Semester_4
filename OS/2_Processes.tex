@@ -1,0 +1,102 @@
+\section{Processes}
+\enumstart
+	\item Process ingredients
+	\enumstart
+		\item Virtual processor
+		\enumstart
+			\item Address space
+			\item Registers
+			\item Intstruction pointer / program counter
+		\enumend
+		\item Program text (object code)
+		\item Program data (static, heap, stack)
+		\item OS stuff (open files, sockets, security rights, \ddd)
+	\enumend
+	\item Process lifecycle
+	\\ \image{process_lifecycle.png}
+	\item Multiplexing
+	\enumstart
+		\item Time division
+		\item Each process has a Process control block (in-kernel data structure)
+		\enumstart
+			\item Identifiers and/or names
+			\item Registers
+			\item Memory used, pointers to page table
+			\item Files and sockets open, etc
+		\enumend
+	\enumend
+	\item Process creation
+	\enumstart
+		\item Windows: Bool CreateProcess(\ddd) with a lot of parameters
+		\item Unix: fork() and exec() (simple commands)
+		\\ \image{process_lifecycle_unix.png}
+	\enumend
+	\item Kernel threads
+	\enumstart
+		\item Not all kernel implement threads (can be done in userspace)
+		\item Kernel can have a stack per process, per CPU or whatever
+	\enumend
+	\item System calls
+	\enumstart
+		\item Dependant on OS and hardware
+		\item SYSCALL execution (userspace part)
+		\enumstart
+			\item Marshall the arguments somewhere safe
+			\item Save registers
+			\item Load system call number
+			\item Execute SYSCALL instructino (or SYSENTER or INT 0x80, \ddd)
+		\enumend
+		\item SYSCALL execution (kernelspace part)
+		\enumstart
+			\item Kernel entered at fixed address \arrow privileged mode
+			\item Call the right function
+			\enumstart
+				\item Save user stack pointer and return address
+				\item Load stack pointer for this process' kernel stack
+				\item Create a C stack frame on the kernel stack
+				\item Lookup the SYSCALL number in a jump table
+				\item Call the function
+			\enumend
+			\item Return
+		\enumend
+		\item Returning
+		\enumstart
+			\item Load the userspace stack pointer
+			\item Adjust the return address
+			\item Execute SYSCALL return instruction
+			\item Alternatively can return to a different process (context switch)
+		\enumend
+	\enumend
+	\item User-space threads
+	\enumstart
+		\item Options
+		\enumstart
+			\item Implement threads within a process
+			\item Multiple kernel thread in a process
+			\item Some combination
+		\enumend
+		\item Many-to-one threads (User level threads)
+		\enumstart
+			\item Pure user-level threads (no kernel support required)
+			\item Allocate stacks for threads on the heap
+			\item Cheap to create and destroy
+			\item Fast to context switch
+			\item Can block entire process
+		\enumend
+		\item One-to-one user threads
+		\enumstart
+			\item Every user-thread has a kernel thread
+			\item Multiple processes sharing an address space
+			\item Process now refers to a group of threads
+			\item Multiple stacks
+			\item Slow to switch
+			\item Easier to schedule
+			\item Nicely handles blocking
+		\enumend
+		\item Many-to-many threads
+		\enumstart
+			\item Share user-level threads among kernel-threads
+			\item Only way to go for a multiprocessor
+		\enumend
+	\enumend
+\enumend
