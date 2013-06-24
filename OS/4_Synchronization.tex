@@ -1,0 +1,81 @@
+\section{Synchronization}
+
+\subsection{Basic synchronization constructs}
+\enumstart
+	\item Disabling interrupts \arrow other processors could interfere
+	\item Test-and-set (TAS): Atomically (read value of a memory location, set value to 1)
+	\item Compare-and-swap (CAS)
+	\item Load-link (LL), Store-conditional (SC)
+	\enumstart
+		\item LL: load from a location and mark as owned
+		\item SC
+		\enumstart
+			\item Store only if marked by this processor
+			\item Clear any marks set by other processors
+			\item Return whether it worked
+		\enumend
+	\enumend
+	\item Spinning (e.g. caused by TAS)
+	\enumstart
+		\item On a uniprocessor: pointless \arrow wait for an interrupt\ddd
+		\item On a multiprocessor: only works if lock-hold is running on another core
+	\enumend
+\enumend
+
+\subsection{Inter process communication (IPC) with shared memory}
+\enumstart
+	\item Constructs
+	\enumstart
+		\item Semaphores
+		\item Mutexes
+		\item Condition variables
+		\item Monitors
+	\enumend
+	\item Interaction between scheduling and synchronization
+	\item Priority inheritance
+	\enumstart
+		\item Process holding lock inherits priority of highest priority process, that is waiting for the lock
+		\item Releasing lock \arrow priority goes back to normal value
+		\item Alternative: Priority ceiling \arrow acquire priority of highest priority process that can ever hold lock
+	\enumend
+\enumend
+
+\subsection{IPC without shared memory}
+\enumstart
+	\item Asynchronous (buffered) IPC
+	\enumstart
+		\item Receiver blocks, waiting for a message
+		\item Sender does not block
+	\enumend
+	\item Synchronous (unbuffered) IPC
+	\enumstart
+		\item Sender blocks until receiver ready
+	\enumend
+	\item Duality of messages and memory: Any shared-memory system is equivalent to non-shared-memory system (claim by Lauer and Needham)
+\enumend
+
+\subsection{Advanced synchronization constructs}
+\enumstart
+	\item Pipes in UNIX
+	\enumstart
+		\item Unidirectional, buffered communication channel between 2 processes
+	\enumend
+	\item Messaging systems
+	\enumstart
+		\item Endpoints may or may not know each other
+		\item Messages to multiple destinations
+		\item Demultiplex multiple arriving messages
+		\item Can't wait forever \arrow timeout
+		\item Same as in networking
+	\enumend
+	\item Named pipes \arrow special file of type pipe(fifo) \arrow mkfifo
+	\item Local RPC (can be made very fast, normally isn't)
+	\item Unix signals \arrow asynchronous notification from the kernel
+	\enumstart
+		\item Some signals can be handled by the process
+		\item Can be used like userspace traps
+		\item If multiple signals of the same type are to be delivered \arrow only one is delivered
+		\item If multiple signals of different type are to be delivered \arrow they are delivered in any order
+		\item Specialized form of upcalls (kernel RPC to user process)
+	\enumend
+\enumend
