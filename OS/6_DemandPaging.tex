@@ -1,0 +1,90 @@
+\section{Demand paging}
+
+\subsection{Uses for virtual memory}
+\enumstart
+	\item Process isolation
+	\item IPC
+	\item Shared code segments
+	\item Program initialization
+	\item Efficient dynamic memory allocation
+	\item Cache management
+	\item Program debugging
+	\item Efficient I/O
+	\item Memory mapped files
+	\item Virtual memory
+	\item Checkpoint and restart
+	\item Persistent data structures
+	\item Process migration
+	\item Information flow control
+	\item Distributed shared memory
+	\item \ddd
+\enumend
+
+\subsection{Copy-on-write (COW)}
+\enumstart
+	\item vfork
+	\item Doesn't copy \arrow fast, dangerous (two writers to same heap)
+	\item Solution: only copy when something is going to get written
+	\item Step-by-step
+	\enumstart
+		\item Initially mark all pages as read only
+		\item Either process writes \arrow page fault
+		\enumstart
+			\item Fault handler allocates new frame
+			\item Makes copy of page in new frame
+			\item Maps each copy in respective processes writeable
+		\enumend
+	\enumend
+\enumend
+
+\subsection{Demand paging}
+\enumstart
+	\item Bring page into memory only when it is needed \arrow less memory, less I/O, faster response
+	\item Turn RAM into a cache for processes on disk
+	\item Lazy swapper
+	\enumstart
+		\item Never swaps a page into memory unless page will be needed
+		\item Swapper that deals with pages is a pager
+		\item Can do this with segments, but more complex
+	\enumend
+	\item Strict demand paging: only page in when referenced
+\enumend
+
+\subsection{Page replacement}
+\enumstart
+	\item What happens, if no free frames available? \arrow discard a victim frame
+	\item Try to pick a victim that won't be used in the future \arrow heuristics
+	\item Use modify-bit on PTE \arrow prefere clean pages
+	\item Goal: lowest page fault rate
+	\item Belady's anomaly: It's possible to have more page faults with more frames
+	\item Optimal: Replace page that will not be used for longest period of time
+	\item Strategies
+	\enumstart
+		\item FIFO page replacement
+		\item Least recently used (LRU) algorithm: use a stack to implement \arrow no bellady's anomaly
+		\item Second chance algorithm: replace (e.g. LRU) if already tried to replace once
+	\enumend
+\enumend
+
+\subsection{Frame allocation policies}
+\enumstart
+	\item Each process needs minimum number of pages
+	\item Schemes
+	\enumstart
+		\item Fixed allocation
+		\enumstart
+			\item Equal allocation: all processes get equal share
+			\item Proportional allocation: allocate according to the size of process
+		\enumend
+		\item Priority allocation
+		\enumstart
+			\item Proportional to priority rather than size
+		\enumend
+	\enumend
+	\item Global replacement: process selects a replacement frame from the set of all frames
+	\item Local replacement: process selects a replacement frame from it's own allocated frames
+	\item If a process does not have enough frames \arrow thrashing
+	\item Thrashing: thread is busy swapping pages in and out
+	\item Working set model: $\sum$WorkingSet$_i >$Total number of pages \arrow thrashing
+	\item Measure page-fault frequency: too high \arrow process gains frames, too low \arrow loses
+\enumend
