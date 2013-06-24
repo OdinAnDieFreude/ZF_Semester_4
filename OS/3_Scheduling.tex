@@ -1,0 +1,135 @@
+\section{Scheduling}
+\enumstart
+	\item Deciding, how to allocate a single ressource among multiple clients
+	\item Metrics
+	\enumstart
+		\item Fairness
+		\item Policy
+		\item Balance
+		\item Power
+	\enumend
+	\item Scheduling algorithm complexity tradeoff
+	\enumstart
+		\item More scheduler complexity/overhead \arrow better scheduling
+		\item Less scheduler complexity/overhead \arrow worse scheduling
+	\enumend
+	\item Scheduling frequency
+	\enumstart
+		\item Higher context switch rate \arrow lower throughput
+		\item Lower context switch rate \arrow better responsiveness
+	\enumend
+	\item Types of jobs
+	\enumstart
+		\item Batch workloads (run job to completion and signal when done)
+		\item Interactive workloads (wait for external event and react fast)
+		\item Soft realtime workloads (deadlines, guarantees)
+		\item Hard realtime workloads (mission-critical, extremely time-sensitive)
+	\enumend
+	\item Assumptions and definitions
+	\enumstart
+		\item Only one CPU
+		\item Fixed speed CPU
+		\item We only consider work conservatice scheduling (no processor is idle, if there is a runnable task)
+		\item The system can always preempt a task
+	\enumend
+	\item When to schedule
+	\enumstart
+		\item A running process blocks
+		\item A blocked process unblocks
+		\item A running or waiting process terminates
+		\item An interrupt occurs
+	\enumend
+	\item Preemption
+	\enumstart
+		\item Non-preemptive scheduling (requires each process to explicitly give control to the scheduler)
+		\item Preemptive scheduling (OS interrupts each process)
+		\item Soft-realtime systems are usually preemptive
+		\item Hard-realtime systems are orften not
+	\enumend
+	\item Overhead
+	\enumstart
+		\item Dispatch latency
+		\item Scheduling cost
+		\item Time slice allocated to a process should be significantly more than scheduling overhead
+		\item Tradeoff: response time vs scheduling overhead
+	\enumend
+	\item Batch oriented scheduling
+	\enumstart
+		\item First-come first-served
+		\enumstart
+			\item Small jobs can wait for a long time \arrow worsening average waiting time
+		\enumend
+		\item Shortest job first
+		\enumstart
+			\item Minimizes waiting time \arrow optimal
+			\item Long jobs can starve
+		\enumend
+		\item Shortest remaining time next
+		\enumstart
+			\item Not always possible (e.g. printer)
+			\item Long jobs can starve
+		\enumend
+	\enumend
+	\item Scheduling interactive loads
+	\enumstart
+		\item Round-robin
+		\item Priority based scheduling
+		\enumstart
+			\item Dispatch highest priority runnable task (priority queue)
+			\item Same priority \arrow other scheduling algorithm (e.g. round-robin)
+			\item Starvation \arrow low priority tasks may starv
+			\item Ageing (gradually increase priority for waiting tasks) \arrow solves starvation
+			\item Multilevel feedback Queues
+			\enumstart
+				\item Penalize CPU-bound tasks to benefit I/O bound tasks \arrow I/O-tasks block before they use their quantum
+			\enumend
+		\enumend
+	\enumend
+	\item Real-time scheduling
+	\enumstart
+		\item Real-time based guarantees to tasks
+		\enumstart
+			\item Tasks appear at any time
+			\item Tasks can have deadlines
+			\item Execution time is generally known
+			\item Periodic or aperiodic tasks
+			\item Unscheduable tasks must be rejected
+		\enumend
+		\item Rate-monotonic scheduling
+		\enumstart
+			\item periodic tasks \arrow schedula task with shortest period first
+			\item $m$ tasks, $C_i =$ execution time of $i$-th task, $P_i =$ Period of the $i$-th task
+			\item RMS will find a schedule if: $\sum_{i=1}^m\frac{C_i}{P_i} \le m(2^{\frac{1}{m}}-1)$
+		\enumend
+		\item Earliest deadline first
+		\enumstart
+			\item Task do not need to be periodic
+			\item More complex $O(n)$ for scheduling decisions
+			\item EDF will find a schedule if: $\sum_{i=1}^m\frac{C_i}{P_i} \le 1$
+		\enumend
+	\enumend
+	\item Multiprocessor scheduling
+	\enumstart
+		\item Problem: move between cores
+		\enumstart
+			\item Tend to move between caches
+			\item Really bad locality \arrow bad performance
+			\item Solution
+			\enumstart
+				\item Affinity scheduling
+				\item Hierarchical scheduling
+			\enumend
+		\enumend
+		\item Problem: parallel applications
+		\enumstart
+			\item Global barriers \arrow one slow thread lowers performance of application
+			\item Cache sharing would be great for threads
+			\item Solution: co-scheduling (schedule threads af an application together)
+		\enumend
+	\enumend
+	\item Multicore scheduling
+	\enumstart
+		\item Two-dimensional: when? on which core? \arrow NP-complete
+		\item Littles law
+	\enumend
+\enumend
