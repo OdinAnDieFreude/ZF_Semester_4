@@ -1,0 +1,118 @@
+\section{File system abstractions}
+\enumstart
+	\item File system emulates the disk: disk (blocks) \arrow programmer (file)
+	\item FS provides
+	\enumstart
+		\item High performance
+		\item Named data
+		\item Controlled sharing
+		\item Reliable storage
+	\enumend
+	\item File to the FS
+	\enumstart
+		\item Data
+		\item Size
+		\item One or more names
+		\item Metadata, attributes
+		\item Type
+		\item Structure
+		\item Location on disk
+	\enumend
+\enumend
+
+\subsection{Naming}
+\enumstart
+	\item Naming provides indirection
+	\item Binding
+	\enumstart
+		\item Association between a value and a name
+		\item Often conflated with creating the value itself
+	\enumend
+	\item General naming model
+	\enumstart
+		\item Namespace: what names are valid
+		\item Universe of values: what values are valid
+		\item Context
+		\item Name mapping algorithm (resolver): could be an $n$-to-$m$ mapping 
+	\enumend
+	\item Resolution: value $\leftarrow$ context.RESOLVE(name)
+	\item Manage bindings
+	\enumstart
+		\item status $\leftarrow$ BIND(name, value, context)
+		\item status $\leftarrow$ UNBIND(name, context)
+	\enumend
+	\item Enumeration: list $\leftarrow$ ENUMERATE(context)
+	\item Name mapping algorithms
+	\enumstart
+		\item Table lookup
+		\item Recursive lookup (pathnames)
+		\item Multiple lookups (search paths)
+	\enumend
+	\item How is the context provided?
+	\enumstart
+		\item Default (implicit): supplied by the resolver
+		\enumstart
+			\item Constant: built in to the resolver
+			\item Variable: from current environment (state)
+		\enumend
+		\item Explicit: supplied by the object
+		\enumstart
+			\item Per object
+			\item Per name (qualified name)
+		\enumend
+	\enumend
+	\item Name discovery
+	\enumstart
+		\item Options
+		\enumstart
+			\item Well-known
+			\item Broadcast the name
+			\item Query
+			\item Breadcast the query
+			\item Resolve some other name to a namespace
+			\item Introduction
+			\item Physical rendezvous
+		\enumend
+	\enumend
+\enumend
+
+\subsection{Access control}
+\enumstart
+	\item Protection
+	\enumstart
+		\item File owner/creator should be able to control file
+		\item Types of access
+		\enumstart
+			\item Read
+			\item Write
+			\item Execute
+			\item Append
+			\item Delete
+			\item List
+		\enumend
+		\item Access control matrix (Rights $\times$ Principals)
+		\item Row-wise (ACL): For each right, list the principals \arrow store with the file
+		\item Column-wise (Capabilities): For each principal, list the rights \arrow store with principal
+		\item POSIX ACL: Each file has 3 principals (Owner, Group, World) with 3 rights (rwx)
+	\enumend
+\enumend
+
+\subsection{Concurrency}
+\enumstart
+	\item Ensure: regardless of concurrent access, file system integrity is ensured
+	\item Provide mechanism for users
+	\item Locking
+	\enumstart
+		\item Type
+		\enumstart
+			\item Advisory
+			\item Mandatory
+		\enumend
+		\item Granularity
+		\enumstart
+			\item Whole file
+			\item Byte ranges
+			\item Write-protecting executing binaries
+		\enumend
+	\enumend
+\enumend
