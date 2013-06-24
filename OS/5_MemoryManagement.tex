@@ -1,0 +1,90 @@
+\section{Memory management}
+\enumstart
+	\item Goals
+	\enumstart
+		\item Allocate physical memory to applications
+		\item Protect an applications memory from others
+		\item Allow an application to share areas of memory
+		\item Create illusion of a whole address space \arrow virtualization of the whole address space
+		\item Create illusion of more memory than you have
+	\enumend
+\enumend
+
+\subsection{Partitioned memory}
+\enumstart
+	\item Base and Limit registers
+	\item Code must be completely position independent
+	\item Relocation register maps compiled addresses dynamically to physical addresses
+	\item Contiguous allocation
+	\item Leads to fragmentation
+\enumend
+
+\subsection{Segmentation}
+\enumstart
+	\item Generalize base + limit \arrow each segment has a base and limit
+	\item Physical memory divided into segments
+	\item Segment table \arrow used by hardware
+	\item Segment table base register (STBR)
+	\item Segment table length register (STLR)
+	\item Fast context switch \arrow Simply reload STBR/STLR
+\enumend
+
+\subsection{Paging}
+\enumstart
+	\item Solves contiguous physical memory problem
+	\item Divide physical memory into frames (power of two sized)
+	\item Divide logical memory into pages of the same size
+	\item Page tables
+	\item TLB
+\enumend
+
+\subsection{Page protection}
+\enumstart
+	\item Associate protection info with each page table entry (PTE)
+	\enumstart
+		\item Valid bit: requesting invalid address \arrow page fault
+		\item User/supervisor
+		\item Read/write
+		\item Present in physical memory flag
+	\enumend
+	\item Independent of frames themselves
+	\item Each page can have different protection to different processes
+\enumend
+
+\subsection{Page sharing}
+\enumstart
+	\item Shared code \arrow one copy of read-only code shared among processes
+\enumend
+
+\subsection{Page table structures}
+\enumstart
+	\item Simple linear page table is too big
+	\item Solutions
+	\enumstart
+		\item Hierarchical page tables
+		\item Virtual memory page tables
+		\item Hashed page tables
+		\enumstart
+			\item VPN is hashed into table
+			\item Can be fast
+			\item Can be unpredictable
+		\enumend
+		\item Inverted page tables
+		\enumstart
+			\item One systemwide table maps PFN \arrow VPN
+		\enumend
+	\enumend
+\enumend
+
+\subsection{TLB shootdown}
+\enumstart
+	\item Many MMUs on many cores
+	\item TLB should be coherent
+	\item Keeping TLBs consistent
+	\enumstart
+		\item Hardware TLB coherence: rarely implemented
+		\item Virtual caches: requires cache flush /invalidate
+		\item Software TLB shootdown: most common, OS notifies other cores
+		\item Hardware shootdown instructions: Broadcast on bus
+	\enumend
+\enumend
