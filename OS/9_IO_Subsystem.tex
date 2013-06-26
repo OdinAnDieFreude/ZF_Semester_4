@@ -132,3 +132,62 @@
 		\item /dev populated dynamically by udev
 	\enumend
 \enumend
+
+\subsection{Interface to network I/O}
+
+\subsubsection{Routing}
+\enumstart
+	\item OS protocol stacks include routing functionality
+	\item Routing protocol typically in a user-space daemon
+	\item Forwarding information typically in kernel
+\enumend
+
+\subsubsection{Network stack implementation}
+\enumstart
+	\item One of the most important peripheral
+	\item Disk interface looks increasingly like a network
+	\item Step-by-step
+	\enumstart
+		\item Interrupt: allocate buffer, enqueue packet, \ddd
+		\item Software interrupt: high priority, defragmentation, TCP processing, enqueue on socket, \ddd
+		\item Application: copy buffer to user space, application processes context
+	\enumend
+	\item In-kernel protocol graph
+	\enumstart
+		\item Nodes can be per-protocol or per-connection
+	\enumend
+\enumend
+
+\subsection{Memory management}
+\enumstart
+	\item How to ship data around?
+	\item Add/remove header must be easy
+	\item Avoid copying
+	\item Uniformly refer to half-defined packets
+	\item Fragment large datasets into smaller units
+	\item Solution: data is held in a linked list of "buffer structures" (bsd: mbuf, linux: sk\_buff)
+\enumend
+
+\subsubsection{Performance}
+\enumstart
+	\item Put TCP procession into hardware
+	\item Buffering: transfer lots of packets in a single transition
+	\enumstart
+		\item Decouple sending and receiving
+		\item Batch together requests
+		\item Producer-consumer buffer descriptor rings
+	\enumend
+	\item Interrupt coalescing / throttling
+	\enumstart
+		\item Don't interrupt on every packet
+		\item Don't interrupt at all, if load is very high
+	\enumend
+	\item Receive-side scaling: parallelize \arrow direct interrupts and data to different cores
+	\enumstart
+		\item Insights: too much traffic for one core to handle
+		\item Cores aren't getting faster
+		\item Handle different flows on different cores
+		\item Demultiplexing on the NIC (\arrow use DMA)
+		\item Can balance flow across cores
+	\enumend
+\enumend
