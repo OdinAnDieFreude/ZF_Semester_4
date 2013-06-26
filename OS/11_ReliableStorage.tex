@@ -1,0 +1,29 @@
+\section{Reliable storage}
+\enumstart
+	\item Reliability: probability it will be reliable for some period of time
+	\item Availability: probability, it is available at any given time
+	\item Use transactions to ensure data is consistent
+	\item Redundancy (e.g. RAID)
+	\item Error correcting codes
+	\item Remapping: identify bad sectors and avoid them
+	\item Nonrecoverable error rates are significant
+	\item Failures are not independent
+	\item Error rates are not uniform
+	\item Mean time to failure (MTTF)
+\enumend
+
+\subsection{Redundant array of independent disks}
+\enumstart
+	\item RAID 1: mirroring
+	\item Parity disks
+	\item RAID 5: rotating parity
+	\item Recovery from crashes
+	\enumstart
+		\item Use non-volatile write buffer
+		\item Tranactional update to blocks
+		\item Recovery scan
+		\item Do nothing
+	\enumend
+	\item Mean time to repair (MTTR)
+	\item Mean time to data loss (MTTDL)
+\enumend
