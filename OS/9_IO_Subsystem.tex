@@ -1,0 +1,134 @@
+\section{I/O subsystems}
+
+\subsection{Partitions}
+\enumstart
+	\item Multiplex single disk among $>1$ file systems
+	\item Contiguous block ranges per file system
+\enumend
+
+\subsection{Logical volumes}
+\enumstart
+	\item Emulate 1 virtual disk from $>1$ physical ones
+	\item Single file system spanning $>1$ disk
+\enumend
+
+\subsection{Name files in multiple file systems}
+\enumstart
+	\item Top level volume names
+	\item Bind "mount points" in name space
+\enumend
+
+\subsection{Virtual file systems (VFS)}
+\enumstart
+	\item Provides an object oriented way of implementing file systems
+	\item Allow the same system calls to be used for different file systems
+	\item The API is to the VFS interface
+\enumend
+
+\subsection{Interrupts}
+\enumstart
+	\item CPU interrupt-request line triggered by I/O device
+	\item Interrupt handler receives interrupts
+	\item Maskable: to ignore or delay some interrupts
+	\item Interrupt vector to dispatch interrupt to correct handler (priorities, non maskable/maskable)
+	\item Mechanism also used for exceptions
+\enumend
+
+\subsection{I/O protection}
+\enumstart
+	\item Can be dangerous to normal system operations
+	\item I/O operations usually privileged
+	\item Performed via system calls
+	\item DMA transfers must be carefully checked
+\enumend
+
+\subsection{Device drivers}
+\enumstart
+	\item Software object, which abstracts a device
+	\item Sits between hardware and OS
+	\item Presents uniform interface to the rest of the OS
+	\item Device abstractions vary
+	\item Terminology
+	\enumstart
+		\item 1$^{st}$ level interrupt handler (FLIH) (linux: top-half)
+	\enumend
+	\item Problem
+	\enumstart
+		\item Hardware is interrupt driven
+		\item Applications are often blocking
+		\item Considerable processing inbetween
+	\enumend
+	\item Solutions
+	\enumstart
+		\item Driver threads
+		\item Deferred procedure call (DPC)
+		\enumstart
+			\item Aka 2$^{nd}$ level interrupt handler, soft interrupt handler, slow interrupt handler, bottom-half handler
+			\item Solution in most versions of Unix
+			\item Don't need kernel threads
+			\item Saves a context switch
+		\enumend
+		\item Demux early, run in user space
+	\enumend
+\enumend
+
+\subsection{The I/O subsystem}
+\enumstart
+	\item Device drivers move data to and from I/O devicesy
+	\item Caching: fast memory holding copy of data
+	\item Spooling: hold output for a device
+	\item Scheduling: some I/O ordering via per-device queue (we want fairness)
+	\item Buffering: store data in memory while transferring between devices or memory
+	\item Naming or discovery
+	\enumstart
+		\item Discovery
+		\item Hotplug/-unplug
+		\item Resource allocation
+		\item Match driver code to device
+		\enumstart
+			\item Devices have unique identifiers
+			\item Drivers recognize particular identifiers
+			\item Kernel offers a device to each driver in turn
+			\item Unix
+			\enumstart
+				\item Kernel creates identifiers for character devices, block devices, \ddd
+				\item Major device number: class of devices
+				\item Minor device number: specific device
+			\enumend
+		\enumend
+		\item Name devices inside the kernel
+		\item Name devices outside the kernel
+	\enumend
+	\item Unix block devices
+	\enumstart
+		\item Used for structured I/O
+		\item Often look like files
+	\enumend
+	\item Character devices
+	\enumstart
+		\item Used for unstructured I/O
+		\item Buffering implemented by libraries
+		\item Examples: keyboard, mouse, serial line, \ddd
+		\item Destinction with block devices somewhat arbitrary
+	\enumend
+	\item Naming devices outside the kernel
+	\enumstart
+		\item Device files (special files, crated with mknod() syscall)
+	\enumend
+	\item Pseudo devices in unix
+	\enumstart
+		\item Devices with no hardware
+	\enumend
+	\item Old style unix device configuration
+	\enumstart
+		\item All drivers compiled into the kernel
+		\item Each driver probes for any supported devices
+		\item System administrator populates /dev
+	\enumend
+	\item Linux device configuration today
+	\enumstart
+		\item Physical hardware configuration readable from /sys
+		\item Drivers dynamically loaded as kernel modules 
+		\item /dev populated dynamically by udev
+	\enumend
+\enumend
