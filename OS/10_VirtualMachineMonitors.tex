@@ -1,0 +1,85 @@
+\section{Virtual machine monitors}
+\enumstart
+	\item Virtualizes an entire (hardware) machine
+	\enumstart
+		\item Contrast with OS processes
+		\item Interface provided is illusion of real hardware
+		\item Terminology: guest operating system
+	\enumend
+	\item Usecases
+	\enumstart
+		\item Performance isolation
+		\item Backward compatibility
+		\item Cloud computing
+		\item Running multiple OSes on one machine
+		\item Server consolidation
+		\item Resource isolation
+		\item Operating system development
+	\enumend
+	\item Hypervisor: OS with unusual API
+	\enumstart
+		\item Difference
+		\enumstart
+			\item Creating an illusion of hardware to the "applications"
+		\enumend
+		\item Hosted VMMs: guest OS knows hypervisor
+		\item Hypervisor-based VMMs: guest OS is unaware of hypervisor
+	\enumend
+\enumend
+
+\subsection{Virtualizing the CPU}
+\enumstart
+	\item A CPU architecture is virtualizable if it can be perfectly emulated over itself, with all non-privileged instructions executed natively
+	\item Privileged instructions \arrow trap
+	\item x86 is not virtualizable \arrow emulation, paravitualization, binary rewriting, hardware support
+\enumend
+
+\subsection{Virtualizing the MMU and physical memory}
+\enumstart
+	\item Hypervisor allocates memory to VMs
+	\item Guest virtual addresses \arrow hypervisor virtual addresses \arrow physical addresses
+	\item virtualization modes
+	\enumstart
+		\item Direct writable page tables
+		\item Shadow pagetables
+		\enumstart
+			\item Guest OS sets up its own pagetables, not used by hardware \arrow VMM maintains shadow page tables
+			\item Maps directly from guest VAs to machine VAs \arrow hardware switched whenever guest reloads PTBR
+			\item VMM must keep tables consistent
+		\enumend
+		\item Hardware assisted paging
+	\enumend
+	\item Paravitualization approach
+	\enumstart
+		\item Guest OS creates page tables, the hardware uses \arrow modification to guest OS
+		\item VMM must check all writes to PTEs \arrow hyper call to update PTEs
+	\enumend
+	\item Nested page tables
+	\item Memory allocation
+	\enumstart
+		\item Guest OS is not expected physical memory in size
+		\item Hypervisor wants to overcommit RAM
+		\item Double paging
+		\item Ballooning
+		\enumstart
+			\item Technique to reclaim memory from guest
+			\item Install a balloon driver in guest OS \arrow hyper calls
+		\enumend
+	\enumend
+\enumend
+
+\subsection{Virtualizing devices}
+\enumstart
+	\item Trap-and-emulate
+	\item Interrupts \arrow upcalls to guest OS
+	\enumstart
+		\item Emulate interrupt controller in guest
+		\item Emulate DMA
+		\item Paravirtualized: fake device driver \arrow hypercalls
+	\enumend
+\enumend
+
+\subsection{Virtualizing the network}
+\enumstart
+	\item Hypervisor implements a soft switch (virtual network on a machine)
+\enumend
