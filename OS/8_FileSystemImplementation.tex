@@ -1,0 +1,99 @@
+\section{File system implementation}
+\enumstart
+	\item Directory implementation
+	\enumstart
+		\item Linear list
+		\item Hash table
+		\item B-tree
+	\enumend
+	\item File type
+	\enumstart
+		\item Executable file
+		\item Directories, symbolic link
+		\item Text and binary
+		\item I/O devices
+		\item Named pipes (FIFOs)
+		\item UNIX domain sockets
+	\enumend
+	\item Open file interface
+	\enumstart
+		\item Byte sequence (vector of bytes)
+		\item Record sequence (fixed records)
+		\item Key-based, tree structured
+	\enumend
+	\item Random access
+	\enumstart
+		\item Read
+		\item Write
+		\item Seek: absolut or relative to current position
+		\item Tell: return current index
+		\item State: current position in the file
+	\enumend
+	\item Memory mapped files: map file content into virtual address space
+	\item On-disk data structures
+	\enumstart
+		\item Disk addressing
+		\enumstart
+			\item Tracks, sectors, spindles, \ddd
+			\item Bad sector maps
+			\item Logical block addressing: linear array of usable blocks
+			\item Abstract other block storage devices (Flash-drives, SAN, \ddd)
+		\enumend
+	\enumend
+	\item FAT32
+	\enumstart
+		\item No access control
+		\item Very little metadata
+		\item Limited volume size
+		\item No support for hardlinks
+		\item extensively used
+		\item Files implemented as linked lists in FAT
+	\enumend
+	\item Unix fast file system (FFS)
+	\enumstart
+		\item Inode array
+		\item Inode (1 block = 4096 bytes): metadata + block pointers
+		\item Inode metadata: 512 bytes
+		\item Block addresses: 8 bytes
+		\item 448 block pointers
+		\item Single-, double-, triple indirect block
+		\item Free space map (bitmap, 1 bit per block) \arrow fast
+	\enumend
+	\item Optimization
+	\enumstart
+		\item Keeping together related data (files, metadata, free space map, directories, \ddd)
+		\item First-fit allocation to improve disk locality
+		\item Layout and block groups defined in the superblock, replicated several times
+	\enumend
+	\item New technology file system (NTFS)
+	\enumstart
+		\item NTFS master file table (1 kB Entries)
+		\item Small files: small files fit into MFS records
+		\item Hard links stored in MFT
+		\item Normal files: MFT entry holds list of extents (Start, length)
+		\item Too many attributes: Attribute list (another MFT entry) holds list of attribute locations
+		\item File system metadata is hold in files
+	\enumend
+	\item In-memory data structures
+	\enumstart
+		\item Opening a file: directories are translated into kernel data structures on demand
+		\item Reading and writing: Per process open file table \arrow System open file table \arrow cache of inodes
+	\enumend
+	\item Efficiency depends on
+	\enumstart
+		\item Disk allocation and directory algorithm
+		\item Type of data kept in file's directory entry
+	\enumend
+	\item Performance
+	\enumstart
+		\item Disk cache
+		\item Free-behind and read-ahead: techniques to optimize sequential access
+		\item Dedicating section of memory as virtual disk or RAM disk
+	\enumend
+	\item Page cache
+	\enumstart
+		\item Page cache rather than disk blocks
+		\item Memory-mapped I/O uses a page cache
+		\item Routine I/O through the file system uses disk cache
+	\enumend
+\enumend
