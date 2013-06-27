@@ -1,0 +1,43 @@
+\documentclass[10pt]{article}
+%Gummi|065|=)
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{fullpage}
+\usepackage{lscape}
+\usepackage{graphicx}
+
+\newcommand{\enumstart}{\begin{enumerate}}
+\newcommand{\enumend}{\end{enumerate}}
+\newcommand{\image}[1]{\includegraphics[width=0.5\textwidth]{img/#1}}
+\newcommand{\customImage}[2]{\includegraphics[width=#2\textwidth]{img/#1}}
+\newcommand{\arrow}{$\rightarrow$ }
+\newcommand{\ddd}{\textellipsis }
+
+\setcounter{tocdepth}{4}
+\setcounter{secnumdepth}{4}
+
+\title{\textbf{Data modeling and databases Zusammenfassung}}
+\author{Christoph Stillhard}
+\date{}
+\begin{document}
+
+\maketitle
+\pagenumbering{none}
+\thispagestyle{empty}
+
+\let\stdsection\section
+\renewcommand\section{\newpage\stdsection}
+
+\newpage
+\pagenumbering{roman}
+\setcounter{page}{1}
+\tableofcontents
+
+\newpage
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+\input{1_Introduction.tex}
+
+\end{document}

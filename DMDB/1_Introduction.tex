@@ -1,0 +1,56 @@
+\section{Introduction}
+
+\subsection{Database management system (DBMS)}
+\enumstart
+	\item Why use DBMS?
+	\enumstart
+		\item Avoid redundancy
+		\item Rich (declarative) access to data
+		\item Synchronize concurrent data access
+		\item Recovery after system failures
+		\item Security and privacy
+		\item Reduce cost and paint to do something useful
+	\enumend
+	\item DBMS architectures
+	\enumstart
+		\item Mainframes: applications and DB on one machine, terminals
+		\item Client-server architecture: applications on clients machine, database server
+		\enumstart
+			\item $+$ Scalability
+			\item $+$ Security
+			\item $+$ Centralized availability, administration
+			\item $-$ Complexity
+		\enumend
+		\item Multi-tier architecture: application servers, database server, \ddd
+		\enumstart
+			\item $+$ Software layering
+			\item $+$ Hardware layering
+			\item $+$ Scalability
+		\enumend
+		\item Parallel database systems: DB runs on multiple harware nodes, network must be fast
+		\enumstart
+			\item Increase throughput
+			\item Reduce latency
+			\item Increase availability
+			\item Reduced cost, extensibility, scalability
+		\enumend
+		\item Distributed database systems: DB runs on multiple hardware nodes, network can be slow
+		\enumstart
+			\item Minimize communication cost
+			\item Possibly replicate data
+			\item Each node behaves autonomously (SOA)
+		\enumend
+		\item Data stream management systems: process events as they occur
+		\item Cloud: logically centralized data, physically distributed data
+	\enumend
+\enumend
+
+\subsection{Data models}
+\enumstart
+	\item Network model (CODASYL, COBOL)
+	\item Hierarchical model (IBM IMS, FastPath)
+	\item Relation model (SQL)
+	\item Object-oriented model (ODMG 2.0)
+	\item Semi-structured model (XML Infoset)
+	\item Deductive model (Datalog, Prolog)
+\enumend
