@@ -1,0 +1,72 @@
+\section{Database design}
+
+\subsection{Conceptual model}
+\enumstart
+	\item Information requirements
+	\item Book of duty: describes information requirements, processes, processing requirements 
+\enumend
+
+\subsection{Logical model}
+\enumstart
+	\item Relation: $R \subseteq E_1 \times E_2$
+	\item Entity/relationship (ER) models
+	\enumstart
+		\item Entity (gegenstandstyp): square with text
+		\item Relationship (beziehungstyp): diamond with text
+		\item Attribute (eigenschaft): oval with not underlined text
+		\item Key (identifikation): oval with underlined text
+		\item Role: line with text
+		\item Functionalities of binary relations: 1:1, 1:N, N:1, N:N
+		\item Functionalities of $n$-ary relations
+	\enumend
+	\item Attribute vs. entity
+	\enumstart
+		\item Entity if the concept has more than one relationship
+		\item Attribute if the concept has only one 1:1 relationship
+	\enumend
+	\item Partitioning of ER models
+	\enumstart
+		\item Most realistic models are larger than a page \arrow partition models
+		\item Partition by domains
+		\item No good automatic graph partitioning tool
+	\enumend
+	\item Good vs. bad models
+	\enumstart
+		\item Do not model redundancy or tricks to improve performance
+		\item Less entries is better
+		\item C4 rules (concise, correct, coplete, comprehensive)
+	\enumend
+	\item (min, max)-notation
+	\item Weak entities: diamond, double frame, double line \arrow weak entity depends on strong entity
+	\item Generalization: hexagon
+	\item Aggregation: diamond with text "part-of"
+	\item Limitations of ER
+	\enumstart
+		\item ER has no formal semantics
+		\item No way to express relationships between sets of entities
+		\item No way to express negative rules
+	\enumend
+	\item Data modeling in UML
+	\enumstart
+		\item Square for class
+		\item Associations as lines (directed, undirected)
+		\item Multiplicities
+		\enumstart
+			\item Exact multiplicities: x..y
+			\item Flipped around as compared to ER
+			\item Cannot be used for $n$-ary relationships
+		\enumend
+		\item Functionalities: 1, $*$, 1..$*$, 0..$*$, 0..1
+		\item Aggregation
+		\enumstart
+			\item Soft aggregation: empty diamond before line
+			\item Hard aggregation: filled diamond before line
+		\enumend
+		\item Generalization: triangle at line
+	\enumend
+\enumend
+
+\subsection{Physical database design}
+\enumstart
+	\item 
+\enumend
