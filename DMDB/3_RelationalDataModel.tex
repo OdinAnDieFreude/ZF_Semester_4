@@ -1,0 +1,103 @@
+\section{Relational data model}
+\enumstart
+	\item Relation
+	\enumstart
+		\item $R \subseteq D_1 \times \ddd \times D_n$
+		\item $D_1, \ddd, D_n$ are domains
+	\enumend
+	\item Tuple: $t \in R$
+	\item Schema: associates labels to domains
+	\item Instance: the state of the database
+	\item Key: minimal set of attributes that identify each tuple uniquely
+	\item Primary key: a randomly chosen key, used for references
+	\item Step-by-step
+	\enumstart
+		\item Implementation of entities: (e.g. Table: $\{[$\underline{Legi: integer}, Name: string, Semester: integer$]\}$)
+		\item Implementation of relationships: (e.g attends: $\{[$\underline{Legi: integer, Nr: integer}$]\}$)
+		\enumstart
+			\item If the ER specifies roles, use them for names
+			\item If there are no roles, use the keys of the entities
+			\item Otherwise invent something
+		\enumend
+		\item Merge relations with the same key
+		\item Generalization: multiple possibilities to handle \arrow all are shitty
+		\item Weak entities: 
+	\enumend
+\enumend
+
+\subsection{Relational algebra}
+\enumstart
+	\item Symbols
+	\enumstart
+		\item $\sigma$ Selection
+		\item $\pi$ Projection
+		\item $\times$ Cartesian product
+		\item $A$ Join
+		\item $\rho$ Rename
+		\item $-$ Set minus
+		\item $\div$ Relational division
+		\item $\cup$ Union
+		\item $\cap$ Intersection
+		\item $F$ Semi-join (left)
+		\item $E$ Semi-join (right)
+		\item $C$ Left outer-join
+		\item $D$ Right outer-join
+	\enumend
+	\item Atoms
+	\enumstart
+		\item A relation in the database
+		\item A constant relation
+	\enumend
+	\item Operators
+	\enumstart
+		\item Selection: get subset of all tuples in a relation: (e.g. $\sigma_{\text{Semester }> 10}$(Student))
+		\item Projection: get a subset of all attributes from all tuples in a relation (e.g. $\pi_{\text{Level}}$(Professor))
+		\item Cartesian product: get all combinations of two relations (e.g. Assistant $\times$ Professor)
+		\item Natural join: R $A$ S = $\pi_{\{y|y \in R\}\cup\{z|z \in S\}}$($\sigma_{\forall x,x \in R \land x \in S: \text{R.$x$ = S.$x$}}$(R $\times$ S))
+		\item Theta join: super category of natural join, uses an arbitrary relation instead of the equality operator: R $A_\theta$ S = $\sigma_{\theta}$(R $\times$ S)
+		\item Left outer join: L $C$ R = (L $A$ R) $\cup$ (L - $\pi_{\text{L}}$(L $A$ R))
+		\item Right outer join: L $D$ R = (L $A$ R) $\cup$ (R - $\pi_{\text{R}}$(L $A$ R))
+		\item Full outer join:  L $O$ R = (L $A$ R) $\cup$ (L - $\pi_{\text{L}}$(L $A$ R)) $\cup$ (R - $\pi_{\text{R}}$(L $A$ R))
+		\item Left semi-join: (L $F$ R) = $\pi_{L}$(L $A$ R)
+		\item Right semi-join: (L $E$ R) = $\pi_{R}$(L $A$ R)
+		\item Rename: renaming of relation names (e.g. $\sigma_{bla}$($\rho_{L1}$(requires) $\times$ $\rho_{L2}$(requires)))
+		\item Intersection: only with equal schemas: R $\cap$ S = R $-$ (R $-$ S)
+		\item Relational division: R $\div$ S = $\pi_{(R-S)}$(R) $-$ $\pi_{(R-S)}$(($\pi_{(R-S)}$(R) $\times$ S) $-$ R) 
+	\enumend
+\enumend
+
+\subsection{Relational calculus}
+\enumstart
+	\item Queries have the form: $\{t \ | \ P(t)\}$ with $t$ a variable and $P(t)$ a predicate
+	\item Two variants
+	\enumstart
+		\item Tuple relational calculus
+		 \enumstart
+		 	\item Atoms
+		 	\enumstart
+		 		\item $s | R$ ($s$ is a tuple, $R$ is a relation)
+		 		\item $s.A \phi t.B$ or $s.A \phi c$ ($s,t$ tuple variables, $A,B$ attribute names, $\phi$ a comparison, $c$ a constant)
+		 	\enumend
+		 	\item Formulas
+		 	\enumstart
+		 		\item All atoms are legal formulas
+		 		\item if $P$ is a formula, then $\lnot P$ and $(P)$ are formulas
+		 		\item if $P_1$ and $P_2$ are formulas, then $P_1 \land P_2$, $P_1 \lor P_2$, $P_1 \implies P_2$ are formulas
+		 		\item If $P(t)$ is a formula with a free variable $t$, then $\forall t \in R(P(t))$
+		 	\enumend
+		 	\item Safety: result must be a subset of the "domain of the formula"
+		 	\item Domain: all constants in the formula + all domains of relations used in the formula
+		 \enumend
+		\item Domain relational calculus (variables iterate over domains)
+		\enumstart
+			\item Expressions: $\{[v_1, \ddd, v_n] \ | \ P(v_1, \ddd v_n)\}$
+		\enumend
+		\item Codds theorem: the following languages are equivalent
+		\enumstart
+			\item Relational algebra
+			\item Tuple relational calculus (safe expressions)
+			\item Domain relational calculus (safe expressions)
+		\enumend
+		\item \arrow SQL is based on relational calculus, SQL implementation is based on relational algebra
+	\enumend
+\enumend
