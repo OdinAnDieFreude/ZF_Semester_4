@@ -42,4 +42,78 @@
 \input{2_DatabaseDesign.tex}
 \input{3_RelationalDataModel.tex}
 
+\section{Structured query language (SQL)}
+\enumstart
+	\item A family of standards
+	\enumstart
+		\item Data definition language (DDL) - schemas
+		\item Data manipulation language (DML) - update
+		\item Query language (Query) - reads
+	\enumend
+	\item Datatypes
+	\enumstart
+		\item character(n), char(n)
+		\item character varying(n), varchar(n)
+		\item numeric(p,s), integer
+		\item blob, raw for large binaries
+		\item clob for large string values
+		\item date
+	\enumend
+	\item DDL
+	\enumstart
+		\item Create tables
+		\enumstart
+			\item CREATE [TEMPORARY] TABLE [IF NOT EXISTS] tbl\_name [(] LIKE old\_tbl\_name[)];
+			\item CREATE [TEMPORARY] TABLE [IF NOT EXISTS] tbl\_name [(create\_definitions, \ddd)];
+		\enumend
+		\item Delete a table: DROP TABLE tbl\_name;
+		\item Modify a table
+		\enumstart
+			\item ALTER TABLE tbl\_name ADD COLUMN(column\_definition, \ddd);
+			\item ALTER TABLE tbl\_name DROP COLUMN column\_name;
+			\item ALTER TABLE tbl\_name RENAME TO new\_tbl\_name;
+		\enumend
+		\item Indexes
+		\enumstart
+			\item CREATE INDEX myindex ON tbl\_name(column1, \ddd);
+			\item DROP INDEX myindex
+		\enumend
+	\enumend
+	\item DML
+	\enumstart
+		\item Insert: INSERT INTO tbl\_name VALUES(v1, \ddd);
+		\item INSERT INTO tbl\_name relation;
+		\item Sequences: CREATE SEQUENCE seq INCREMENT BY 1 START WITH 1;
+		\item INSERT INTO tbl\_name VALUES(seq.nextval, \ddd);
+		\item Delete: DELETE tbl\_name WHERE column $>$ 10
+		\item Update: UPDATE tbl\_name SET column = bla;
+	\enumend
+	\item Queries
+	\enumstart
+		\item SELECT column1, \ddd FROM tbl\_name, \ddd WHERE constraint ORDER BY culumn1 DESC, column3 ASC;
+		\item Duplicate elimination: SELECT DISTINCT column FROM tbl\_name;
+		\item Joins
+		\enumstart
+			\item SELECT column1, \ddd FROM tbl\_name1, tbl\_name2 WHERE x = y AND z = v;
+		\enumend
+		\item Rename attributes: SELECT bla, x AS y FROM table;
+		\item Union: (SELECT x FROM a) UNION (SELECT x FROM B);
+		\item Grouping, aggregation
+		\enumstart
+			\item Aggregate functions: avg, max, min, count, sum
+			\item SELECT avg(Semester) FROM Student;
+			\item SELECT sum(x) FROM y GROUP BY z;
+		\enumend
+		\item SELECT x FROM y WHERE NOT EXISTS(SELECT a FROM b WHERE c);
+	\enumend
+	\item Working with NULL values
+	\enumstart
+		\item null $+$ 1 \arrow null
+		\item null $*$ 0 \arrow null
+		\item null $=$ null \arrow unknown
+		\item null $<$ 13 \arrow unknown
+		\item null $>$ null \arrow unknown
+	\enumend
+\enumend
+
 \end{document}
