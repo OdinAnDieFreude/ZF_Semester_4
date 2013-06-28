@@ -1,0 +1,31 @@
+\section{Constraints}
+\enumstart
+	\item Why use a DBMS? avoid inconsistency \arrow use constraints to ensure consistency
+	\item Static constraints: constraint that any instance of a DB must meet
+	\item Dynamic constraints: constraint on a state transition of the DB
+	\item Referential integrity constraints
+	\enumstart
+		\item Foreign keys
+		\item The value of a FK is null, or the referenced tuple must exists
+		\item CREATE TABLE $R$ ($\alpha$ INTEGER PRIMARY KEY, $\beta$ VARCHAR(7) UNIQUE, \ddd);
+		\item CREATE TABLE $S$ (\ddd, $\kappa$ INTEGER REFERENCES $R$);
+		\item Actions on violation
+		\enumstart
+			\item Reject the update (return an error)
+			\item Cascade: propagate update
+			\item Set null: set references to null
+			\item Set references to default value (not supported)
+		\enumend
+		\item CREATE TABLE $S$ (\ddd, $\kappa$ INTEGER REFERENCES $R$ ON UPDATE CASCADE);
+		\item CREATE TABLE $S$ (\ddd, $\kappa$ INTEGER REFERENCES $R$ ON DELETE SET null);
+	\enumend
+	\item Constraints on domains
+	\enumstart
+		\item Integer domains: CHECK Semester BETWEEN 1 AND 13
+		\item Enum types: CHECK level IN('Assistant', 'Associate', 'Full');
+	\enumend
+	\item Trigger
+	\enumstart
+		\item CREATE TRIGGER $x$\\BEFORE UPDATE ON $R$\\FOR EACH ROW\\WHEN (\ddd)\\BEGIN\\$. \ \ $IF :constraint THEN \ddd END IF;\\\ddd\\END
+	\enumend
+\enumend
