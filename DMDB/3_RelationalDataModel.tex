@@ -30,18 +30,18 @@
 	\item Symbols
 	\enumstart
 		\item $\sigma$ Selection
-		\item $\pi$ Projection
+		\item $\Pi$ Projection
 		\item $\times$ Cartesian product
-		\item $A$ Join
+		\item \join Join
 		\item $\rho$ Rename
 		\item $-$ Set minus
 		\item $\div$ Relational division
 		\item $\cup$ Union
 		\item $\cap$ Intersection
-		\item $F$ Semi-join (left)
-		\item $E$ Semi-join (right)
-		\item $C$ Left outer-join
-		\item $D$ Right outer-join
+		\item $\leftsemijoin$ Semi-join (left)
+		\item $\rightsemijoin$ Semi-join (right)
+		\item $\leftouterjoin$ Left outer-join
+		\item $\rightouterjoin$ Right outer-join
 	\enumend
 	\item Atoms
 	\enumstart
@@ -51,18 +51,18 @@
 	\item Operators
 	\enumstart
 		\item Selection: get subset of all tuples in a relation: (e.g. $\sigma_{\text{Semester }> 10}$(Student))
-		\item Projection: get a subset of all attributes from all tuples in a relation (e.g. $\pi_{\text{Level}}$(Professor))
+		\item Projection: get a subset of all attributes from all tuples in a relation (e.g. $\Pi_{\text{Level}}$(Professor))
 		\item Cartesian product: get all combinations of two relations (e.g. Assistant $\times$ Professor)
-		\item Natural join: R $A$ S = $\pi_{\{y|y \in R\}\cup\{z|z \in S\}}$($\sigma_{\forall x,x \in R \land x \in S: \text{R.$x$ = S.$x$}}$(R $\times$ S))
-		\item Theta join: super category of natural join, uses an arbitrary relation instead of the equality operator: R $A_\theta$ S = $\sigma_{\theta}$(R $\times$ S)
-		\item Left outer join: L $C$ R = (L $A$ R) $\cup$ (L - $\pi_{\text{L}}$(L $A$ R))
-		\item Right outer join: L $D$ R = (L $A$ R) $\cup$ (R - $\pi_{\text{R}}$(L $A$ R))
-		\item Full outer join:  L $O$ R = (L $A$ R) $\cup$ (L - $\pi_{\text{L}}$(L $A$ R)) $\cup$ (R - $\pi_{\text{R}}$(L $A$ R))
-		\item Left semi-join: (L $F$ R) = $\pi_{L}$(L $A$ R)
-		\item Right semi-join: (L $E$ R) = $\pi_{R}$(L $A$ R)
+		\item Natural join: R \join S = $\Pi_{\{y|y \in R\}\cup\{z|z \in S\}}$($\sigma_{\forall x,x \in R \land x \in S: \text{R.$x$ = S.$x$}}$(R $\times$ S))
+		\item Theta join: super category of natural join, uses an arbitrary relation instead of the equality operator: R $\join_\theta$ S = $\sigma_{\theta}$(R $\times$ S)
+		\item Left outer join: L $\leftouterjoin$ R = (L $A$ R) $\cup$ (L - $\Pi_{\text{L}}$(L $A$ R))
+		\item Right outer join: L $\rightouterjoin$ R = (L $A$ R) $\cup$ (R - $\Pi_{\text{R}}$(L $A$ R))
+		\item Full outer join:  L $\fullouterjoin$ R = (L $A$ R) $\cup$ (L - $\Pi_{\text{L}}$(L $A$ R)) $\cup$ (R - $\Pi_{\text{R}}$(L $A$ R))
+		\item Left semi-join: (L $\leftsemijoin$ R) = $\Pi_{L}$(L $A$ R)
+		\item Right semi-join: (L $\rightsemijoin$ R) = $\Pi_{R}$(L $A$ R)
 		\item Rename: renaming of relation names (e.g. $\sigma_{bla}$($\rho_{L1}$(requires) $\times$ $\rho_{L2}$(requires)))
 		\item Intersection: only with equal schemas: R $\cap$ S = R $-$ (R $-$ S)
-		\item Relational division: R $\div$ S = $\pi_{(R-S)}$(R) $-$ $\pi_{(R-S)}$(($\pi_{(R-S)}$(R) $\times$ S) $-$ R) 
+		\item Relational division: R $\div$ S = $\Pi_{(R-S)}$(R) $-$ $\Pi_{(R-S)}$(($\Pi_{(R-S)}$(R) $\times$ S) $-$ R) 
 	\enumend
 \enumend
 
