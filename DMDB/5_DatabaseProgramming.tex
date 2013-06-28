@@ -1,0 +1,50 @@
+\section{Database programming}
+\enumstart
+	\item Embedded SQL
+	\enumstart
+		\item Host: Query
+		\item DBMS: Evaluate query \arrow provide cursor to query result
+		\item Host: Process a tuple at a time
+		\item Host: Close cursor
+	\enumend
+	\item Java database connectivity (JDBC)
+	\enumstart
+		\item Create a connection to the database: Connection con = DriverManager.getConnection(urlDB, username, password); (need JDBC driver, provided by the DBMS)
+		\item Create a statement to be executed by the database: Statement s = con.createStatement();
+		\item Set parameters of the statement (optional)
+		\item Execute the statement \arrow return result set (cursor): s.execute("SELECT \ddd"); r = s.getResultSet();
+		\item Read tuples from result set: while(r.next()) $\{$output(r.getString(1));$\}$
+		\item JDBC is not restricted to SQL
+	\enumend
+	\item Parameterized queries
+	\enumstart
+		\item PreparedStatement s = con.prepareStatement("SELECT name FROM prof WHERE level=?");
+		\item s.setString(1, "AP");
+		\item r.executeQuery();
+	\enumend
+	\item Optimizations
+	\enumstart
+		\item Connection pooling: create several connections and reuse them (don't use too many connections)
+		\item Cursor caching: Use prepares statements \arrow avoids overhead for every call
+	\enumend
+	\item SQLJ
+	\enumstart
+		\item SQL embedded in Java
+		\item Uses preprocessor at compile time for type safety
+		\item \#sql iterator ProfIterator(String name, String level);
+		\item ProfIterator myProfs;
+		\item \#sql myProfs = $\{$SELECT \ddd$\}$;
+		\item while (myProfs.next()) $\{$System.out.println(myProfs.name() + myProfs.level());$\}$
+	\enumend
+	\item Object relational mapping
+	\enumstart
+		\item Automate database programming
+		\item Make everything look like Java
+	\enumend
+	\item Other approaches
+	\enumstart
+		\item New programming languages
+		\item PL/SQL (stored procedures): bring application logic to database (good performance)
+		\item LINQ (languages integrated queries)
+	\enumend
+\enumend
