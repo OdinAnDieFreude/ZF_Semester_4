@@ -1,0 +1,133 @@
+\section{Normal forms}
+\enumstart
+	\item Quality seal for database schemas: normal form 1-4 + BCNF
+	\item Synthesis algorithm
+	\item Decomposition algorithm
+	\item Anomalies
+	\enumstart
+		\item Update-anomaly: inconsistency after update
+		\item Insert-anomaly: inconsistency when a tuple can't be filled completely because of lack of information
+		\item Delete-anomaly: inconsistency when a needed tuple is deleted
+	\enumend
+	\item Multi-version databases: never throw anything away \arrow less anomalies
+\enumend
+
+\subsection{Function dependency}
+\enumstart
+	\item Schema: $\mathcal{R}$ = $\{A:D_A, B:D_B, C:D_C, D:D_D\}$
+	\item Instance: $R$
+	\item Let $\alpha \subseteq \mathcal{R}, \beta \subseteq \mathcal{R}$
+	\item $\alpha \rightarrow \beta$ iff $\forall r,s \in R: r.\alpha=s.\alpha \implies r.\beta=s.\beta$ (there is a function $f: D_\alpha \rightarrow D_\beta$)
+\enumend
+
+\subsection{Keys}
+\enumstart
+	\item $\alpha \subseteq \mathcal{R}$ is a superkey iff $\alpha \rightarrow \mathcal{R}$
+	\item A superkey is minimal iff $\forall A \in \alpha: \lnot((\alpha - \{A\})\rightarrow \beta)$
+	\item Notation for minimal functional dependency: $\alpha \dot \rightarrow \beta$
+	\item $\alpha \subseteq \mathcal{R}$ is a candidate key iff $\alpha \dot \rightarrow \mathcal{R}$
+	\item Armstrong axioms
+	\enumstart
+		\item Reflexivity: $(\beta \subseteq \alpha) \implies \alpha \rightarrow \beta$
+		\item Augmentation: $\alpha \rightarrow \beta \implies \alpha\gamma \rightarrow \beta\gamma$ (Notation: $\alpha\gamma := \alpha \cup \gamma$)
+		\item Transitivity: $\alpha \rightarrow \beta \land \beta \rightarrow \gamma \implies \alpha \rightarrow \gamma$
+		\item These axioms are complete
+	\enumend
+	\item Additional rules
+	\enumstart
+		\item Union of FDs: $\alpha \rightarrow \beta \land \alpha \rightarrow \gamma \implies \alpha \rightarrow \beta\gamma$
+		\item Decomposition: $\alpha \rightarrow \beta\gamma \implies \alpha \rightarrow \beta \land \alpha \rightarrow \gamma$
+		\item Pseude transitivity: $\alpha \rightarrow \beta \land \gamma\beta \rightarrow \delta \implies \alpha\gamma \rightarrow \delta$
+	\enumend
+	\item Minimal basis: $F_c$ is minimal iff
+	\enumstart
+		\item $F_c \equiv F$
+		\item $\forall A \in \alpha: (F_c - (\alpha \rightarrow \beta) \cup ((\alpha - \{A\})\rightarrow \beta)) \not\equiv F_c$
+		\item $\forall B \in \beta: (F_c - (\alpha \rightarrow \beta) \cup (\alpha \rightarrow( \beta - \{B\}))) \not\equiv F_c$
+		\item In $F_c$ there are no functional dependencies with the same left side
+	\enumend
+	\item Decomposition
+	\enumstart
+		\item $\mathcal{R} \rightarrow \mathcal{R}_1, \ddd, \mathcal{R}_n$
+		\item Lossless: $\mathcal{R} = \mathcal{R}_1 \join \ddd \join \mathcal{R}_n$
+		\item Preservation of dependencies: $FD(\mathcal{R})+ = (FD(\mathcal{R}_1) \cup \ddd \cup FD(\mathcal{R}_n))+$
+	\enumend
+\enumend
+
+\subsection{1. Normalform}
+\enumstart
+	\item Only atomic domains
+\enumend
+
+\subsection{2. Normalform}
+\enumstart
+	\item $\mathcal{R}$ is in 2NF iff every non-key attribute is minimally dependant on every key
+	\item $\mathcal{R}$ is in 2NF $\implies \mathcal{R}$ is in 1NF 
+\enumend
+
+\subsection{3. Normalform}
+\enumstart
+	\item $\mathcal{R}$ is in 3NF iff for all $\alpha \rightarrow B$ in $\mathcal{R}$ at least one condition holds
+	\enumstart
+		\item $B \in \alpha$
+		\item $B$ is an attribute of at least one key
+		\item $\alpha$ is a superkey of $\mathcal{R}$
+	\enumend
+	\item $\mathcal{R}$ is in 3NF $\implies \mathcal{R}$ is in 2NF 
+\enumend
+
+\subsection{Boyce-Codd Normalform (BCNF)}
+\enumstart
+	\item $\mathcal{R}$ is in BCNF iff for all $\alpha \rightarrow B$ in $\mathcal{R}$ at least one condition holds
+	\enumstart
+		\item $B \in \alpha$
+		\item $\alpha$ is a superkey of $\mathcal{R}$
+	\enumend
+	\item $\mathcal{R}$ is in BCNF $\implies \mathcal{R}$ is in 3NF 
+\enumend
+
+\subsection{Non first normal form (NFNF)}
+\enumstart
+	\item Allow non-atomic domains (not in SQL2, but SQL3 and XML)
+\enumend
+
+\subsection{Definitions}
+\enumstart
+	\item Multi-value dependency (MVD): $\alpha \rightarrow \rightarrow \beta$ iff
+	\enumstart
+		\item $\forall t_1, t_2 \in R: t_1.\alpha = t_2.\alpha \implies \exists t_3, t_4 \in R: (t_3.\alpha = t_4.\alpha = t_1.\alpha = t_2.\alpha) \land (t_3.\beta = t_1.\beta) \land (t_4.\beta = t_2.\beta) \land (t_3.\gamma = t_2.\gamma) \land (t_4.\gamma = t_1.\gamma)$
+	\enumend
+	\item Let $\mathcal{R} = \mathcal{R}1 \cup \mathcal{R}2 $
+	\item $R1 := \Pi_{\mathcal{R}1}(R)$
+	\item $R2 := \Pi_{\mathcal{R}2}(R)$
+	\item Decomposition is lossless iff
+	\enumstart
+		\item $(\mathcal{R}1 \cap \mathcal{R}2) \rightarrow \rightarrow \mathcal{R}1$ or
+		\item $(\mathcal{R}1 \cap \mathcal{R}2) \rightarrow \rightarrow \mathcal{R}2$
+	\enumend
+	\item Laws
+	\enumstart
+		\item Trivial: $\alpha \rightarrow \rightarrow \mathcal{R}$
+		\item Generalization (promotion): $\alpha \rightarrow \beta \implies \alpha \rightarrow\rightarrow \beta$
+		\item Reflexivity: $\beta \subseteq \alpha \implies \alpha \rightarrow \beta$
+		\item Augmentation: $\alpha \rightarrow \beta \implies \alpha\gamma \rightarrow \beta\gamma$
+		\item Transitivity: $\alpha \rightarrow \beta \land \beta \rightarrow \gamma \implies \alpha \rightarrow \gamma$
+		\item Complement: $\alpha \rightarrow\rightarrow \beta \implies \alpha \rightarrow \rightarrow \mathcal{R}-\alpha-\beta$
+		\item Multi-value augmentation: $\alpha \rightarrow\rightarrow \beta \land (\delta \subseteq \gamma) \implies \alpha \gamma \rightarrow\rightarrow \beta\delta$
+		\item Multi-value transitivity: $\alpha \rightarrow\rightarrow \beta \land \beta \rightarrow\rightarrow \gamma \implies \alpha \rightarrow\rightarrow \gamma$
+		\item Coalesce: $\alpha \rightarrow\rightarrow \beta \land (\gamma \subseteq \beta) \land (\delta \cap \beta = \emptyset) \land \delta \rightarrow \gamma \implies \alpha \rightarrow \gamma$
+		\item Multi-value union: $\alpha \rightarrow\rightarrow \beta \land \alpha \rightarrow\rightarrow \gamma \implies \alpha \rightarrow\rightarrow \beta\gamma$
+		\item Intersection: $\alpha \rightarrow\rightarrow \beta \land \alpha \rightarrow\rightarrow \gamma \implies \alpha \rightarrow\rightarrow (\beta \cap \gamma)$
+		\item Minus: $\alpha \rightarrow\rightarrow \beta \land \alpha \rightarrow\rightarrow \gamma \implies \alpha \rightarrow\rightarrow (\beta - \gamma) \land \alpha \rightarrow\rightarrow (\gamma - \beta)$
+	\enumend
+\enumend
+
+\subsection{4. Normalform}
+\enumstart
+	\item $\mathcal{R}$ is in 4NF iff for all $\alpha \rightarrow\rightarrow \beta$ at least one condition holds
+	\enumstart
+		\item $\alpha \rightarrow\rightarrow \beta$
+		\item $\alpha$ is a superkey of $\mathcal{R}$
+	\enumend
+	\item $\mathcal{R}$ is in 4NF implies $\mathcal{R}$ is in BCNF
+\enumend
